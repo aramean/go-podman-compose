@@ -1,0 +1,13 @@
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - tmp:/usr/share/nginx/html:ro
+    ports:
+      - 127.0.0.1:8080:80
+  mariadb:
+    image: mariadb:latest
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:13306:3306

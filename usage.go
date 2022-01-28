@@ -1,0 +1,234 @@
+package main
+
+import (
+	"errors"
+	"flag"
+	"fmt"
+	"os"
+	"strings"
+)
+
+const message = "\nRun 'podman-compose COMMAND --help' for more information on a command."
+
+func NewMainCommand(args []string) *MainCommand {
+
+	gc := &MainCommand{
+		fs: flag.NewFlagSet("help", flag.ExitOnError),
+	}
+
+	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
+	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	return gc
+}
+
+func NewDownCommand(args []string) *UpCommand {
+
+	var exit = flag.ContinueOnError
+	if len(args) > 1 && strings.Contains(args[1], "-help") {
+		exit = flag.ExitOnError
+	}
+
+	gc := &UpCommand{
+		fs: flag.NewFlagSet("down", exit),
+	}
+
+	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
+	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	return gc
+}
+
+func NewPsCommand(args []string) *PsCommand {
+
+	var exit = flag.ContinueOnError
+	if len(args) > 1 && strings.Contains(args[1], "-help") {
+		exit = flag.ExitOnError
+	}
+
+	gc := &PsCommand{
+		fs: flag.NewFlagSet("ps", exit),
+	}
+
+	gc.fs.BoolVar(&gc.detach, "d", false, "")
+	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "")
+	return gc
+}
+
+func NewUpCommand(args []string) *UpCommand {
+
+	var exit = flag.ContinueOnError
+	if len(args) > 1 && strings.Contains(args[1], "-help") {
+		exit = flag.ExitOnError
+	}
+
+	gc := &UpCommand{
+		fs: flag.NewFlagSet("up", exit),
+	}
+
+	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
+	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	//gc.fs.StringVar(&gc.name, "", "Josef", "")
+	return gc
+}
+
+func NewVersionCommand(args []string) *VersionCommand {
+
+	var exit = flag.ContinueOnError
+	if len(args) > 1 && strings.Contains(args[1], "-help") {
+		exit = flag.ExitOnError
+	}
+
+	gc := &VersionCommand{
+		fs: flag.NewFlagSet("version", exit),
+	}
+
+	gc.fs.StringVar(&gc.format, "f", "", "")
+	return gc
+}
+
+type MainCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+func (g *MainCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *MainCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *MainCommand) Run() error {
+	fmt.Println("  up          Create and start containers")
+	fmt.Println("  down        Stop and remove containers, networks")
+	fmt.Println("  ps          List containers")
+	fmt.Println("  version     Show the Podman-Compose version information")
+	return errors.New(message)
+}
+
+type DownCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+func (g *DownCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *DownCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *DownCommand) Run() error {
+	fmt.Println("Detach: ", g.detach, "!")
+	return nil
+}
+
+type PsCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+func (g *PsCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *PsCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *PsCommand) Run() error {
+	fmt.Println("Detach: ", g.detach, "!")
+	return nil
+}
+
+type UpCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+func (g *UpCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *UpCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *UpCommand) Run() error {
+	//fmt.Println("Detach: ", g.detach, "!")
+	return nil
+}
+
+type VersionCommand struct {
+	fs *flag.FlagSet
+
+	format string
+}
+
+func (g *VersionCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *VersionCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *VersionCommand) Run() error {
+	fmt.Print("Podman-Compose version v1.0.0")
+	return fmt.Errorf("")
+}
+
+type Runner interface {
+	Init([]string) error
+	Run() error
+	Name() string
+}
+
+func root(args []string) error {
+	if len(args) < 1 {
+		/*cmds := []Runner{
+			NewMainCommand(args['help']),
+		}*/
+
+		/*for _, cmd := range cmds {
+			//cmd.Init(os.Args[2:])
+			return cmd.Run()
+		}*/
+		//return errors.New(message)
+		args[0] = "help"
+		fmt.Println(args)
+		os.Exit(0)
+	}
+
+	cmds := []Runner{
+		NewMainCommand(args),
+		NewDownCommand(args),
+		NewPsCommand(args),
+		NewUpCommand(args),
+		NewVersionCommand(args),
+	}
+
+	subcommand := os.Args[1]
+
+	for _, cmd := range cmds {
+		if cmd.Name() == subcommand {
+			cmd.Init(os.Args[2:])
+			return cmd.Run()
+		}
+	}
+
+	return fmt.Errorf("%s\nunknown command: \"%s\"", message, subcommand)
+}
