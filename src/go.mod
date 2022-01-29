@@ -1,4 +1,4 @@
-module example.com/whatever
+module podman-compose
 
 go 1.17
 
