@@ -58,8 +58,9 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 	case "down":
 		for _, v := range e {
 			for k, _ := range v.Services {
-				arr := []string{"stop", "--time", "2", k}
-				args = append(args, arr)
+				arr1 := []string{"stop", "--time", "2", k}
+				arr2 := []string{"rm", k}
+				args = append(args, arr1, arr2)
 			}
 		}
 		break
