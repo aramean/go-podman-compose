@@ -35,6 +35,12 @@ func main() {
 		//fmt.Printf("Row: %v\n", i)
 		//fmt.Println(f[i])
 		executeCommand(f[i])
+
+		if message != "" {
+			//fmt.Printf("%s %s ... ", message, name)
+			fmt.Printf(ColorInfo, " ... OK\n")
+			//fmt.Printf("\n\n%#v", args)
+		}
 	}
 }
 
@@ -116,10 +122,4 @@ func executeCommand(f []string) {
 
 	// Wait for goroutine to print everything
 	<-doneChan
-
-	if message != "" {
-		//fmt.Printf("%s %s ... ", message, name)
-		fmt.Printf(ColorInfo, " ... OK\n")
-		//fmt.Printf("\n\n%#v", args)
-	}
 }
