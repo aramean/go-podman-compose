@@ -124,7 +124,6 @@ func NewUpCommand(args []string) *UpCommand {
 
 	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
 	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
-	//gc.fs.StringVar(&gc.name, "", "Josef", "")
 	return gc
 }
 
@@ -232,15 +231,6 @@ type Runner interface {
 
 func root(args []string) error {
 	if len(args) < 1 {
-		/*cmds := []Runner{
-			NewMainCommand(args['help']),
-		}*/
-
-		/*for _, cmd := range cmds {
-			//cmd.Init(os.Args[2:])
-			return cmd.Run()
-		}*/
-		//return errors.New(message)
 		args[0] = "help"
 		fmt.Println(args)
 		os.Exit(0)
