@@ -36,9 +36,7 @@ type PsCommand struct {
 type StopCommand struct {
 	fs *flag.FlagSet
 
-	name          string
-	detach        bool
-	removeOrphans bool
+	timeout int
 }
 
 type UpCommand struct {
@@ -98,32 +96,19 @@ func NewPsCommand(args []string) *PsCommand {
 	return gc
 }
 
-func NewStopCommand(args []string) *UpCommand {
+func NewStopCommand(args []string) *StopCommand {
 
 	var exit = flag.ContinueOnError
 	if len(args) > 1 && strings.Contains(args[1], "-help") {
 		exit = flag.ExitOnError
 	}
 
-	gc := &UpCommand{
-		fs: flag.NewFlagSet("up", exit),
+	gc := &StopCommand{
+		fs: flag.NewFlagSet("stop", exit),
 	}
 
-	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
-	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	gc.fs.IntVar(&gc.timeout, "t", 10, "Specify a shutdown timeout in seconds (default 10)")
 	return gc
-}
-
-func (g *StopCommand) Name() string {
-	return g.fs.Name()
-}
-
-func (g *StopCommand) Init(args []string) error {
-	return g.fs.Parse(args)
-}
-
-func (g *StopCommand) Run() error {
-	return nil
 }
 
 func NewUpCommand(args []string) *UpCommand {
@@ -170,6 +155,8 @@ func (g *MainCommand) Run() error {
 	fmt.Println("  up          Create and start containers")
 	fmt.Println("  down        Stop and remove containers, networks")
 	fmt.Println("  ps          List containers")
+	fmt.Println("  start       Start services")
+	fmt.Println("  stop        Stop services")
 	fmt.Println("  version     Show the Podman-Compose version information")
 	return errors.New(message)
 }
@@ -196,6 +183,18 @@ func (g *PsCommand) Init(args []string) error {
 }
 
 func (g *PsCommand) Run() error {
+	return nil
+}
+
+func (g *StopCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *StopCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *StopCommand) Run() error {
 	return nil
 }
 
