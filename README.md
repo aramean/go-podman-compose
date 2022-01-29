@@ -5,4 +5,4 @@ Podman Compose lets you define and run multi-container Podman applications. You 
 
 ## Contributing
 
-If you find an issue, please report it on the <a href="/issues/new">issue tracker</a>.
+If you find an issue, please report it on the <a href="../../issues/new">issue tracker</a>.
