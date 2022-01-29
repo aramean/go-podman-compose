@@ -33,5 +33,8 @@ version%help:
 ps:
 	@cd src && go run . ps
 
+ps%help:
+	@cd src && go run . ps --help
+
 help:
 	@cd src && go run . --help

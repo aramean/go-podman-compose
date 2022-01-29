@@ -29,9 +29,8 @@ type DownCommand struct {
 type PsCommand struct {
 	fs *flag.FlagSet
 
-	name          string
-	detach        bool
-	removeOrphans bool
+	all      string
+	external string
 }
 
 type StopCommand struct {
@@ -94,8 +93,8 @@ func NewPsCommand(args []string) *PsCommand {
 		fs: flag.NewFlagSet("ps", exit),
 	}
 
-	gc.fs.BoolVar(&gc.detach, "d", false, "")
-	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "")
+	gc.fs.StringVar(&gc.all, "a", "all", "Show all the containers, default is only running containers")
+	gc.fs.StringVar(&gc.external, "external", "", "Show containers in storage not controlled by Podman")
 	return gc
 }
 
@@ -197,7 +196,6 @@ func (g *PsCommand) Init(args []string) error {
 }
 
 func (g *PsCommand) Run() error {
-	fmt.Println("Detach: ", g.detach, "!")
 	return nil
 }
 
