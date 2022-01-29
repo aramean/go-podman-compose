@@ -62,6 +62,7 @@ func root(args []string) error {
 		NewMainCommand(args),
 		NewDownCommand(args),
 		NewPsCommand(args),
+		NewStartCommand(args),
 		NewStopCommand(args),
 		NewUpCommand(args),
 		NewVersionCommand(args),

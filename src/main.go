@@ -16,19 +16,19 @@ const (
 )
 
 func main() {
-	var arg1 = os.Args[1:]
+	var arg = os.Args[1:]
 
-	if err := root(arg1); err != nil {
+	if err := root(arg); err != nil {
 		fmt.Println(err)
 		os.Exit(0)
 	}
 
 	e := parseYML()
-	f := buildCommand(e, arg1[0])
+	f := buildCommand(e, arg)
 
 	for i := range f {
-		//fmt.Printf("Row: %v\n", i)
-		//fmt.Println(f[i])
+		fmt.Printf("Row: %v\n", i)
+		fmt.Println(f[i])
 		executeCommand(f[i])
 
 		if message != "" {
@@ -39,11 +39,11 @@ func main() {
 	}
 }
 
-func buildCommand(e map[string]Config, arg1 string) [][]string {
+func buildCommand(e map[string]Config, arg []string) [][]string {
 
 	args := [][]string{}
 
-	switch arg1 {
+	switch arg[0] {
 	case "down":
 		for _, v := range e {
 			for k, _ := range v.Services {
@@ -57,14 +57,45 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 		arr := []string{"ps"}
 		args = append(args, arr)
 		return args
+	case "start":
+		for _, v := range e {
+			for k, v := range v.Services {
+				if k == arg[1] {
+					arr := []string{
+						"run",
+						"--replace",
+						"-d",
+						"--name", k,
+					}
+
+					for i := range v.Ports {
+						arr = append(arr, "-p", v.Ports[i])
+					}
+
+					for i := range v.Volumes {
+						arr = append(arr, "-v", v.Volumes[i])
+					}
+
+					for i := range v.Environment {
+						arr = append(arr, "-e", v.Environment[i])
+					}
+
+					arr = append(arr, v.Image)
+					args = append(args, arr)
+				}
+			}
+		}
+		return args
 	case "stop":
 		for _, v := range e {
 			for k, _ := range v.Services {
-				arr := []string{
-					"stop",
-					"--time", "2",
-					k}
-				args = append(args, arr)
+				if k == arg[1] {
+					arr := []string{
+						"stop",
+						"--time", "2",
+						k}
+					args = append(args, arr)
+				}
 			}
 		}
 		return args

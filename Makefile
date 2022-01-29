@@ -10,8 +10,18 @@ stop:
 stop%help:
 	@cd src && go run . stop --help
 
+stop%nginx:
+	@cd src && go run . stop nginx
+
 start:
 	@cd src && go run . start
+
+start%nginx:
+	@cd src && go run . start nginx
+
+start%all:
+	@cd src && go run . start nginx
+	@cd src && go run . start mariadb
 
 down:
 	@cd src && go run . down
