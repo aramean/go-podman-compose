@@ -1,35 +1,37 @@
+SHELL := /bin/bash
+
 default:
-	@go run . --help
+	@cd src && go run . --help
 
 stop:
-	@go run . stop
+	@cd src && go run . stop
 
 start:
-	@go run . start
+	@cd src && go run . start
 
 down:
-	@go run . down
+	@cd src && go run . down
 
 down%help:
-	@go run . down -help
+	@cd src && go run . down -help
 
 up:
-	@go run . up
+	@cd src && go run . up
 
 up%help:
-	@go run . up -help
+	@cd src && go run . up -help
 
 up%detach:
-	@go run . up -d
+	@cd src && go run . up -d
 
 version:
-	@go run . version
+	@cd src && go run . version
 
 version%help:
-	@go run . version --help
+	@cd src && go run . version --help
 
 ps:
-	@go run . ps
+	@cd src && go run . ps
 
 help:
-	@go run . --help
+	@cd src && go run . --help
