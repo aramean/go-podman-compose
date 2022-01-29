@@ -87,6 +87,10 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 					arr = append(arr, "-v", v.Volumes[i])
 				}
 
+				for i := range v.Environment {
+					arr = append(arr, "-e", v.Environment[i])
+				}
+
 				arr = append(arr, v.Image)
 				args = append(args, arr)
 			}
