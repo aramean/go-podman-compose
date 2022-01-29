@@ -10,6 +10,52 @@ import (
 
 const message = "\nRun 'podman-compose COMMAND --help' for more information on a command."
 
+type MainCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+type DownCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+type PsCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+type StopCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+type UpCommand struct {
+	fs *flag.FlagSet
+
+	name          string
+	detach        bool
+	removeOrphans bool
+}
+
+type VersionCommand struct {
+	fs *flag.FlagSet
+
+	format string
+}
+
 func NewMainCommand(args []string) *MainCommand {
 
 	gc := &MainCommand{
@@ -53,6 +99,34 @@ func NewPsCommand(args []string) *PsCommand {
 	return gc
 }
 
+func NewStopCommand(args []string) *UpCommand {
+
+	var exit = flag.ContinueOnError
+	if len(args) > 1 && strings.Contains(args[1], "-help") {
+		exit = flag.ExitOnError
+	}
+
+	gc := &UpCommand{
+		fs: flag.NewFlagSet("up", exit),
+	}
+
+	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
+	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	return gc
+}
+
+func (g *StopCommand) Name() string {
+	return g.fs.Name()
+}
+
+func (g *StopCommand) Init(args []string) error {
+	return g.fs.Parse(args)
+}
+
+func (g *StopCommand) Run() error {
+	return nil
+}
+
 func NewUpCommand(args []string) *UpCommand {
 
 	var exit = flag.ContinueOnError
@@ -85,14 +159,6 @@ func NewVersionCommand(args []string) *VersionCommand {
 	return gc
 }
 
-type MainCommand struct {
-	fs *flag.FlagSet
-
-	name          string
-	detach        bool
-	removeOrphans bool
-}
-
 func (g *MainCommand) Name() string {
 	return g.fs.Name()
 }
@@ -109,14 +175,6 @@ func (g *MainCommand) Run() error {
 	return errors.New(message)
 }
 
-type DownCommand struct {
-	fs *flag.FlagSet
-
-	name          string
-	detach        bool
-	removeOrphans bool
-}
-
 func (g *DownCommand) Name() string {
 	return g.fs.Name()
 }
@@ -128,14 +186,6 @@ func (g *DownCommand) Init(args []string) error {
 func (g *DownCommand) Run() error {
 	fmt.Println("Detach: ", g.detach, "!")
 	return nil
-}
-
-type PsCommand struct {
-	fs *flag.FlagSet
-
-	name          string
-	detach        bool
-	removeOrphans bool
 }
 
 func (g *PsCommand) Name() string {
@@ -151,14 +201,6 @@ func (g *PsCommand) Run() error {
 	return nil
 }
 
-type UpCommand struct {
-	fs *flag.FlagSet
-
-	name          string
-	detach        bool
-	removeOrphans bool
-}
-
 func (g *UpCommand) Name() string {
 	return g.fs.Name()
 }
@@ -170,12 +212,6 @@ func (g *UpCommand) Init(args []string) error {
 func (g *UpCommand) Run() error {
 	//fmt.Println("Detach: ", g.detach, "!")
 	return nil
-}
-
-type VersionCommand struct {
-	fs *flag.FlagSet
-
-	format string
 }
 
 func (g *VersionCommand) Name() string {
@@ -217,6 +253,7 @@ func root(args []string) error {
 		NewMainCommand(args),
 		NewDownCommand(args),
 		NewPsCommand(args),
+		NewStopCommand(args),
 		NewUpCommand(args),
 		NewVersionCommand(args),
 	}
