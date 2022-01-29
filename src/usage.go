@@ -42,7 +42,7 @@ func (g *MainCommand) Run() error {
 	fmt.Println("  ps          List containers")
 	fmt.Println("  start       Start services")
 	fmt.Println("  stop        Stop services")
-	fmt.Println("  version     Show the Podman-Compose version information")
+	fmt.Println("  version     Show Podman-Compose version information")
 	return errors.New(message)
 }
 
