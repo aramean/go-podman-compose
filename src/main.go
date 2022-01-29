@@ -38,7 +38,7 @@ func main() {
 
 		if message != "" {
 			//fmt.Printf("%s %s ... ", message, name)
-			fmt.Printf(ColorInfo, " ... OK\n")
+			fmt.Printf(ColorInfo, " ... \n")
 			//fmt.Printf("\n\n%#v", args)
 		}
 	}
@@ -65,7 +65,10 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 	case "stop":
 		for _, v := range e {
 			for k, _ := range v.Services {
-				arr := []string{"stop", "--time", "2", k}
+				arr := []string{
+					"stop",
+					"--time", "2",
+					k}
 				args = append(args, arr)
 			}
 		}
