@@ -2,12 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
 
 	"github.com/go-cmd/cmd"
-	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -22,47 +19,6 @@ var (
 	version *string
 	debug   *bool
 )
-
-type Services struct {
-	Image   string   `yaml:"image"`
-	Volumes []string `yaml:"volumes"`
-	Ports   []string `yaml:"ports"`
-}
-
-type Volumes struct {
-	Mounts []string `yaml:"volumes"`
-}
-
-type Networks struct {
-	Networks []string `yaml:"networks"`
-}
-
-type Config struct {
-	SkipHeaderValidation bool
-	Services             map[string]Services
-	Volumes              map[string]Volumes
-}
-
-func (e *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	/*var params struct {
-		SkipHeaderValidation bool `yaml:"skip-header-validation"`
-	}
-	if err := unmarshal(&params); err != nil {
-		return err
-	}*/
-	var services map[string]Services
-	if err := unmarshal(&services); err != nil {
-		if _, ok := err.(*yaml.TypeError); !ok {
-			return err
-		}
-	}
-	e.Services = services
-
-	var volumes map[string]Volumes
-	//e.SkipHeaderValidation = params.SkipHeaderValidation
-	e.Volumes = volumes
-	return nil
-}
 
 func main() {
 	var arg1 = os.Args[1:]
@@ -80,23 +36,6 @@ func main() {
 		//fmt.Println(f[i])
 		executeCommand(f[i])
 	}
-}
-
-func parseYML() map[string]Config {
-	yfile, err2 := ioutil.ReadFile("docker-compose.yml")
-
-	if err2 != nil {
-		log.Fatal(err2)
-	}
-
-	var e map[string]Config
-	err3 := yaml.Unmarshal(yfile, &e)
-
-	if err3 != nil {
-		log.Fatal(err3)
-	}
-
-	return e
 }
 
 func buildCommand(e map[string]Config, arg1 string) [][]string {
