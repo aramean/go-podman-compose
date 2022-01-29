@@ -15,11 +15,6 @@ const (
 	ColorDebug   = "\033[0;36m%s\033[0m"
 )
 
-var (
-	version *string
-	debug   *bool
-)
-
 func main() {
 	var arg1 = os.Args[1:]
 
@@ -57,11 +52,11 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 				args = append(args, arr1, arr2)
 			}
 		}
-		break
+		return args
 	case "ps":
 		arr := []string{"ps"}
 		args = append(args, arr)
-		break
+		return args
 	case "stop":
 		for _, v := range e {
 			for k, _ := range v.Services {
@@ -72,7 +67,7 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 				args = append(args, arr)
 			}
 		}
-		break
+		return args
 	case "up":
 		for _, v := range e {
 			for k, v := range v.Services {
@@ -96,7 +91,7 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 				args = append(args, arr)
 			}
 		}
-		break
+		return args
 	}
 
 	return args

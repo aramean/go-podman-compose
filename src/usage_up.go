@@ -8,7 +8,6 @@ import (
 type UpCommand struct {
 	fs *flag.FlagSet
 
-	name          string
 	detach        bool
 	removeOrphans bool
 }
@@ -38,6 +37,5 @@ func (g *UpCommand) Init(args []string) error {
 }
 
 func (g *UpCommand) Run() error {
-	//fmt.Println("Detach: ", g.detach, "!")
 	return nil
 }

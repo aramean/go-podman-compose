@@ -12,7 +12,6 @@ const message = "\nRun 'podman-compose COMMAND --help' for more information on a
 type MainCommand struct {
 	fs *flag.FlagSet
 
-	name          string
 	detach        bool
 	removeOrphans bool
 }
