@@ -73,7 +73,23 @@ func buildCommand(e map[string]Config, arg1 string) [][]string {
 	case "up":
 		for _, v := range e {
 			for k, v := range v.Services {
-				arr := []string{"run", "--replace", "-d", "--name", k, "-v", v.Volumes[0], "-p", v.Ports[0], v.Image}
+
+				arr := []string{
+					"run",
+					"--replace",
+					"-d",
+					"--name", k,
+				}
+
+				for i := range v.Ports {
+					arr = append(arr, "-p", v.Ports[i])
+				}
+
+				for i := range v.Volumes {
+					arr = append(arr, "-v", v.Volumes[i])
+				}
+
+				arr = append(arr, v.Image)
 				args = append(args, arr)
 			}
 		}
