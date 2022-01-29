@@ -8,13 +8,22 @@ import (
 )
 
 type Services struct {
-	Image   string   `yaml:"image"`
-	Volumes []string `yaml:"volumes"`
-	Ports   []string `yaml:"ports"`
+	Image       string   `yaml:"image"`
+	Volumes     []string `yaml:"volumes"`
+	Ports       []string `yaml:"ports"`
+	Environment []string `yaml:"environment"`
 }
 
 type Volumes struct {
 	Mounts []string `yaml:"volumes"`
+}
+
+type Ports struct {
+	Ports []string `yaml:"ports"`
+}
+
+type Environment struct {
+	Environment []string `yaml:"environment"`
 }
 
 type Networks struct {
