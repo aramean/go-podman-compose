@@ -20,3 +20,9 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: example
+  error1:
+    image: no-image
+  error2:
+    image: nginx:alpine
+    volumes:
+      - tmp:no-path:ro

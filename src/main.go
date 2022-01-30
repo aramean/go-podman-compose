@@ -8,11 +8,13 @@ import (
 )
 
 const (
-	ColorInfo    = "\033[1;34m%s\033[0m"
-	ColorNotice  = "\033[1;36m%s\033[0m"
-	ColorWarning = "\033[1;33m%s\033[0m"
-	ColorError   = "\033[1;31m%s\033[0m"
-	ColorDebug   = "\033[0;36m%s\033[0m"
+	colorBlue   = "\033[1;34m%s\033[0m"
+	colorCyan   = "\033[1;36m%s\033[0m"
+	colorGreen  = "\033[1;32m%s\033[0m"
+	colorPurple = "\033[1;35m%s\033[0m"
+	colorRed    = "\033[1;31m%s\033[0m"
+	colorYellow = "\033[1;33m%s\033[0m"
+	colorWhite  = "\033[1;37m%s\033[0m"
 )
 
 func main() {
@@ -26,16 +28,15 @@ func main() {
 	e := parseYML()
 	f := buildCommand(e, arg)
 
-	for i := range f {
-		/*fmt.Printf("Row: %v\n", i)
-		fmt.Println(f[i])
-		*/
-		executeCommand(f[i])
+	for _, v := range f {
 
-		if message != "" {
-			//fmt.Printf("%s %s ... ", message, name)
-			fmt.Printf(ColorInfo, " ... \n")
-			//fmt.Printf("\n\n%#v", args)
+		e := executeCommand(v)
+
+		if e.status == 0 {
+			fmt.Printf(colorGreen, "[OK] ")
+			fmt.Println(e.message)
+		} else if e.status == 1 {
+			fmt.Printf(colorRed, e.message+"\n")
 		}
 	}
 }
@@ -44,12 +45,12 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 
 	var arg0, arg1 = "", ""
 
-	for i := range arg {
+	for i, v := range arg {
 		if i == 0 {
-			arg0 = arg[0]
+			arg0 = v
 		}
 		if i == 1 {
-			arg1 = arg[1]
+			arg1 = v
 		}
 	}
 
@@ -144,7 +145,15 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 	return args
 }
 
-func executeCommand(f []string) {
+type cmdMessage struct {
+	status  int
+	message string
+}
+
+func executeCommand(f []string) *cmdMessage {
+
+	m := cmdMessage{status: 0, message: ""}
+
 	// Disable output buffering, enable streaming
 	cmdOptions := cmd.Options{
 		Buffered:  false,
@@ -167,14 +176,22 @@ func executeCommand(f []string) {
 					envCmd.Stdout = nil
 					continue
 				}
-				fmt.Print(line)
+
+				m.status = 0
+				m.message = m.message + line + " "
+
 			case line, open := <-envCmd.Stderr:
 				if !open {
 					envCmd.Stderr = nil
 					continue
 				}
-				fmt.Fprintln(os.Stderr, line)
+
+				m.status = 1
+				m.message = m.message + line + " "
 			}
+
+			/*debugMessage := fmt.Sprintln(envCmd.Args)
+			fmt.Printf(colorYellow, debugMessage)*/
 		}
 	}()
 
@@ -183,4 +200,6 @@ func executeCommand(f []string) {
 
 	// Wait for goroutine to print everything
 	<-doneChan
+
+	return &m
 }

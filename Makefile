@@ -13,6 +13,12 @@ stop%help:
 stop%nginx:
 	@cd src && go run . stop nginx
 
+stop%error1:
+	@cd src && go run . stop error1
+
+stop%error2:
+	@cd src && go run . stop error2
+
 stop%mariadb:
 	@cd src && go run . stop mariadb
 
