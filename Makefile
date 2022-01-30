@@ -13,11 +13,17 @@ stop%help:
 stop%nginx:
 	@cd src && go run . stop nginx
 
+stop%mariadb:
+	@cd src && go run . stop mariadb
+
 start:
 	@cd src && go run . start
 
 start%nginx:
 	@cd src && go run . start nginx
+
+start%mariadb:
+	@cd src && go run . start mariadb
 
 start%all:
 	@cd src && go run . start nginx

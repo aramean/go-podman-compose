@@ -27,8 +27,9 @@ func main() {
 	f := buildCommand(e, arg)
 
 	for i := range f {
-		fmt.Printf("Row: %v\n", i)
+		/*fmt.Printf("Row: %v\n", i)
 		fmt.Println(f[i])
+		*/
 		executeCommand(f[i])
 
 		if message != "" {
@@ -41,9 +42,20 @@ func main() {
 
 func buildCommand(e map[string]Config, arg []string) [][]string {
 
+	var arg0, arg1 = "", ""
+
+	for i := range arg {
+		if i == 0 {
+			arg0 = arg[0]
+		}
+		if i == 1 {
+			arg1 = arg[1]
+		}
+	}
+
 	args := [][]string{}
 
-	switch arg[0] {
+	switch arg0 {
 	case "down":
 		for _, v := range e {
 			for k, _ := range v.Services {
@@ -60,7 +72,7 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 	case "start":
 		for _, v := range e {
 			for k, v := range v.Services {
-				if k == arg[1] {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					arr := []string{
 						"run",
 						"--replace",
@@ -89,7 +101,7 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 	case "stop":
 		for _, v := range e {
 			for k, _ := range v.Services {
-				if k == arg[1] {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					arr := []string{
 						"stop",
 						"--time", "2",
