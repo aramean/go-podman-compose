@@ -18,7 +18,7 @@ default: build
 
 build:
 	@if [ -d $(SRC_DIR)/$(GO_OUTPUT_DIR) ] ; then \
-		cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)$(GO_OUTPUT_APP_NAME) ; \
+		cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ; \
 		if [ -d $(GO_OUTPUT_DIR) ] ; then \
 			echo -e "$(GREEN)Build for $(ARCH) architecture successfuly created.$(NC)" ; \
 		fi \
@@ -29,9 +29,10 @@ build:
 
 install:
 	@if [ -d $(SRC_DIR)/$(GO_OUTPUT_DIR) ] ; then \
-		dir=$(SRC_DIR)/$(GO_OUTPUT_DIR) ; \
-		list="`echo "$$dir"/*`" ; \
-		test "$$list" = "$$dir/*" && echo -e "$(RED)No build found in "$$dir" folder!$(NC)" && exit 1 || true ; \
+		if [ ! -e $(SRC_DIR)/$(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ]; then \
+			echo -e "$(RED)No build found in \"$(GO_OUTPUT_DIR)\" folder!$(NC)" ; \
+			exit 1 ; \
+		fi \
  	else \
 		echo -e "$(RED)\"$(GO_OUTPUT_DIR)\" folder not found!$(NC)" ; \
 		exit 1 ; \
@@ -44,8 +45,8 @@ install:
 	[ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ] || (echo -e "$(RED)Installation cancelled.$(NC)" ; exit 1;)
 
 	@sudo cp $(SRC_DIR)/$(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) $(INSTALL_DIR)/$(INSTALL_NAME) ; \
-	if [ -d $(INSTALL_DIR)/$(INSTALL_NAME) ] ; then \
-		echo -e "$(GREEN)The installation was successful.$(NC)\n\nStart command:\n\n$(WHITE)$(NC)" ; \
+	if [ -e $(INSTALL_DIR)/$(INSTALL_NAME) ] ; then \
+		echo -e "\n\n$(GREEN)The installation was successful.$(NC)\n\nStart command:\n\n$(WHITE)$(INSTALL_NAME)$(NC)\n" ; \
 	fi \
 
 %:
