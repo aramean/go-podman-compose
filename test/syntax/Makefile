@@ -4,7 +4,7 @@ SRC_DIR = ../../src
 GO_ARG = run .
 
 default:
-	@cd $(SRC_DIR) && go $(GO_ARG) --help
+	@cd $(SRC_DIR) && go $(GO_ARG)
 
 stop:
 	@cd $(SRC_DIR) && go $(GO_ARG) stop
@@ -66,6 +66,9 @@ ps%help:
 
 help:
 	@cd $(SRC_DIR) && go $(GO_ARG) --help
+
+nocommand:
+	@cd $(SRC_DIR) && go $(GO_ARG) nocommand
 
 %:
 	@:

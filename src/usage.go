@@ -4,7 +4,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"os"
 )
 
 const message = "\nRun 'podman-compose COMMAND --help' for more information on a command."
@@ -51,11 +50,10 @@ type Runner interface {
 	Name() string
 }
 
-func root(args []string) error {
+func runUsage(args []string) error {
+
 	if len(args) < 1 {
-		args[0] = "help"
-		fmt.Println(args)
-		os.Exit(0)
+		args = append(args, "help")
 	}
 
 	cmds := []Runner{
@@ -68,11 +66,11 @@ func root(args []string) error {
 		NewVersionCommand(args),
 	}
 
-	subcommand := os.Args[1]
+	subcommand := args[0]
 
 	for _, cmd := range cmds {
 		if cmd.Name() == subcommand {
-			cmd.Init(os.Args[2:])
+			cmd.Init(args[1:])
 			return cmd.Run()
 		}
 	}

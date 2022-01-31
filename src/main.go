@@ -18,7 +18,7 @@ const (
 func main() {
 	var arg = os.Args[1:]
 
-	if err := root(arg); err != nil {
+	if err := runUsage(arg); err != nil {
 		fmt.Println(err)
 		os.Exit(0)
 	}
