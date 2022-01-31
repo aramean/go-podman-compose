@@ -37,6 +37,9 @@ start%all:
 	@cd $(SRC_DIR) && go $(GO_ARG) start nginx
 	@cd $(SRC_DIR) && go $(GO_ARG) start mariadb
 
+restart:
+	@cd $(SRC_DIR) && go $(GO_ARG) restart
+
 down:
 	@cd $(SRC_DIR) && go $(GO_ARG) down
 

@@ -38,6 +38,7 @@ func (g *MainCommand) Run() error {
 	fmt.Println("  up          Create and start containers")
 	fmt.Println("  down        Stop and remove containers, networks")
 	fmt.Println("  ps          List containers")
+	fmt.Println("  restart     Restart containers")
 	fmt.Println("  start       Start services")
 	fmt.Println("  stop        Stop services")
 	fmt.Println("  version     Show Podman-Compose version information")
@@ -60,6 +61,7 @@ func runUsage(args []string) error {
 		NewMainCommand(args),
 		NewDownCommand(args),
 		NewPsCommand(args),
+		NewRestartCommand(args),
 		NewStartCommand(args),
 		NewStopCommand(args),
 		NewUpCommand(args),
