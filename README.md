@@ -8,7 +8,7 @@ Podman Compose lets you define and run multi-container Podman applications. You 
 ## Installing
 
 ### With Curl
-`curl -fsSL github.com/aramean/go-podman-compose/releases/latest/download/podman-compose.zip -O`
+`curl -fsSL github.com/aramean/go-podman-compose/releases/download/refs%2Fheads%2Fmain/podman-compose.zip -O`
 
 ### From source
 To compile from source, simply run `make && make install`
