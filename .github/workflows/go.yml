@@ -34,4 +34,3 @@ jobs:
       with:
         name: podman-compose
         path: podman-compose
-    
