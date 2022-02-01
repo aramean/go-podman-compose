@@ -43,7 +43,7 @@ jobs:
       run: cd src && env GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/podman-compose
       
     - name: Build Go binary for Linux (Amd64)
-      run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/linux/am64/podman-compose
+      run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/linux/amd64/podman-compose
 
     - name: Cache Go binaries
       uses: actions/cache@v2
@@ -68,8 +68,20 @@ jobs:
           path: src/bin
           key: ${{ github.sha }}
 
-      - name: Create artifact
+      - name: Create artifact for MacOS (Arm64)
         uses: actions/upload-artifact@v2
         with:
-          name: artifact-podman-compose
+          name: artifact-darwin-arm64
           path: src/bin/darwin/arm64/
+
+      - name: Create artifact for MacOS (Amd64)
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-darwin-amd64
+          path: src/bin/darwin/amd64/
+
+      - name: Create artifact for Linux (Amd64)
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-linux-amd64
+          path: src/bin/linux/amd64/
