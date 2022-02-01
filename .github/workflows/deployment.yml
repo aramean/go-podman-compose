@@ -71,7 +71,7 @@ jobs:
           zip podman-compose-darwin-arm64.zip *
           cd ../amd64
           zip podman-compose-darwin-amd64.zip *
-          cd ../linux/amd64
+          cd ../../linux/amd64
           zip podman-compose-linux-amd64.zip *
           ls
 
