@@ -2,21 +2,24 @@ name: go-continuous-deployment
 
 on:
   workflow_run:
-    workflows: ['go-continues-integration-and-delivery']
+    workflows: ['go-continuous-integration-and-delivery']
     types:
       - completed
       
 jobs:
 
-  test:
+  test1:
+    name: Upload
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
-
-    - name: Test Go binaries
-      run: cd src && go test .
+      - name: Restore cached Go binaries
+        uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: src/bin
+          key: podman-compose-cache-key
+      - run: ls
