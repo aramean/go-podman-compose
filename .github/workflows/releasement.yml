@@ -35,13 +35,12 @@ jobs:
     - name: Build Go binaries
       run: cd src && go build -v . && ls
 
-    - name: Cache Go binaries
     - uses: actions/cache@v2
+    - name: Cache Go binaries
       id: restore-build
       with:
-          path: ./*
+          path: podman-compose
           key: ${{ github.sha }}
-    - run: ls src
 
   upload:
     name: Re-use Cache
@@ -52,6 +51,6 @@ jobs:
       - uses: actions/checkout@v2
         id: restore-build
         with:
-          path: ./*
+          path: podman-compose
           key: ${{ github.sha }}
       - run: ls
