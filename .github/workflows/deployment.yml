@@ -88,19 +88,30 @@ jobs:
           draft: false
           prerelease: true
 
-      - name: Upload release asset
-        id: upload-release-asset2
+      - name: Upload release asset - MacOS (ARM64)
+        id: upload-release-asset-macos-arm64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: src/bin/darwin/arm64/podman-compose-linux-arm64.zip
+          asset_path: src/bin/darwin/arm64/podman-compose-darwin-arm64.zip
           asset_name: podman-compose-darwin-arm64.zip
           asset_content_type: application/zip
+          
+      - name: Upload release asset - MacOS (AMD64)
+        id: upload-release-asset-macos-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: src/bin/darwin/amd64/podman-compose-darwin-amd64.zip
+          asset_name: podman-compose-darwin-amd64.zip
+          asset_content_type: application/zip
 
-      - name: Upload release asset
-        id: upload-release-asset
+      - name: Upload release asset - Linux (AMD64)
+        id: upload-release-asset-linux-amd64
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
