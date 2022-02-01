@@ -21,11 +21,11 @@ jobs:
     - name: Build
       run: cd src && go build -v .
 
-    - name: Test
-      run: cd src && go build -v .
-
     - uses: actions/upload-artifact@v2
       with:
         name: podman-compose
         path: podman-compose
+
+    - name: Test
+      run: cd src && go build -v .
     
