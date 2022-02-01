@@ -34,3 +34,11 @@ jobs:
 
     - name: Build Go binaries
       run: cd src && go build -v .
+  
+  upload:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: List items
+      run: ls
