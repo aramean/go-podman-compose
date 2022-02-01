@@ -50,4 +50,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
       - run: ls src
