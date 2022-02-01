@@ -54,3 +54,4 @@ jobs:
           path: podman-compose
           key: ${{ github.sha }}
       - run: ls
+      - run: ./podman-compose
