@@ -41,6 +41,7 @@ jobs:
       with:
           path: ./*
           key: ${{ github.sha }}
+    - run: ls src
 
   upload:
     name: Re-use Cache
