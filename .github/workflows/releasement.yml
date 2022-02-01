@@ -60,4 +60,7 @@ jobs:
         with:
           path: src/bin
           key: podman-compose-cache-key
-      - run: cd src/bin && ls
+      - name: Create artifact
+        with:
+          name: podman
+          path: src/bin
