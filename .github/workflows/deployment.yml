@@ -35,7 +35,7 @@ jobs:
         id: restore-build
         with:
             path: src/bin
-            key: podman-compose-cache-key
+            key: ${{ github.sha }}
 
   deploy:
     name: Deploy
@@ -51,7 +51,7 @@ jobs:
         id: restore-build
         with:
           path: src/bin
-          key: podman-compose-cache-key
+          key: ${{ github.sha }}
       - run: ls src/bin
       
       - name: Zip Go binaries
