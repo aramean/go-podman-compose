@@ -43,7 +43,7 @@ jobs:
       run: cd src && env GOOS=darwin GOARCH=amd64 go build -o bin/podman-compose-macos_amd64
       
     - name: Build Go binary for Linux (Amd64)
-      run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/podman-compose-linux_amd64 && ls src/bin
+      run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/podman-compose-linux_amd64 && ls bin
 
     - name: Cache Go binaries
       uses: actions/cache@v2
