@@ -9,6 +9,7 @@ on:
 jobs:
 
   test:
+    name: Test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -23,6 +24,7 @@ jobs:
       run: cd src && go test .
 
   build:
+    name: Build
     runs-on: ubuntu-latest
     needs: [test]
     steps:
@@ -45,7 +47,7 @@ jobs:
           key: podman-compose-cache-key
 
   upload:
-    name: Re-use Cache
+    name: Upload
     runs-on: ubuntu-latest
     needs: [build]
 
