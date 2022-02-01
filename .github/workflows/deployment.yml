@@ -23,13 +23,14 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-podman-compose
-      - run: ls
+          path: src/bin
+      - run: ls src/bin
 
       - name: Cache Go binaries
         uses: actions/cache@v2
         id: restore-build
         with:
-            path: .
+            path: src/bin
             key: podman-compose-cache-key
 
   deploy:
@@ -45,5 +46,5 @@ jobs:
         uses: actions/cache@v2
         id: restore-build
         with:
-          path: .
+          path: src/bin
           key: podman-compose-cache-key
