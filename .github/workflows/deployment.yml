@@ -61,7 +61,7 @@ jobs:
           path: src/bin
           key: ${{ github.sha }}
       - run: |
-          ls src/bin/linux/arm64
+          ls src/bin/darwin/arm64
           ls src/bin/darwin/amd64
           ls src/bin/linux/amd64
 
