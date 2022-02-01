@@ -19,4 +19,4 @@ jobs:
         with:
           workflow: releasement.yml
           workflow_conclusion: success
-          name: podman-compose
+          name: artifact-podman-compose
