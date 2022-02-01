@@ -8,6 +8,19 @@ on:
 
 jobs:
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: cd src && go build -v .
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +32,4 @@ jobs:
         go-version: 1.17
 
     - name: Build
-      run: cd src && go build -v . && ls
-
-    - name: Test
-      run: cd src && go test -v .
+      run: cd src && go test .
