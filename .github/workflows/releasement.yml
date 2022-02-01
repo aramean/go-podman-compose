@@ -36,13 +36,13 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Build Go binary for MacOS (Arm64)
+    - name: Build Go binary for MacOS (ARM64)
       run: cd src && env GOOS=darwin GOARCH=arm64 go build -o bin/darwin/arm64/podman-compose
 
-    - name: Build Go binary for MacOS (Amd64)
+    - name: Build Go binary for MacOS (AMD64)
       run: cd src && env GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/podman-compose
       
-    - name: Build Go binary for Linux (Amd64)
+    - name: Build Go binary for Linux (AMD64)
       run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/linux/amd64/podman-compose
 
     - name: Cache Go binaries
@@ -68,19 +68,19 @@ jobs:
           path: src/bin
           key: ${{ github.sha }}
 
-      - name: Create artifact for MacOS (Arm64)
+      - name: Create artifact for MacOS (ARM64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-darwin-arm64
           path: src/bin/darwin/arm64/
 
-      - name: Create artifact for MacOS (Amd64)
+      - name: Create artifact for MacOS (AMD64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-darwin-amd64
           path: src/bin/darwin/amd64/
 
-      - name: Create artifact for Linux (Amd64)
+      - name: Create artifact for Linux (AMD64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-linux-amd64
