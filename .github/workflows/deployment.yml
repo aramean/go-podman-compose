@@ -60,11 +60,15 @@ jobs:
         with:
           path: src/bin
           key: ${{ github.sha }}
-      - run: ls src/bin
-      
+      - run: |
+          ls src/bin/linux/arm64
+          ls src/bin/darwin/amd64
+          ls src/bin/linux/amd64
+
       - name: Zip Go binaries
         run: |
-          cd src/bin/linux/amd64/ && zip podman-compose-linux-amd64.zip *
+          cd src/bin/linux/amd64
+          zip podman-compose-linux-amd64.zip *
 
       - name: Create release
         id: create_release
@@ -86,7 +90,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: src/bin/linux/amd64
+          asset_path: src/bin/linux
           asset_name: podman-compose-linux-amd64.zip
           asset_content_type: application/zip
     
