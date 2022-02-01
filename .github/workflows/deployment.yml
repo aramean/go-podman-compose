@@ -20,6 +20,7 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-podman-compose
+          run: ls
 
       - name: Cache Go binaries
         uses: actions/cache@v2
