@@ -26,7 +26,7 @@ jobs:
         with:
           workflow: releasement.yml
           workflow_conclusion: success
-          name: artifact-podman-compose
+          name: artifact-linux-amd64
           path: src/bin
       - run: ls src/bin
 
@@ -56,7 +56,7 @@ jobs:
       
       - name: Zip Go binaries
         run: |
-          cd src/bin && zip podman-compose.zip *
+          cd src/bin/linux/amd64/ && zip podman-compose-linux-amd64.zip *
 
       - name: Create release
         id: create_release
@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: src/bin/podman-compose.zip
-          asset_name: podman-compose.zip
+          asset_path: src/bin/linux/amd64/podman-compose.zip
+          asset_name: podman-compose-linux-amd64.zip
           asset_content_type: application/zip
     
