@@ -1,4 +1,4 @@
-name: binary-continues-integration-and-delivery
+name: go-continues-integration-and-delivery
 
 on:
   push:
