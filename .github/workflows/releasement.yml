@@ -61,6 +61,7 @@ jobs:
           path: src/bin
           key: podman-compose-cache-key
       - name: Create artifact
+        uses: actions/upload-artifact@v2
         with:
           name: podman
           path: src/bin
