@@ -1,7 +1,7 @@
 <img src="/docs/logo.svg">
 
 # Podman Compose
-Podman Compose lets you define and run multi-container Podman applications. You configure the services using YAML files, and then start all the services with the same command. [![Continuous integration and delivery](https://github.com/aramean/go-podman-compose/actions/workflows/continuous-integration-and-delivery.yml/badge.svg)](https://github.com/aramean/go-podman-compose/actions/workflows/continuous-integration-and-delivery.yml)
+Podman Compose lets you define and run multi-container Podman applications. You configure the services using YAML files, and then start all the services with the same command. [![Continuous integration and delivery](https://github.com/aramean/go-podman-compose/actions/workflows/releasement.yml/badge.svg)](https://github.com/aramean/go-podman-compose/actions/workflows/releasement.yml)
 
 ## Installing
 
