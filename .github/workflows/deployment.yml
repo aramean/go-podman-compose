@@ -8,19 +8,15 @@ on:
       
 jobs:
   
-  test1:
+  deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Upload
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Restore cached Go binaries
-        uses: actions/cache@v2
-        id: restore-build
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
-          path: src/bin
-          key: podman-compose-cache-key
-      - run: ls
+          name: podman-compose
+      - shell: bash
+        run: ./podman-compose
