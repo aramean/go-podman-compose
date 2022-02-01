@@ -35,8 +35,8 @@ jobs:
     - name: Build Go binaries
       run: cd src && go build -v . && ls
 
-    - uses: actions/cache@v2
     - name: Cache Go binaries
+      uses: actions/cache@v2
       id: restore-build
       with:
           path: podman-compose
