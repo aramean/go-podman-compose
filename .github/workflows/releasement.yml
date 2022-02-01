@@ -35,7 +35,7 @@ jobs:
         go-version: 1.17
 
     - name: Build Go binaries
-      run: cd src && go build -o /bin/podman-compose
+      run: cd src && go build -o bin/podman-compose && ls
 
     - name: Cache Go binaries
       uses: actions/cache@v2
