@@ -38,8 +38,7 @@ jobs:
     - run: ls
 
     - name: Cache Go binaries
-    - run: cd src
-    - run: ls
+      run: ls
     - uses: actions/cache@v2
       id: restore-build
       with:
