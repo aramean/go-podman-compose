@@ -19,7 +19,7 @@ jobs:
         go-version: 1.17
 
     - name: Build
-      run: cd src && go build -v .
+      run: cd src && go build -v . && ls
 
     - uses: actions/upload-artifact@v2
       with:
