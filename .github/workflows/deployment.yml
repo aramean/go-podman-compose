@@ -48,3 +48,13 @@ jobs:
         with:
           path: src/bin
           key: podman-compose-cache-key
+      - run: ls
+          
+      #- name: Publish Release
+      #  id: publish
+      #  uses: packagrio/action-publishr-go@master
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+      #  with:
+      #    upload_assets: 'podman-compose'
+    
