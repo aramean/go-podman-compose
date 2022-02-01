@@ -7,8 +7,9 @@ on:
       - completed
       
 jobs:
-
+  
   test1:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Upload
     runs-on: ubuntu-latest
 
