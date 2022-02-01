@@ -21,12 +21,17 @@ jobs:
     - name: Build
       run: cd src && go build -v . && ls
 
+    - name: Test
+      run: cd src && go test -v .
+  
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
     - name: Upload a Build Artifact
     - uses: actions/upload-artifact@v2
       with:
         name: podman-compose
-        path: ./podman-compose
-
-    - name: Test
-      run: cd src && go test -v .
+        path: podman-compose
     
