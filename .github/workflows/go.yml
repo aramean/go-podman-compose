@@ -18,7 +18,7 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Build
+    - name: Build Go binaries
       run: cd src && go build -v .
 
   build:
@@ -31,5 +31,5 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Build
+    - name: Test Go binaries
       run: cd src && go test .
