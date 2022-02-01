@@ -56,4 +56,4 @@ jobs:
         with:
           path: src/bin
           key: podman-compose-cache-key
-      - run: ls src/bin && ls bin
+      - run: cd src/bin && ls
