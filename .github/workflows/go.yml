@@ -27,5 +27,5 @@ jobs:
         path: podman-compose
 
     - name: Test
-      run: cd src && go build -v .
+      run: cd src && go test -v .
     
