@@ -8,7 +8,7 @@ Podman Compose lets you define and run multi-container Podman applications. You 
 ## Installing
 
 ### From binary
-Binaries for your architecture will soon be available in <a href="/src/bin">src/bin</a> folder.
+Neutral builds with binaries for your architecture will soon be available in <a href="/src/bin">src/bin</a> folder.
 
 ### From source
 To compile from source, simply run `make && make install`
