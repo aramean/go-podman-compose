@@ -54,12 +54,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Restore cached Go binaries
         uses: actions/cache@v2
         id: restore-build
         with:
           path: src/bin
           key: podman-compose-cache-key
+
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
