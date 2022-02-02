@@ -8,14 +8,21 @@ Podman Compose lets you define and run multi-container Podman applications. You 
 ## Installing
 
 ### With wget
+
 #### MacOS (ARM64)
-`wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-darwin-arm64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip`
+```shell
+wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-darwin-arm64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip
+```
 
 #### MacOS (AMD64)
-`wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-darwin-amd64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip`
+```shell
+wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-darwin-amd64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip
+```
 
 #### Linux (AMD64)
-`wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-linux-amd64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip`
+```shell
+wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.0.0/podman-compose-linux-amd64.zip && sudo unzip .pctmp.zip -d /usr/local/bin && rm .pctmp.zip
+```
 
 
 ### From source
