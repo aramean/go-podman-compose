@@ -7,13 +7,18 @@ import (
 const binary = "podman"
 
 type cmdMessage struct {
-	status  int
-	message string
+	status   int
+	message  string
+	newlines bool
 }
 
 func executeCommand(f []string) *cmdMessage {
 
-	m := cmdMessage{status: 0, message: ""}
+	m := cmdMessage{
+		status:   0,
+		message:  "",
+		newlines: false,
+	}
 
 	// Disable output buffering, enable streaming
 	cmdOptions := cmd.Options{
