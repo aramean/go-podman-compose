@@ -20,14 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
- 
-      - name: Remove
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true # default: false
-          tag_name: v1.0.0 # tag name to delete
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Download artifact - Linux (AMD64)
         uses: dawidd6/action-download-artifact@v2
@@ -74,6 +66,14 @@ jobs:
           cd ../../linux/amd64
           zip podman-compose-linux-amd64.zip *
           ls
+
+      - name: Remove old release
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true # default: false
+          tag_name: v1.0.0 # tag name to delete
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release
         id: create_release
