@@ -17,24 +17,16 @@ NC=\033[0m
 default: build
 
 build:
-	@if [ -d $(SRC_DIR)/$(GO_OUTPUT_DIR) ] ; then \
-		cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ; \
-		if [ -d $(GO_OUTPUT_DIR) ] ; then \
-			echo -e "$(GREEN)Build for $(ARCH) architecture successfuly created.$(NC)" ; \
-		fi \
-	else \
-		echo -e "$(RED)\"$(GO_OUTPUT_DIR)\" folder not found!$(NC)" ; \
-		exit 1 ; \
+	@mkdir -p $(SRC_DIR)/$(GO_OUTPUT_DIR)
+	@cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ; \
+	if [ -d $(GO_OUTPUT_DIR) ] ; then \
+		echo -e "$(GREEN)Build for $(ARCH) architecture successfuly created.$(NC)" ; \
 	fi \
 
 install:
-	@if [ -d $(SRC_DIR)/$(GO_OUTPUT_DIR) ] ; then \
-		if [ ! -e $(SRC_DIR)/$(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ]; then \
-			echo -e "$(RED)No build found in \"$(GO_OUTPUT_DIR)\" folder!$(NC)" ; \
-			exit 1 ; \
-		fi \
- 	else \
-		echo -e "$(RED)\"$(GO_OUTPUT_DIR)\" folder not found!$(NC)" ; \
+	@mkdir -p $(SRC_DIR)/$(GO_OUTPUT_DIR)
+	@if [ ! -e $(SRC_DIR)/$(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ]; then \
+		echo -e "$(RED)No build found in \"$(GO_OUTPUT_DIR)\" folder!$(NC)" ; \
 		exit 1 ; \
 	fi \
 
