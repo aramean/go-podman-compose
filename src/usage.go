@@ -60,6 +60,7 @@ func runUsage(args []string) error {
 	cmds := []Runner{
 		NewMainCommand(args),
 		NewDownCommand(args),
+		NewLogsCommand(args),
 		NewPsCommand(args),
 		NewRestartCommand(args),
 		NewStartCommand(args),

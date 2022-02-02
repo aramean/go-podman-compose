@@ -43,6 +43,15 @@ restart:
 down:
 	@cd $(SRC_DIR) && go $(GO_ARG) down
 
+logs:
+	@cd $(SRC_DIR) && go $(GO_ARG) logs
+
+logs%mariadb:
+	@cd $(SRC_DIR) && go $(GO_ARG) logs mariadb
+
+logs%nginx:
+	@cd $(SRC_DIR) && go $(GO_ARG) logs nginx
+
 down%help:
 	@cd $(SRC_DIR) && go $(GO_ARG) down --help
 

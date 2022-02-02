@@ -68,6 +68,19 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 		arr := []string{"ps"}
 		args = append(args, arr)
 		return args
+	case "logs":
+		for _, v := range e {
+			for k := range v.Services {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					arr := []string{
+						"logs",
+						k,
+					}
+					args = append(args, arr)
+				}
+			}
+		}
+		return args
 	case "restart":
 		for _, v := range e {
 			for k := range v.Services {
