@@ -35,7 +35,7 @@ func main() {
 
 	e := parseYML()
 
-	g := buildCommandNew(e, arg)
+	g := buildCommand(e, arg)
 
 	for _, field := range g.Tasks {
 
@@ -56,7 +56,7 @@ func main() {
 	}
 }
 
-func buildCommandNew(e map[string]Config, arg []string) Command {
+func buildCommand(e map[string]Config, arg []string) Command {
 
 	var arg0, arg1 = "", ""
 
