@@ -18,10 +18,9 @@ default: build
 
 build:
 	@mkdir -p $(SRC_DIR)/$(GO_OUTPUT_DIR)
-	@cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) ; \
-	if [ -d $(GO_OUTPUT_DIR) ] ; then \
-		echo -e "$(GREEN)Build for $(ARCH) architecture successfuly created.$(NC)" ; \
-	fi \
+	@cd $(SRC_DIR) && $(GO_BIN) build -o $(GO_OUTPUT_DIR)/$(GO_OUTPUT_APP_NAME) \
+	&& echo -e "$(GREEN)Build for $(ARCH) architecture successfuly created.$(NC)" \
+	|| echo -e "$(RED)Error: Build not successful.$(NC)"; \
 
 install:
 	@mkdir -p $(SRC_DIR)/$(GO_OUTPUT_DIR)
