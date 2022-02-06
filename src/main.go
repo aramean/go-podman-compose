@@ -16,9 +16,9 @@ const (
 )
 
 type Command struct {
-	Newlines      bool
-	StatusMessage bool
-	Tasks         []CommandTask
+	Newlines     bool
+	OutputStatus bool
+	Tasks        []CommandTask
 }
 
 type CommandTask struct {
@@ -42,7 +42,7 @@ func main() {
 		e := executeCommand(field.Command)
 
 		if e.statusCode == 0 {
-			if g.StatusMessage {
+			if g.OutputStatus {
 				fmt.Printf(colorGreen, "[OK] ")
 			}
 			if g.Newlines {
@@ -74,8 +74,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 	switch arg0 {
 	case "up":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
@@ -111,8 +111,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "down":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
@@ -126,8 +126,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "restart":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
@@ -142,8 +142,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "stop":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
@@ -158,8 +158,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "start":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
@@ -197,7 +197,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "ps":
 		g = Command{
-			StatusMessage: false,
+			OutputStatus: false,
 			Tasks: []CommandTask{
 				{
 					[]string{"ps"},
@@ -206,8 +206,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 		}
 	case "logs":
 		g = Command{
-			Newlines:      true,
-			StatusMessage: true,
+			Newlines:     true,
+			OutputStatus: true,
 		}
 
 		for _, v := range e {
