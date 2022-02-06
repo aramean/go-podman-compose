@@ -41,7 +41,8 @@ func main() {
 
 		e := executeCommand(field.Command)
 
-		if e.statusCode == 0 {
+		switch e.statusCode {
+		case 0:
 			if g.OutputStatus {
 				fmt.Printf(colorGreen, "[OK] ")
 			}
@@ -50,7 +51,7 @@ func main() {
 			} else {
 				fmt.Print(e.message)
 			}
-		} else if e.statusCode == 1 {
+		case 1:
 			fmt.Printf(colorRed, e.message+"\n")
 		}
 	}
