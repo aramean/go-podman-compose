@@ -9,7 +9,6 @@ const binary = "podman"
 type cmdMessage struct {
 	statusCode int
 	message    string
-	newlines   bool
 }
 
 func executeCommand(f []string) *cmdMessage {
@@ -17,7 +16,6 @@ func executeCommand(f []string) *cmdMessage {
 	m := cmdMessage{
 		statusCode: 0,
 		message:    "",
-		newlines:   false,
 	}
 
 	// Disable output buffering, enable streaming
