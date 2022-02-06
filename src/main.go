@@ -37,8 +37,6 @@ func main() {
 
 	g := buildCommandNew(e, arg)
 
-	//fmt.Print(g.Newlines)
-
 	for _, field := range g.Tasks {
 
 		e := executeCommand(field.Command)
@@ -57,36 +55,6 @@ func main() {
 		}
 	}
 }
-
-/*fields := reflect.VisibleFields(reflect.TypeOf(g))
-for _, field := range fields {
-	fmt.Print(field.Name)
-	fmt.Printf("Key: %s\tType: %s\n", field.Name, field.Type)
-}*/
-
-/*	gtype := reflect.TypeOf(g)
-	numFields := gtype.NumField()
-	rg := reflect.ValueOf(&g)
-
-	for i := 0; i < numFields; i++ {
-
-		fmt.Print(rg.Elem().Field(i).Interface())
-		//fmt.Println(rg.Elem().Field(i))
-	}
-*/
-/*f := buildCommand(e, arg)
-
-for _, v := range f {
-
-	e := executeCommand(v)
-
-	if e.status == 0 {
-		fmt.Printf(colorGreen, "[OK] ")
-		fmt.Println(e.message)
-	} else if e.status == 1 {
-		fmt.Printf(colorRed, e.message+"\n")
-	}
-}*/
 
 func buildCommandNew(e map[string]Config, arg []string) Command {
 
