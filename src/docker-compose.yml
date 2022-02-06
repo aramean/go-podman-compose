@@ -6,8 +6,8 @@ services:
       - tmp:/usr/share/nginx/html:ro # Test volume 1
       - tmp2:/usr/share/nginx:ro # Test volume 2
     ports:
-      - "8081:80" # Test port 1
-      - "8082:80" # Test port 2
+      - "8088:80" # Test port 1
+      - "8089:80" # Test port 2
     environment:
       - NGINX_HOST=foobar.com # Test environment 1
       - NGINX_PORT=80 # Test environment 2
