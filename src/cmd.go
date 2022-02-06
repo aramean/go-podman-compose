@@ -7,17 +7,17 @@ import (
 const binary = "podman"
 
 type cmdMessage struct {
-	status   int
-	message  string
-	newlines bool
+	statusCode int
+	message    string
+	newlines   bool
 }
 
 func executeCommand(f []string) *cmdMessage {
 
 	m := cmdMessage{
-		status:   0,
-		message:  "",
-		newlines: false,
+		statusCode: 0,
+		message:    "",
+		newlines:   false,
 	}
 
 	// Disable output buffering, enable streaming
@@ -43,7 +43,7 @@ func executeCommand(f []string) *cmdMessage {
 					continue
 				}
 
-				m.status = 0
+				m.statusCode = 0
 				m.message = m.message + line + " "
 
 			case line, open := <-envCmd.Stderr:
@@ -52,7 +52,7 @@ func executeCommand(f []string) *cmdMessage {
 					continue
 				}
 
-				m.status = 1
+				m.statusCode = 1
 				m.message = m.message + line + " "
 			}
 

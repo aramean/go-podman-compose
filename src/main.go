@@ -15,6 +15,16 @@ const (
 	colorWhite  = "\033[1;37m%s\033[0m"
 )
 
+type Command struct {
+	Newlines      bool
+	StatusMessage bool
+	Tasks         []CommandTask
+}
+
+type CommandTask struct {
+	Command []string
+}
+
 func main() {
 	var arg = os.Args[1:]
 
@@ -24,22 +34,61 @@ func main() {
 	}
 
 	e := parseYML()
-	f := buildCommand(e, arg)
 
-	for _, v := range f {
+	g := buildCommandNew(e, arg)
 
-		e := executeCommand(v)
+	//fmt.Print(g.Newlines)
 
-		if e.status == 0 {
-			fmt.Printf(colorGreen, "[OK] ")
-			fmt.Println(e.message)
-		} else if e.status == 1 {
+	for _, field := range g.Tasks {
+
+		e := executeCommand(field.Command)
+
+		if e.statusCode == 0 {
+			if g.StatusMessage {
+				fmt.Printf(colorGreen, "[OK] ")
+			}
+			if g.Newlines {
+				fmt.Println(e.message)
+			} else {
+				fmt.Print(e.message)
+			}
+		} else if e.statusCode == 1 {
 			fmt.Printf(colorRed, e.message+"\n")
 		}
 	}
 }
 
-func buildCommand(e map[string]Config, arg []string) [][]string {
+/*fields := reflect.VisibleFields(reflect.TypeOf(g))
+for _, field := range fields {
+	fmt.Print(field.Name)
+	fmt.Printf("Key: %s\tType: %s\n", field.Name, field.Type)
+}*/
+
+/*	gtype := reflect.TypeOf(g)
+	numFields := gtype.NumField()
+	rg := reflect.ValueOf(&g)
+
+	for i := 0; i < numFields; i++ {
+
+		fmt.Print(rg.Elem().Field(i).Interface())
+		//fmt.Println(rg.Elem().Field(i))
+	}
+*/
+/*f := buildCommand(e, arg)
+
+for _, v := range f {
+
+	e := executeCommand(v)
+
+	if e.status == 0 {
+		fmt.Printf(colorGreen, "[OK] ")
+		fmt.Println(e.message)
+	} else if e.status == 1 {
+		fmt.Printf(colorRed, e.message+"\n")
+	}
+}*/
+
+func buildCommandNew(e map[string]Config, arg []string) Command {
 
 	var arg0, arg1 = "", ""
 
@@ -52,91 +101,15 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 		}
 	}
 
-	args := [][]string{}
+	g := Command{}
 
 	switch arg0 {
-	case "down":
-		for _, v := range e {
-			for k, _ := range v.Services {
-				arr1 := []string{"stop", "--time", "2", k}
-				arr2 := []string{"rm", k}
-				args = append(args, arr1, arr2)
-			}
-		}
-		return args
-	case "ps":
-		arr := []string{"ps"}
-		args = append(args, arr)
-		return args
-	case "logs":
-		for _, v := range e {
-			for k := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					arr := []string{
-						"logs",
-						k,
-					}
-					args = append(args, arr)
-				}
-			}
-		}
-		return args
-	case "restart":
-		for _, v := range e {
-			for k := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					arr := []string{
-						"restart",
-						k,
-					}
-					args = append(args, arr)
-				}
-			}
-		}
-		return args
-	case "start":
-		for _, v := range e {
-			for k, v := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					arr := []string{
-						"run",
-						"--replace",
-						"-d",
-						"--name", k,
-					}
-
-					for i := range v.Ports {
-						arr = append(arr, "-p", v.Ports[i])
-					}
-
-					for i := range v.Volumes {
-						arr = append(arr, "-v", v.Volumes[i])
-					}
-
-					for i := range v.Environment {
-						arr = append(arr, "-e", v.Environment[i])
-					}
-
-					arr = append(arr, v.Image)
-					args = append(args, arr)
-				}
-			}
-		}
-		return args
-	case "stop":
-		for _, v := range e {
-			for k, _ := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					arr := []string{
-						"stop",
-						"--time", "2",
-						k}
-					args = append(args, arr)
-				}
-			}
-		}
-		return args
 	case "up":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
 		for _, v := range e {
 			for k, v := range v.Services {
 
@@ -160,11 +133,126 @@ func buildCommand(e map[string]Config, arg []string) [][]string {
 				}
 
 				arr = append(arr, v.Image)
-				args = append(args, arr)
+
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{arr},
+				)
+
 			}
 		}
-		return args
+	case "down":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
+		for _, v := range e {
+			for k := range v.Services {
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{[]string{"stop", "--time", "2", k}},
+					CommandTask{[]string{"rm", k}},
+				)
+			}
+		}
+	case "restart":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
+		for _, v := range e {
+			for k := range v.Services {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					g.Tasks = append(
+						g.Tasks,
+						CommandTask{[]string{"restart", k}},
+					)
+				}
+			}
+		}
+	case "stop":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
+		for _, v := range e {
+			for k := range v.Services {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					g.Tasks = append(
+						g.Tasks,
+						CommandTask{[]string{"stop", "--time", "2", k}},
+					)
+				}
+			}
+		}
+	case "start":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
+		for _, v := range e {
+			for k, v := range v.Services {
+
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					arr := []string{
+						"run",
+						"--replace",
+						"-d",
+						"--name", k,
+					}
+
+					for i := range v.Ports {
+						arr = append(arr, "-p", v.Ports[i])
+					}
+
+					for i := range v.Volumes {
+						arr = append(arr, "-v", v.Volumes[i])
+					}
+
+					for i := range v.Environment {
+						arr = append(arr, "-e", v.Environment[i])
+					}
+
+					arr = append(arr, v.Image)
+
+					g.Tasks = append(
+						g.Tasks,
+						CommandTask{arr},
+					)
+				}
+
+			}
+		}
+	case "ps":
+		g = Command{
+			StatusMessage: false,
+			Tasks: []CommandTask{
+				{
+					[]string{"ps"},
+				},
+			},
+		}
+	case "logs":
+		g = Command{
+			Newlines:      true,
+			StatusMessage: true,
+		}
+
+		for _, v := range e {
+			for k := range v.Services {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					g.Tasks = append(
+						g.Tasks,
+						CommandTask{[]string{"logs", k}},
+					)
+				}
+			}
+		}
 	}
 
-	return args
+	return g
 }
