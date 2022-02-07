@@ -102,7 +102,7 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 				}
 
 				for i := range v.Environment {
-					arr = append(arr, "-e", v.Environment[i])
+					arr = append(arr, "-e", replaceEnvironmentVariable(v.Environment[i]))
 				}
 
 				arr = append(arr, v.Image)

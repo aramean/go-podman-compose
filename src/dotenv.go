@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/joho/godotenv"
 )
 
@@ -27,4 +29,9 @@ func loadEnvironmentVariables() *EnvironmentVariables {
 	}
 
 	return &e
+}
+
+func replaceEnvironmentVariable(s string) string {
+	split := strings.Split(s, "=")
+	return split[0] + "=" + split[1]
 }
