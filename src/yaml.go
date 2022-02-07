@@ -11,6 +11,7 @@ type Services struct {
 	Image       string   `yaml:"image"`
 	Volumes     []string `yaml:"volumes"`
 	Ports       []string `yaml:"ports"`
+	Restart     string   `yaml:"restart"`
 	Environment []string `yaml:"environment"`
 }
 
@@ -20,6 +21,10 @@ type Volumes struct {
 
 type Ports struct {
 	Ports []string `yaml:"ports"`
+}
+
+type Restart struct {
+	Restart string `yaml:"restart"`
 }
 
 type Environment struct {

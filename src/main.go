@@ -106,6 +106,10 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 					arr = append(arr, "-e", r.Name+"="+r.Value)
 				}
 
+				if v.Restart != "" {
+					arr = append(arr, "--restart", v.Restart)
+				}
+
 				arr = append(arr, v.Image)
 
 				g.Tasks = append(
@@ -190,6 +194,10 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 					for i := range v.Environment {
 						r := replaceEnvironmentVariable(v.Environment[i], l)
 						arr = append(arr, "-e", r.Name+"="+r.Value)
+					}
+
+					if v.Restart != "" {
+						arr = append(arr, "--restart", v.Restart)
 					}
 
 					arr = append(arr, v.Image)

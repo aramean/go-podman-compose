@@ -15,7 +15,7 @@ services:
       - TEST2={TEST2} # Test2 environment from .env file
   mariadb:
     image: mariadb:latest
-    restart: always # TODO
+    restart: always
     volumes:
       - db:/var/lib/mysql
     ports:
