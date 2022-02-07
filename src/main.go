@@ -36,7 +36,13 @@ func main() {
 
 	for _, field := range g.Tasks {
 
-		e := executeCommand(field.Command, field.OutputMessage, field.OutputSingleline, field.OutputQuiet)
+		e := executeCommand(
+			field.Command,
+			field.OutputMessage,
+			field.OutputSingleline,
+			field.OutputQuiet,
+		)
+
 		switch e.OutputStatusCode {
 		case 0:
 			if !field.OutputQuiet {
