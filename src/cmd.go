@@ -16,6 +16,9 @@ type CommandTask struct {
 
 func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 
+	/*debugMessage := fmt.Sprintln(f)
+	fmt.Printf(colorYellow, debugMessage)*/
+
 	t := CommandTask{
 		Command:          []string{},
 		OutputMessage:    m,
@@ -64,9 +67,6 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 				}
 				t.OutputStatusCode = 1
 			}
-
-			/*debugMessage := fmt.Sprintln(envCmd.Args)
-			fmt.Printf(colorYellow, debugMessage)*/
 		}
 	}()
 
