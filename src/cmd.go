@@ -59,7 +59,9 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 					continue
 				}
 
-				t.OutputMessage = t.OutputMessage + line + " "
+				if !t.OutputQuiet {
+					t.OutputMessage = t.OutputMessage + "\n" + line
+				}
 				t.OutputStatusCode = 1
 			}
 
