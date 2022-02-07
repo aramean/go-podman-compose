@@ -57,7 +57,7 @@ func (e *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return nil
 }
 
-func parseYML() map[string]Config {
+func parseYAML() map[string]Config {
 	yfile, err2 := ioutil.ReadFile("docker-compose.yml")
 
 	if err2 != nil {

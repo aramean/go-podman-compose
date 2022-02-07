@@ -29,8 +29,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	l := loadEnv()
-	e := parseYML()
+	l := loadEnvironmentVariables()
+	e := parseYAML()
 
 	g := buildCommand(e, l.Environment, arg)
 

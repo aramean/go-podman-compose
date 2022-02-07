@@ -13,7 +13,7 @@ type EnvironmentVariable struct {
 	Value string
 }
 
-func loadEnv() *EnvironmentVariables {
+func loadEnvironmentVariables() *EnvironmentVariables {
 
 	envs, _ := godotenv.Read(".env")
 
