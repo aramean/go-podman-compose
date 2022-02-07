@@ -16,13 +16,9 @@ const (
 )
 
 type Command struct {
-	Newlines     bool
-	OutputStatus bool
-	Tasks        []CommandTask
-}
-
-type CommandTask struct {
-	Command []string
+	OutputStatus   bool
+	OutputNewlines bool
+	Tasks          []CommandTask
 }
 
 func main() {
@@ -39,20 +35,21 @@ func main() {
 
 	for _, field := range g.Tasks {
 
-		e := executeCommand(field.Command)
-
-		switch e.statusCode {
+		e := executeCommand(field.Command, field.OutputSingleline, field.OutputQuiet)
+		switch e.OutputStatusCode {
 		case 0:
-			if g.OutputStatus {
-				fmt.Printf(colorGreen, "[OK] ")
-			}
-			if g.Newlines {
-				fmt.Println(e.message)
-			} else {
-				fmt.Print(e.message)
+			if !field.OutputQuiet {
+				if g.OutputStatus {
+					fmt.Printf(colorGreen, "[OK] ")
+				}
+				if g.OutputNewlines {
+					fmt.Println(e.OutputMessage)
+				} else {
+					fmt.Print(e.OutputMessage)
+				}
 			}
 		case 1:
-			fmt.Printf(colorRed, e.message+"\n")
+			fmt.Printf(colorRed, e.OutputMessage+"\n")
 		}
 	}
 }
@@ -75,8 +72,8 @@ func buildCommand(e map[string]Config, arg []string) Command {
 	switch arg0 {
 	case "up":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
@@ -105,30 +102,30 @@ func buildCommand(e map[string]Config, arg []string) Command {
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr},
+					CommandTask{arr, "", 0, false, false},
 				)
 
 			}
 		}
 	case "down":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
 			for k := range v.Services {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"stop", "--time", "2", k}},
-					CommandTask{[]string{"rm", k}},
+					CommandTask{[]string{"stop", "--time", "2", k}, "", 0, true, false},
+					CommandTask{[]string{"rm", k}, "", 0, true, true},
 				)
 			}
 		}
 	case "restart":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
@@ -136,15 +133,15 @@ func buildCommand(e map[string]Config, arg []string) Command {
 				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{[]string{"restart", k}},
+						CommandTask{[]string{"restart", k}, "", 0, true, false},
 					)
 				}
 			}
 		}
 	case "stop":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
@@ -152,15 +149,15 @@ func buildCommand(e map[string]Config, arg []string) Command {
 				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{[]string{"stop", "--time", "2", k}},
+						CommandTask{[]string{"stop", "--time", "2", k}, "", 0, true, false},
 					)
 				}
 			}
 		}
 	case "start":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
@@ -190,7 +187,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{arr},
+						CommandTask{arr, "", 0, true, false},
 					)
 				}
 
@@ -201,14 +198,14 @@ func buildCommand(e map[string]Config, arg []string) Command {
 			OutputStatus: false,
 			Tasks: []CommandTask{
 				{
-					[]string{"ps"},
+					[]string{"ps"}, "", 0, true, false,
 				},
 			},
 		}
 	case "logs":
 		g = Command{
-			Newlines:     true,
-			OutputStatus: true,
+			OutputStatus:   true,
+			OutputNewlines: true,
 		}
 
 		for _, v := range e {
@@ -216,7 +213,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{[]string{"logs", k}},
+						CommandTask{[]string{"logs", k}, "", 0, true, false},
 					)
 				}
 			}

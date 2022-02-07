@@ -6,16 +6,20 @@ import (
 
 const binary = "podman"
 
-type cmdMessage struct {
-	statusCode int
-	message    string
+type CommandTask struct {
+	Command          []string
+	OutputMessage    string
+	OutputStatusCode int
+	OutputSingleline bool
+	OutputQuiet      bool
 }
 
-func executeCommand(f []string) *cmdMessage {
+func executeCommand(f []string, s bool, q bool) *CommandTask {
 
-	m := cmdMessage{
-		statusCode: 0,
-		message:    "",
+	m := CommandTask{
+		Command:          []string{},
+		OutputSingleline: s,
+		OutputQuiet:      q,
 	}
 
 	// Disable output buffering, enable streaming
@@ -41,8 +45,14 @@ func executeCommand(f []string) *cmdMessage {
 					continue
 				}
 
-				m.statusCode = 0
-				m.message = m.message + line + " "
+				if !m.OutputQuiet {
+					m.OutputMessage = m.OutputMessage + line + " "
+
+					if m.OutputSingleline {
+						m.OutputMessage = line
+					}
+				}
+				m.OutputStatusCode = 0
 
 			case line, open := <-envCmd.Stderr:
 				if !open {
@@ -50,8 +60,8 @@ func executeCommand(f []string) *cmdMessage {
 					continue
 				}
 
-				m.statusCode = 1
-				m.message = m.message + line + " "
+				m.OutputMessage = m.OutputMessage + line + " "
+				m.OutputStatusCode = 1
 			}
 
 			/*debugMessage := fmt.Sprintln(envCmd.Args)
