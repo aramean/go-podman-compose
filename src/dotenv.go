@@ -1,23 +1,30 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
 	"github.com/joho/godotenv"
 )
 
-func loadEnv() {
+type EnvironmentVariables struct {
+	Environment []EnvironmentVariable
+}
 
-	var envs map[string]string
-	envs, err := godotenv.Read(".env")
+type EnvironmentVariable struct {
+	Name  string
+	Value string
+}
 
-	if err != nil {
-		log.Fatal("Error loading .env file")
+func loadEnv() *EnvironmentVariables {
+
+	envs, _ := godotenv.Read(".env")
+
+	e := EnvironmentVariables{}
+
+	for v, k := range envs {
+		e.Environment = append(
+			e.Environment,
+			EnvironmentVariable{Name: k, Value: v},
+		)
 	}
 
-	name := envs["NAME"]
-	editor := envs["EDITOR"]
-
-	fmt.Printf("%s uses %s\n", name, editor)
+	return &e
 }

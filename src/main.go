@@ -29,9 +29,10 @@ func main() {
 		os.Exit(0)
 	}
 
+	l := loadEnv()
 	e := parseYML()
 
-	g := buildCommand(e, arg)
+	g := buildCommand(e, l.Environment, arg)
 
 	for _, field := range g.Tasks {
 
@@ -54,7 +55,7 @@ func main() {
 	}
 }
 
-func buildCommand(e map[string]Config, arg []string) Command {
+func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Command {
 
 	var arg0, arg1 = "", ""
 
