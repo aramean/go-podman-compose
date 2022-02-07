@@ -14,10 +14,11 @@ type CommandTask struct {
 	OutputQuiet      bool
 }
 
-func executeCommand(f []string, s bool, q bool) *CommandTask {
+func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 
-	m := CommandTask{
+	t := CommandTask{
 		Command:          []string{},
+		OutputMessage:    m,
 		OutputSingleline: s,
 		OutputQuiet:      q,
 	}
@@ -45,14 +46,12 @@ func executeCommand(f []string, s bool, q bool) *CommandTask {
 					continue
 				}
 
-				if !m.OutputQuiet {
-					m.OutputMessage = m.OutputMessage + line + " "
-
-					if m.OutputSingleline {
-						m.OutputMessage = line
+				if len(t.OutputMessage) < 1 {
+					if !t.OutputQuiet {
+						t.OutputMessage = t.OutputMessage + line + " "
 					}
 				}
-				m.OutputStatusCode = 0
+				t.OutputStatusCode = 0
 
 			case line, open := <-envCmd.Stderr:
 				if !open {
@@ -60,8 +59,8 @@ func executeCommand(f []string, s bool, q bool) *CommandTask {
 					continue
 				}
 
-				m.OutputMessage = m.OutputMessage + line + " "
-				m.OutputStatusCode = 1
+				t.OutputMessage = t.OutputMessage + line + " "
+				t.OutputStatusCode = 1
 			}
 
 			/*debugMessage := fmt.Sprintln(envCmd.Args)
@@ -75,5 +74,5 @@ func executeCommand(f []string, s bool, q bool) *CommandTask {
 	// Wait for goroutine to print everything
 	<-doneChan
 
-	return &m
+	return &t
 }

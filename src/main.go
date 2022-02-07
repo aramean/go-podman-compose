@@ -35,7 +35,7 @@ func main() {
 
 	for _, field := range g.Tasks {
 
-		e := executeCommand(field.Command, field.OutputSingleline, field.OutputQuiet)
+		e := executeCommand(field.Command, field.OutputMessage, field.OutputSingleline, field.OutputQuiet)
 		switch e.OutputStatusCode {
 		case 0:
 			if !field.OutputQuiet {
@@ -102,7 +102,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr, "", 0, false, false},
+					CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
 				)
 
 			}
@@ -117,7 +117,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 			for k := range v.Services {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"stop", "--time", "2", k}, "", 0, true, false},
+					CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
 					CommandTask{[]string{"rm", k}, "", 0, true, true},
 				)
 			}
@@ -133,7 +133,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{[]string{"restart", k}, "", 0, true, false},
+						CommandTask{[]string{"restart", k}, "Restarting container " + k + " ...", 0, true, false},
 					)
 				}
 			}
@@ -149,7 +149,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{[]string{"stop", "--time", "2", k}, "", 0, true, false},
+						CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
 					)
 				}
 			}
@@ -187,7 +187,7 @@ func buildCommand(e map[string]Config, arg []string) Command {
 
 					g.Tasks = append(
 						g.Tasks,
-						CommandTask{arr, "", 0, true, false},
+						CommandTask{arr, "Starting container " + k + " ...", 0, true, false},
 					)
 				}
 
