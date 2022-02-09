@@ -36,28 +36,27 @@ type Networks struct {
 }
 
 type Config struct {
-	SkipHeaderValidation bool
-	Services             map[string]Services
-	Volumes              map[string]Volumes
+	Version  string
+	Services map[string]Services
+	Volumes  map[string]Volumes
 }
 
 func (e *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	/*var params struct {
-		SkipHeaderValidation bool `yaml:"skip-header-validation"`
-	}
-	if err := unmarshal(&params); err != nil {
-		return err
-	}*/
 	var services map[string]Services
+	var volumes map[string]Volumes
+
 	if err := unmarshal(&services); err != nil {
 		if _, ok := err.(*yaml.TypeError); !ok {
 			return err
 		}
 	}
-	e.Services = services
+	if err := unmarshal(&volumes); err != nil {
+		if _, ok := err.(*yaml.TypeError); !ok {
+			return err
+		}
+	}
 
-	var volumes map[string]Volumes
-	//e.SkipHeaderValidation = params.SkipHeaderValidation
+	e.Services = services
 	e.Volumes = volumes
 	return nil
 }
