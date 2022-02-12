@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"strconv"
 
 	"gopkg.in/yaml.v3"
 )
@@ -90,7 +91,17 @@ func convertEnvironmentVariable(t interface{}) []string {
 		}
 	case map[string]interface{}:
 		for k, v := range t {
-			arr = append(arr, k+"="+v.(string))
+
+			var x = ""
+
+			switch v := v.(type) {
+			case int:
+				x = strconv.FormatInt(int64(v), 10)
+			case bool, string:
+				x = v.(string)
+			}
+
+			arr = append(arr, k+"="+x)
 		}
 	}
 
