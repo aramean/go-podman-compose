@@ -37,6 +37,7 @@ func (g *MainCommand) Init(args []string) error {
 func (g *MainCommand) Run() error {
 	fmt.Println("  up          Create and start containers")
 	fmt.Println("  down        Stop and remove containers, networks")
+	fmt.Println("  logs        View output from containers")
 	fmt.Println("  ps          List containers")
 	fmt.Println("  restart     Restart containers")
 	fmt.Println("  start       Start services")
