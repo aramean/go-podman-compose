@@ -39,7 +39,7 @@ func replaceEnvironmentVariable(s string, l []EnvironmentVariable) *EnvironmentV
 	vfirst := v[0:1]
 	vlast := v[len(v)-1:]
 
-	if vfirst == "{" && vlast == "}" {
+	if vfirst == "$" && vlast == "}" {
 		for _, i := range l {
 			if k == i.Name {
 				if k == i.Name {

@@ -11,8 +11,9 @@ services:
     environment:
       - NGINX_HOST=foobar.com # Test environment 1
       - NGINX_PORT=80 # Test environment 2
-      - TEST1={TEST1} # Test1 environment from .env file
-      - TEST2={TEST2} # Test2 environment from .env file
+      - TEST1=${TEST1} # Test1 environment from .env file
+      - TEST2=${TEST2} # Test2 environment from .env file
+      - TEST3=http://${TEST1}:${TEST1}@${TEST2}:${TEST2}/${TEST2} #TODO
   mariadb:
     image: mariadb:latest
     restart: always
