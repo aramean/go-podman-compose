@@ -8,11 +8,11 @@ import (
 )
 
 type Services struct {
-	Image       string   `yaml:"image"`
-	Volumes     []string `yaml:"volumes"`
-	Ports       []string `yaml:"ports"`
-	Restart     string   `yaml:"restart"`
-	Environment []string `yaml:"environment"`
+	Image       string      `yaml:"image"`
+	Volumes     []string    `yaml:"volumes"`
+	Ports       []string    `yaml:"ports"`
+	Restart     string      `yaml:"restart"`
+	Environment interface{} `yaml:"environment"`
 }
 
 type Volumes struct {
@@ -28,7 +28,7 @@ type Restart struct {
 }
 
 type Environment struct {
-	Environment []string `yaml:"environment"`
+	Environment interface{} `yaml:"environment"`
 }
 
 type Networks struct {
@@ -68,6 +68,8 @@ func parseYAML() map[string]Config {
 		log.Fatal(err2)
 	}
 
+	//yfile = bytes.Replace(yfile, []byte("mariadb"), []byte("ok"), -1)
+
 	var e map[string]Config
 	err3 := yaml.Unmarshal(yfile, &e)
 
@@ -76,4 +78,21 @@ func parseYAML() map[string]Config {
 	}
 
 	return e
+}
+
+func convertEnvironmentVariable(t interface{}) []string {
+	arr := []string{}
+
+	switch t := t.(type) {
+	case []interface{}:
+		for _, v := range t {
+			arr = append(arr, v.(string))
+		}
+	case map[string]interface{}:
+		for k, v := range t {
+			arr = append(arr, k+"="+v.(string))
+		}
+	}
+
+	return arr
 }
