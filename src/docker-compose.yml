@@ -19,7 +19,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     ports:
-      - "3388:3306"
+      - "3377:3306"
     environment:
       MYSQL_ROOT_PASSWORD: example
 #  error1:
