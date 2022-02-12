@@ -1,3 +1,5 @@
+export DEBUG=TRUE
+
 SHELL := /bin/bash
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 SRC_DIR = ../../src

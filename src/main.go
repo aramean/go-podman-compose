@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+var debug = os.Getenv("DEBUG")
+
 const (
 	colorBlue   = "\033[1;34m%s\033[0m"
 	colorCyan   = "\033[1;36m%s\033[0m"
