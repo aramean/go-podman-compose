@@ -221,7 +221,7 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 		}
 	case "logs":
 		g = Command{
-			OutputStatus:   true,
+			OutputStatus:   false,
 			OutputNewlines: true,
 		}
 
