@@ -19,9 +19,9 @@ services:
     volumes:
       - db:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3388:3306"
     environment:
-      - MARIADB_ROOT_PASSWORD=example
+      MYSQL_ROOT_PASSWORD: example
 #  error1:
 #    image: no-image
 #  error2:
