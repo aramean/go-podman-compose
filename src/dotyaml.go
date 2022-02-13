@@ -71,9 +71,7 @@ func parseYAML(l []EnvironmentVariable) map[string]Config {
 		log.Fatal(err2)
 	}
 
-	for _, k := range l {
-		yfile = bytes.Replace(yfile, []byte("${"+k.Name+"}"), []byte(k.Value), -1)
-	}
+	yfile = replaceEnvironmentVariables(l, yfile)
 
 	var e map[string]Config
 	err3 := yaml.Unmarshal(yfile, &e)
@@ -83,6 +81,13 @@ func parseYAML(l []EnvironmentVariable) map[string]Config {
 	}
 
 	return e
+}
+
+func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
+	for _, k := range l {
+		yfile = bytes.Replace(yfile, []byte("${"+k.Name+"}"), []byte(k.Value), -1)
+	}
+	return yfile
 }
 
 func convertEnvironmentVariable(t interface{}) []string {
