@@ -76,7 +76,7 @@ func main() {
 	}
 }
 
-func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Command {
+func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 
 	var arg0, arg1 = "", ""
 
@@ -98,9 +98,91 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 			OutputNewlines: true,
 		}
 
-		for _, v := range e {
-			for k, v := range v.Services {
+		for k, v := range e.Services {
 
+			arr := []string{
+				"run",
+				"--replace",
+				"-d",
+				"--name", k,
+			}
+
+			for i := range v.Ports {
+				arr = append(arr, "-p", v.Ports[i])
+			}
+
+			for i := range v.Volumes {
+				arr = append(arr, "-v", v.Volumes[i])
+			}
+
+			for _, r := range convertEnvironmentVariable(v.Environment) {
+				r := transformEnvironmentVariable(r, l)
+				arr = append(arr, "-e", r.Name+"="+r.Value)
+			}
+
+			if v.Restart != "" {
+				arr = append(arr, "--restart", v.Restart)
+			}
+
+			arr = append(arr, v.Image)
+
+			g.Tasks = append(
+				g.Tasks,
+				CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
+			)
+
+		}
+
+	case "down":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k, _ := range e.Services {
+			g.Tasks = append(
+				g.Tasks,
+				CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
+				CommandTask{[]string{"rm", k}, "", 0, true, true},
+			)
+		}
+	case "restart":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k := range e.Services {
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{[]string{"restart", k}, "Restarting container " + k + " ...", 0, true, false},
+				)
+			}
+		}
+	case "stop":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k := range e.Services {
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
+				)
+			}
+		}
+	case "start":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k, v := range e.Services {
+
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 				arr := []string{
 					"run",
 					"--replace",
@@ -129,101 +211,10 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
-				)
-
-			}
-		}
-	case "down":
-		g = Command{
-			OutputStatus:   true,
-			OutputNewlines: true,
-		}
-
-		for _, v := range e {
-			for k := range v.Services {
-				g.Tasks = append(
-					g.Tasks,
-					CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
-					CommandTask{[]string{"rm", k}, "", 0, true, true},
+					CommandTask{arr, "Starting container " + k + " ...", 0, true, false},
 				)
 			}
-		}
-	case "restart":
-		g = Command{
-			OutputStatus:   true,
-			OutputNewlines: true,
-		}
 
-		for _, v := range e {
-			for k := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					g.Tasks = append(
-						g.Tasks,
-						CommandTask{[]string{"restart", k}, "Restarting container " + k + " ...", 0, true, false},
-					)
-				}
-			}
-		}
-	case "stop":
-		g = Command{
-			OutputStatus:   true,
-			OutputNewlines: true,
-		}
-
-		for _, v := range e {
-			for k := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					g.Tasks = append(
-						g.Tasks,
-						CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
-					)
-				}
-			}
-		}
-	case "start":
-		g = Command{
-			OutputStatus:   true,
-			OutputNewlines: true,
-		}
-
-		for _, v := range e {
-			for k, v := range v.Services {
-
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					arr := []string{
-						"run",
-						"--replace",
-						"-d",
-						"--name", k,
-					}
-
-					for i := range v.Ports {
-						arr = append(arr, "-p", v.Ports[i])
-					}
-
-					for i := range v.Volumes {
-						arr = append(arr, "-v", v.Volumes[i])
-					}
-
-					for _, r := range convertEnvironmentVariable(v.Environment) {
-						r := transformEnvironmentVariable(r, l)
-						arr = append(arr, "-e", r.Name+"="+r.Value)
-					}
-
-					if v.Restart != "" {
-						arr = append(arr, "--restart", v.Restart)
-					}
-
-					arr = append(arr, v.Image)
-
-					g.Tasks = append(
-						g.Tasks,
-						CommandTask{arr, "Starting container " + k + " ...", 0, true, false},
-					)
-				}
-
-			}
 		}
 	case "ps":
 		g = Command{
@@ -240,14 +231,12 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 			OutputNewlines: true,
 		}
 
-		for _, v := range e {
-			for k := range v.Services {
-				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-					g.Tasks = append(
-						g.Tasks,
-						CommandTask{[]string{"logs", k}, "", 0, true, false},
-					)
-				}
+		for k := range e.Services {
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{[]string{"logs", k}, "", 0, true, false},
+				)
 			}
 		}
 	}

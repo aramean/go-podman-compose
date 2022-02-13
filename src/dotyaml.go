@@ -43,27 +43,7 @@ type Config struct {
 	Volumes  map[string]Volumes
 }
 
-func (e *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	var services map[string]Services
-	var volumes map[string]Volumes
-
-	if err := unmarshal(&services); err != nil {
-		if _, ok := err.(*yaml.TypeError); !ok {
-			return err
-		}
-	}
-	if err := unmarshal(&volumes); err != nil {
-		if _, ok := err.(*yaml.TypeError); !ok {
-			return err
-		}
-	}
-
-	e.Services = services
-	e.Volumes = volumes
-	return nil
-}
-
-func parseYAML(l []EnvironmentVariable) map[string]Config {
+func parseYAML(l []EnvironmentVariable) *Config {
 
 	yfile, err2 := ioutil.ReadFile("docker-compose.yml")
 
@@ -73,14 +53,14 @@ func parseYAML(l []EnvironmentVariable) map[string]Config {
 
 	yfile = replaceEnvironmentVariables(l, yfile)
 
-	var e map[string]Config
+	var e Config
 	err3 := yaml.Unmarshal(yfile, &e)
 
 	if err3 != nil {
 		log.Fatal(err3)
 	}
 
-	return e
+	return &e
 }
 
 func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
