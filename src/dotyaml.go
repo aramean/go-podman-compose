@@ -11,10 +11,10 @@ import (
 
 type Services struct {
 	Image       string      `yaml:"image"`
-	Volumes     []string    `yaml:"volumes"`
-	Ports       []string    `yaml:"ports"`
-	Restart     string      `yaml:"restart"`
-	Environment interface{} `yaml:"environment"`
+	Volumes     []string    `yaml:"volumes,omitempty"`
+	Ports       []string    `yaml:"ports,omitempty"`
+	Restart     string      `yaml:"restart,omitempty"`
+	Environment interface{} `yaml:"environment,omitempty"`
 }
 
 type Volumes struct {
