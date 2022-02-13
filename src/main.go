@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 var debug = os.Getenv("DEBUG")
@@ -58,7 +59,19 @@ func main() {
 				}
 			}
 		case 1:
-			fmt.Printf(colorRed, e.OutputMessage+"\n")
+
+			m := strings.Split(e.OutputMessage, "\n")
+
+			for i, s := range m {
+				if i == 0 {
+					if s != "" {
+						fmt.Printf(colorRed, "[**] ")
+						fmt.Println(s)
+					}
+				} else {
+					fmt.Printf(colorRed, "|**| "+s+"\n")
+				}
+			}
 		}
 	}
 }
