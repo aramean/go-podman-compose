@@ -32,7 +32,7 @@ func main() {
 	}
 
 	l := loadEnvironmentVariables()
-	e := parseYAML()
+	e := parseYAML(l.Environment)
 
 	g := buildCommand(e, l.Environment, arg)
 
@@ -104,7 +104,7 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 				}
 
 				for _, r := range convertEnvironmentVariable(v.Environment) {
-					r := replaceEnvironmentVariable(r, l)
+					r := transformEnvironmentVariable(r, l)
 					arr = append(arr, "-e", r.Name+"="+r.Value)
 				}
 
@@ -194,7 +194,7 @@ func buildCommand(e map[string]Config, l []EnvironmentVariable, arg []string) Co
 					}
 
 					for _, r := range convertEnvironmentVariable(v.Environment) {
-						r := replaceEnvironmentVariable(r, l)
+						r := transformEnvironmentVariable(r, l)
 						arr = append(arr, "-e", r.Name+"="+r.Value)
 					}
 

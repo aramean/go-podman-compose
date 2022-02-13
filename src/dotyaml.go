@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -62,14 +63,17 @@ func (e *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	return nil
 }
 
-func parseYAML() map[string]Config {
+func parseYAML(l []EnvironmentVariable) map[string]Config {
+
 	yfile, err2 := ioutil.ReadFile("docker-compose.yml")
 
 	if err2 != nil {
 		log.Fatal(err2)
 	}
 
-	//yfile = bytes.Replace(yfile, []byte("mariadb"), []byte("ok"), -1)
+	for _, k := range l {
+		yfile = bytes.Replace(yfile, []byte("${"+k.Name+"}"), []byte(k.Value), -1)
+	}
 
 	var e map[string]Config
 	err3 := yaml.Unmarshal(yfile, &e)
