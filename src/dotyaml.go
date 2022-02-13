@@ -45,7 +45,7 @@ type Config struct {
 
 func parseYAML(l []EnvironmentVariable) *Config {
 
-	yfile, err2 := ioutil.ReadFile("docker-compose.yml")
+	yfile, err2 := ioutil.ReadFile(fileYAML)
 
 	if err2 != nil {
 		log.Fatal(err2)

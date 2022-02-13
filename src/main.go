@@ -9,6 +9,12 @@ import (
 var debug = os.Getenv("DEBUG")
 
 const (
+	fileYAML         = "docker-compose.yml"
+	fileYAMLOverride = "docker-compose.override.yml"
+	fileEnv          = ".env"
+)
+
+const (
 	colorBlue   = "\033[1;34m%s\033[0m"
 	colorCyan   = "\033[1;36m%s\033[0m"
 	colorGreen  = "\033[1;32m%s\033[0m"

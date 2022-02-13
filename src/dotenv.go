@@ -17,7 +17,7 @@ type EnvironmentVariable struct {
 
 func loadEnvironmentVariables() *EnvironmentVariables {
 
-	envs, _ := godotenv.Read(".env")
+	envs, _ := godotenv.Read(fileEnv)
 
 	e := EnvironmentVariables{}
 
