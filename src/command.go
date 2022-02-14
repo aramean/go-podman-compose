@@ -9,11 +9,11 @@ import (
 const binary = "podman"
 
 type CommandTask struct {
-	Command          []string
-	OutputMessage    string
-	OutputStatusCode int
-	OutputSingleline bool
-	OutputQuiet      bool
+	Command             []string
+	OutputCustomMessage string
+	OutputStatusCode    int
+	OutputSingleline    bool
+	OutputQuiet         bool
 }
 
 func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
@@ -23,11 +23,13 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 		fmt.Printf(colorYellow, debugMessage)
 	}
 
+	var customMessage = len(m)
+
 	t := CommandTask{
-		Command:          []string{},
-		OutputMessage:    m,
-		OutputSingleline: s,
-		OutputQuiet:      q,
+		Command:             []string{},
+		OutputCustomMessage: m,
+		OutputSingleline:    s,
+		OutputQuiet:         q,
 	}
 
 	// Disable output buffering, enable streaming
@@ -53,10 +55,8 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 					continue
 				}
 
-				if len(t.OutputMessage) < 1 {
-					if !t.OutputQuiet {
-						t.OutputMessage = t.OutputMessage + line + " "
-					}
+				if customMessage == 0 && !t.OutputQuiet {
+					t.OutputCustomMessage = t.OutputCustomMessage + line + " "
 				}
 				t.OutputStatusCode = 0
 
@@ -67,7 +67,7 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 				}
 
 				if !t.OutputQuiet {
-					t.OutputMessage = t.OutputMessage + "\n" + line
+					t.OutputCustomMessage = t.OutputCustomMessage + "\n" + line
 				}
 				t.OutputStatusCode = 1
 			}

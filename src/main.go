@@ -47,7 +47,7 @@ func main() {
 
 		e := executeCommand(
 			field.Command,
-			field.OutputMessage,
+			field.OutputCustomMessage,
 			field.OutputSingleline,
 			field.OutputQuiet,
 		)
@@ -59,14 +59,14 @@ func main() {
 					fmt.Printf(colorGreen, "[OK] ")
 				}
 				if g.OutputNewlines {
-					fmt.Println(e.OutputMessage)
+					fmt.Println(e.OutputCustomMessage)
 				} else {
-					fmt.Print(e.OutputMessage)
+					fmt.Print(e.OutputCustomMessage)
 				}
 			}
 		case 1:
 
-			m := strings.Split(e.OutputMessage, "\n")
+			m := strings.Split(e.OutputCustomMessage, "\n")
 
 			for i, s := range m {
 				if i == 0 {
@@ -246,10 +246,11 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 		}
 	case "ps":
 		g = Command{
-			OutputStatus: false,
+			OutputStatus:   false,
+			OutputNewlines: true,
 			Tasks: []CommandTask{
 				{
-					[]string{"ps"}, "", 0, true, false,
+					[]string{"ps"}, "", 0, false, false,
 				},
 			},
 		}
