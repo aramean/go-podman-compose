@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type UpCommand struct {
@@ -12,15 +11,9 @@ type UpCommand struct {
 	removeOrphans bool
 }
 
-func NewUpCommand(args []string) *UpCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewUpCommand() *UpCommand {
 	gc := &UpCommand{
-		fs: flag.NewFlagSet("up", exit),
+		fs: flag.NewFlagSet("up", flag.ExitOnError),
 	}
 
 	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")

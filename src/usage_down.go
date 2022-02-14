@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type DownCommand struct {
@@ -11,15 +10,9 @@ type DownCommand struct {
 	removeOrphans bool
 }
 
-func NewDownCommand(args []string) *DownCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewDownCommand() *DownCommand {
 	gc := &DownCommand{
-		fs: flag.NewFlagSet("down", exit),
+		fs: flag.NewFlagSet("down", flag.ExitOnError),
 	}
 
 	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")

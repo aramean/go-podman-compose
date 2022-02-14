@@ -2,22 +2,15 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type KillCommand struct {
 	fs *flag.FlagSet
 }
 
-func NewKillCommand(args []string) *KillCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewKillCommand() *KillCommand {
 	gc := &KillCommand{
-		fs: flag.NewFlagSet("kill", exit),
+		fs: flag.NewFlagSet("kill", flag.ExitOnError),
 	}
 
 	return gc

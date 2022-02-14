@@ -15,7 +15,7 @@ type MainCommand struct {
 	removeOrphans bool
 }
 
-func NewMainCommand(args []string) *MainCommand {
+func NewMainCommand() *MainCommand {
 
 	gc := &MainCommand{
 		fs: flag.NewFlagSet("help", flag.ExitOnError),
@@ -60,16 +60,16 @@ func runUsage(args []string) error {
 	}
 
 	cmds := []Runner{
-		NewMainCommand(args),
-		NewDownCommand(args),
-		NewKillCommand(args),
-		NewLogsCommand(args),
-		NewPsCommand(args),
-		NewRestartCommand(args),
-		NewStartCommand(args),
-		NewStopCommand(args),
-		NewUpCommand(args),
-		NewVersionCommand(args),
+		NewMainCommand(),
+		NewDownCommand(),
+		NewKillCommand(),
+		NewLogsCommand(),
+		NewPsCommand(),
+		NewRestartCommand(),
+		NewStartCommand(),
+		NewStopCommand(),
+		NewUpCommand(),
+		NewVersionCommand(),
 	}
 
 	subcommand := args[0]

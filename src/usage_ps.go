@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type PsCommand struct {
@@ -12,15 +11,9 @@ type PsCommand struct {
 	external string
 }
 
-func NewPsCommand(args []string) *PsCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewPsCommand() *PsCommand {
 	gc := &PsCommand{
-		fs: flag.NewFlagSet("ps", exit),
+		fs: flag.NewFlagSet("ps", flag.ExitOnError),
 	}
 
 	gc.fs.StringVar(&gc.all, "a", "all", "Show all the containers, default is only running containers")

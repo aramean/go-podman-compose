@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type StopCommand struct {
@@ -11,15 +10,9 @@ type StopCommand struct {
 	timeout int
 }
 
-func NewStopCommand(args []string) *StopCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewStopCommand() *StopCommand {
 	gc := &StopCommand{
-		fs: flag.NewFlagSet("stop", exit),
+		fs: flag.NewFlagSet("stop", flag.ExitOnError),
 	}
 
 	gc.fs.IntVar(&gc.timeout, "t", 10, "Specify a shutdown timeout in seconds (default 10)")

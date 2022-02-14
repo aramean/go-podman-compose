@@ -2,22 +2,15 @@ package main
 
 import (
 	"flag"
-	"strings"
 )
 
 type StartCommand struct {
 	fs *flag.FlagSet
 }
 
-func NewStartCommand(args []string) *StartCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewStartCommand() *StartCommand {
 	gc := &StartCommand{
-		fs: flag.NewFlagSet("start", exit),
+		fs: flag.NewFlagSet("start", flag.ExitOnError),
 	}
 
 	return gc

@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"strings"
 )
 
 type VersionCommand struct {
@@ -12,15 +11,9 @@ type VersionCommand struct {
 	format string
 }
 
-func NewVersionCommand(args []string) *VersionCommand {
-
-	var exit = flag.ContinueOnError
-	if len(args) > 1 && strings.Contains(args[1], "-help") {
-		exit = flag.ExitOnError
-	}
-
+func NewVersionCommand() *VersionCommand {
 	gc := &VersionCommand{
-		fs: flag.NewFlagSet("version", exit),
+		fs: flag.NewFlagSet("version", flag.ExitOnError),
 	}
 
 	gc.fs.StringVar(&gc.format, "f", "", "")
