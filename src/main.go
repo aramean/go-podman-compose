@@ -152,6 +152,28 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 				CommandTask{[]string{"rm", k}, "", 0, true, true},
 			)
 		}
+	case "kill":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k := range e.Services {
+
+			arr := []string{"kill"}
+
+			if len(arg1) > 0 {
+				arr = append(arr, arg1)
+			} else {
+				arr = append(arr, "--all")
+			}
+
+			g.Tasks = append(
+				g.Tasks,
+				CommandTask{arr, "Killing container " + k + " ...", 0, true, false},
+			)
+
+		}
 	case "restart":
 		g = Command{
 			OutputStatus:   true,

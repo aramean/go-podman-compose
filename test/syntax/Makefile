@@ -45,6 +45,12 @@ restart:
 down:
 	@cd $(SRC_DIR) && go $(GO_ARG) down
 
+kill:
+	@cd $(SRC_DIR) && go $(GO_ARG) kill
+
+kill%nginx:
+	@cd $(SRC_DIR) && go $(GO_ARG) kill nginx
+
 logs:
 	@cd $(SRC_DIR) && go $(GO_ARG) logs
 
