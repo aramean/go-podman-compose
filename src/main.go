@@ -131,6 +131,7 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				"run",
 				"--replace",
 				"--name", k,
+				"-d",
 			}
 
 			for i := range v.Ports {
@@ -150,10 +151,6 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				arr = append(arr, "--restart", v.Restart)
 			}
 
-			if detach {
-				arr = append(arr, "-d")
-			}
-
 			arr = append(arr, v.Image)
 
 			g.Tasks = append(
@@ -163,6 +160,23 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 
 		}
 
+		if !detach {
+
+			g = Command{
+				OutputStatus:   false,
+				OutputNewlines: true,
+			}
+
+			for k := range e.Services {
+				if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+					g.Tasks = append(
+						g.Tasks,
+						CommandTask{[]string{"logs", k}, "", 0, true, false},
+					)
+				}
+			}
+
+		}
 	case "down":
 		g = Command{
 			OutputStatus:   true,
