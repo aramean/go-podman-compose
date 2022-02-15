@@ -296,12 +296,20 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 		g = Command{
 			OutputStatus:   false,
 			OutputNewlines: true,
-			Tasks: []CommandTask{
-				{
-					[]string{"ps"}, "", 0, false, false,
-				},
-			},
 		}
+
+		arr := []string{
+			"ps",
+		}
+
+		if quiet {
+			arr = append(arr, "-q")
+		}
+
+		g.Tasks = append(
+			g.Tasks,
+			CommandTask{arr, "", 0, false, false},
+		)
 	case "logs":
 		g = Command{
 			OutputStatus:   false,

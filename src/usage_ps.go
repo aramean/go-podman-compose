@@ -9,6 +9,7 @@ type PsCommand struct {
 
 	all      string
 	external string
+	quiet    bool
 }
 
 func NewPsCommand() *PsCommand {
@@ -18,6 +19,7 @@ func NewPsCommand() *PsCommand {
 
 	gc.fs.StringVar(&gc.all, "a", "all", "Show all the containers, default is only running containers")
 	gc.fs.StringVar(&gc.external, "external", "", "Show containers in storage not controlled by Podman")
+	gc.fs.BoolVar(&gc.quiet, "q", false, "Print the numeric IDs of the containers only")
 	return gc
 }
 
