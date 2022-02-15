@@ -11,6 +11,9 @@ default:
 stop:
 	@cd $(SRC_DIR) && go $(GO_ARG) stop
 
+stop%timeout:
+	@cd $(SRC_DIR) && go $(GO_ARG) stop -t 10
+
 stop%help:
 	@cd $(SRC_DIR) && go $(GO_ARG) stop --help
 
@@ -41,6 +44,15 @@ start%all:
 
 restart:
 	@cd $(SRC_DIR) && go $(GO_ARG) restart
+
+restart%timeout:
+	@cd $(SRC_DIR) && go $(GO_ARG) restart -t 20
+
+restart%nginx:
+	@cd $(SRC_DIR) && go $(GO_ARG) restart nginx
+
+restart%nginxtime:
+	@cd $(SRC_DIR) && go $(GO_ARG) restart nginx -t 20
 
 down:
 	@cd $(SRC_DIR) && go $(GO_ARG) down

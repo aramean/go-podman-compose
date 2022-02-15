@@ -6,7 +6,14 @@ import (
 	"strings"
 )
 
-var debug = os.Getenv("DEBUG")
+var (
+	debug         = os.Getenv("DEBUG")
+	args          = os.Args[1:]
+	detach        bool
+	timeout       string
+	removeOrphans bool
+	quiet         bool
+)
 
 const (
 	fileYAML         = "docker-compose.yml"
@@ -30,18 +37,32 @@ type Command struct {
 	Tasks          []CommandTask
 }
 
-func main() {
-	var arg = os.Args[1:]
-
-	if err := runUsage(arg); err != nil {
+func init() {
+	if err := runUsage(args); err != nil {
 		fmt.Println(err)
 		os.Exit(0)
 	}
 
+	for i, f := range args {
+		if f == "-d" || f == "--detach" {
+			detach = true
+		}
+		if f == "-t" || f == "--timeout" {
+			timeout = args[(i + 1)]
+		}
+		if f == "--remove-orphans" {
+			removeOrphans = true
+		}
+		if f == "-q" || f == "--quiet" {
+			quiet = true
+		}
+	}
+}
+
+func main() {
 	l := loadEnvironmentVariables()
 	e := parseYAML(l.Environment)
-
-	g := buildCommand(e, l.Environment, arg)
+	g := buildCommand(e, l.Environment)
 
 	for _, field := range g.Tasks {
 
@@ -82,11 +103,11 @@ func main() {
 	}
 }
 
-func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
+func buildCommand(e *Config, l []EnvironmentVariable) Command {
 
 	var arg0, arg1 = "", ""
 
-	for i, v := range arg {
+	for i, v := range args {
 		if i == 0 {
 			arg0 = v
 		}
@@ -109,7 +130,6 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 			arr := []string{
 				"run",
 				"--replace",
-				"-d",
 				"--name", k,
 			}
 
@@ -128,6 +148,10 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 
 			if v.Restart != "" {
 				arr = append(arr, "--restart", v.Restart)
+			}
+
+			if detach {
+				arr = append(arr, "-d")
 			}
 
 			arr = append(arr, v.Image)
@@ -181,10 +205,20 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 		}
 
 		for k := range e.Services {
-			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+			if len(arg1) > 0 && k == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
+
+				arr := []string{
+					"restart",
+					k,
+				}
+
+				if len(timeout) > 0 {
+					arr = append(arr, "--time", timeout)
+				}
+
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"restart", k}, "Restarting container " + k + " ...", 0, true, false},
+					CommandTask{arr, "Restarting container " + k + " ...", 0, true, false},
 				)
 			}
 		}
@@ -198,7 +232,7 @@ func buildCommand(e *Config, l []EnvironmentVariable, arg []string) Command {
 			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
+					CommandTask{[]string{"stop", "--time", "10", k}, "Stopping container " + k + " ...", 0, true, false},
 				)
 			}
 		}
