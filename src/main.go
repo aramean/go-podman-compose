@@ -12,6 +12,7 @@ var (
 	detach        bool
 	timeout       string
 	removeOrphans bool
+	signal        string
 	quiet         bool
 )
 
@@ -55,6 +56,9 @@ func init() {
 		}
 		if f == "-q" || f == "--quiet" {
 			quiet = true
+		}
+		if f == "-s" || f == "--signal" {
+			signal = args[(i + 1)]
 		}
 	}
 }
@@ -199,20 +203,22 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 		}
 
 		for k := range e.Services {
+			if len(arg1) > 0 && k == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
 
-			arr := []string{"kill"}
+				arr := []string{
+					"kill",
+					k,
+				}
 
-			if len(arg1) > 0 {
-				arr = append(arr, arg1)
-			} else {
-				arr = append(arr, "--all")
+				if len(signal) > 0 {
+					arr = append(arr, "--signal", signal)
+				}
+
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{arr, "Killing container " + k + " ...", 0, true, false},
+				)
 			}
-
-			g.Tasks = append(
-				g.Tasks,
-				CommandTask{arr, "Killing container " + k + " ...", 0, true, false},
-			)
-
 		}
 	case "restart":
 		g = Command{
