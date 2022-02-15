@@ -56,7 +56,7 @@ func executeCommand(f []string, m string, s bool, q bool) *CommandTask {
 				}
 
 				if customMessage == 0 && !t.OutputQuiet {
-					t.OutputCustomMessage = t.OutputCustomMessage + line + " "
+					t.OutputCustomMessage = t.OutputCustomMessage + "\n" + line
 				}
 				t.OutputStatusCode = 0
 

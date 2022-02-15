@@ -73,6 +73,8 @@ func main() {
 			field.OutputQuiet,
 		)
 
+		output := strings.TrimSpace(e.OutputCustomMessage)
+
 		switch e.OutputStatusCode {
 		case 0:
 			if !field.OutputQuiet {
@@ -80,14 +82,14 @@ func main() {
 					fmt.Printf(colorGreen, "[OK] ")
 				}
 				if g.OutputNewlines {
-					fmt.Println(e.OutputCustomMessage)
+					fmt.Println(output)
 				} else {
-					fmt.Print(e.OutputCustomMessage)
+					fmt.Print(output)
 				}
 			}
 		case 1:
 
-			m := strings.Split(e.OutputCustomMessage, "\n")
+			m := strings.Split(output, "\n")
 
 			for i, s := range m {
 				if i == 0 {

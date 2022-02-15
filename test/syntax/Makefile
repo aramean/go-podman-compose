@@ -96,6 +96,9 @@ ps:
 ps%help:
 	@cd $(SRC_DIR) && go $(GO_ARG) ps --help
 
+ps%quiet:
+	@cd $(SRC_DIR) && go $(GO_ARG) ps -q
+
 help:
 	@cd $(SRC_DIR) && go $(GO_ARG) --help
 
