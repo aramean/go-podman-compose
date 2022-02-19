@@ -6,7 +6,7 @@ on:
   #pull_request:
   #  branches: [ main ]
     paths:
-      - 'src/**.go'
+      - '**.go'
 
 jobs:
 
@@ -23,7 +23,7 @@ jobs:
         go-version: 1.17
 
     - name: Test Go application
-      run: cd src && go test .
+      run: go test .
 
   build:
     name: Build
@@ -39,19 +39,19 @@ jobs:
         go-version: 1.17
 
     - name: Build Go binary for MacOS (ARM64)
-      run: cd src && env GOOS=darwin GOARCH=arm64 go build -o bin/darwin/arm64/podman-compose
+      run: env GOOS=darwin GOARCH=arm64 go build -o bin/darwin/arm64/podman-compose
 
     - name: Build Go binary for MacOS (AMD64)
-      run: cd src && env GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/podman-compose
+      run: env GOOS=darwin GOARCH=amd64 go build -o bin/darwin/amd64/podman-compose
       
     - name: Build Go binary for Linux (AMD64)
-      run: cd src && env GOOS=linux GOARCH=amd64 go build -o bin/linux/amd64/podman-compose
+      run: env GOOS=linux GOARCH=amd64 go build -o bin/linux/amd64/podman-compose
 
     - name: Cache Go binaries
       uses: actions/cache@v2
       id: restore-build
       with:
-          path: src/bin
+          path: bin
           key: ${{ github.sha }}
 
   upload:
@@ -67,23 +67,23 @@ jobs:
         uses: actions/cache@v2
         id: restore-build
         with:
-          path: src/bin
+          path: bin
           key: ${{ github.sha }}
 
       - name: Create artifact for MacOS (ARM64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-darwin-arm64
-          path: src/bin/darwin/arm64/
+          path: bin/darwin/arm64/
 
       - name: Create artifact for MacOS (AMD64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-darwin-amd64
-          path: src/bin/darwin/amd64/
+          path: bin/darwin/amd64/
 
       - name: Create artifact for Linux (AMD64)
         uses: actions/upload-artifact@v2
         with:
           name: artifact-linux-amd64
-          path: src/bin/linux/amd64/
+          path: bin/linux/amd64/

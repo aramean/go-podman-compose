@@ -27,7 +27,7 @@ wget -q -O .pctmp.zip github.com/aramean/go-podman-compose/releases/download/v1.
 
 
 ### From source
-To compile from source, simply run `make && make install`
+To compile from source, simply run `go build .`
 > **_NOTE:_**  Make sure you have the latest version of <a href="https://go.dev/dl/">Go</a> installed on your machine.
 
 ## Contributing

@@ -27,14 +27,14 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-linux-amd64
-          path: src/bin
-      - run: ls src/bin
+          path: bin
+      - run: ls bin
 
       - name: Cache Go binaries
         uses: actions/cache@v2
         id: restore-build
         with:
-            path: src/bin
+            path: bin
             key: ${{ github.sha }}
 
   deploy:
@@ -50,16 +50,16 @@ jobs:
         uses: actions/cache@v2
         id: restore-build
         with:
-          path: src/bin
+          path: bin
           key: ${{ github.sha }}
       - run: |
-          ls src/bin/darwin/arm64
-          ls src/bin/darwin/amd64
-          ls src/bin/linux/amd64
+          ls bin/darwin/arm64
+          ls bin/darwin/amd64
+          ls bin/linux/amd64
 
       - name: Zip Go binaries
         run: |
-          cd src/bin/darwin/arm64
+          cd bin/darwin/arm64
           zip podman-compose-darwin-arm64.zip *
           cd ../amd64
           zip podman-compose-darwin-amd64.zip *
@@ -95,7 +95,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/bin/darwin/arm64/podman-compose-darwin-arm64.zip
+          asset_path: bin/darwin/arm64/podman-compose-darwin-arm64.zip
           asset_name: podman-compose-darwin-arm64.zip
           asset_content_type: application/zip
           
@@ -106,7 +106,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/bin/darwin/amd64/podman-compose-darwin-amd64.zip
+          asset_path: bin/darwin/amd64/podman-compose-darwin-amd64.zip
           asset_name: podman-compose-darwin-amd64.zip
           asset_content_type: application/zip
 
@@ -117,7 +117,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: src/bin/linux/amd64/podman-compose-linux-amd64.zip
+          asset_path: bin/linux/amd64/podman-compose-linux-amd64.zip
           asset_name: podman-compose-linux-amd64.zip
-          asset_content_type: application/zip
-    
+          asset_content_type: application/zip    

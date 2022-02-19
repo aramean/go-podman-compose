@@ -2,4 +2,4 @@
 __debug_bin
 .DS_Store
 .vscode
-src/bin
+podman-compose
