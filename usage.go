@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-const message = "\nRun 'podman-compose COMMAND --help' for more information on a command."
+const message = "\nRun 'podman-compose COMMAND --help' for more information on a command"
 
 type MainCommand struct {
 	fs *flag.FlagSet
