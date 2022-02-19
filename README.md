@@ -1,6 +1,6 @@
 [![Continuous integration and delivery](https://github.com/aramean/go-podman-compose/actions/workflows/releasement.yml/badge.svg)](https://github.com/aramean/go-podman-compose/actions/workflows/releasement.yml)
 [![Continuous deployment](https://github.com/aramean/go-podman-compose/actions/workflows/deployment.yml/badge.svg)](https://github.com/aramean/go-podman-compose/actions/workflows/deployment.yml)<br><br>
-<img src="/docs/logo.svg">
+<img src="docs/logo.svg">
 
 # Podman Compose
 Podman Compose lets you define and run multi-container Podman applications.  
