@@ -2,8 +2,11 @@ export DEBUG=TRUE
 
 SHELL := /bin/bash
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
-SRC_DIR = ../../src
+SRC_DIR = ../../
 GO_ARG = run .
+
+ENV_FILE = .env
+YAML_FILE = docker-compose.yml
 
 default:
 	@cd $(SRC_DIR) && go $(GO_ARG)
