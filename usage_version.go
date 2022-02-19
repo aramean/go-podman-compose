@@ -29,6 +29,6 @@ func (g *VersionCommand) Init(args []string) error {
 }
 
 func (g *VersionCommand) Run() error {
-	fmt.Print("Podman-Compose version v1.0.0")
+	fmt.Print(binaryName + " version " + binaryVersion)
 	return fmt.Errorf("")
 }
