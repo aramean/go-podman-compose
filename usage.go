@@ -53,7 +53,7 @@ type Runner interface {
 	Name() string
 }
 
-func runUsage(args []string) error {
+func runUsage() error {
 
 	if len(args) < 1 {
 		args = append(args, "help")

@@ -41,7 +41,7 @@ type Command struct {
 }
 
 func init() {
-	if err := runUsage(args); err != nil {
+	if err := runUsage(); err != nil {
 		fmt.Println(err)
 		os.Exit(0)
 	}
