@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"strings"
 )
 
 const message = "\nRun 'podman-compose COMMAND --help' for more information on a command"
@@ -55,8 +56,30 @@ type Runner interface {
 
 func runUsage() error {
 
-	if len(args) < 1 {
-		args = append(args, "help")
+	var arg0, arg1 = "", ""
+
+	for i, v := range args {
+		if i == 0 {
+			arg0 = v
+		}
+		if i == 1 {
+			arg1 = v
+		}
+	}
+
+	if arg1 == "" {
+		if arg0 == "" || strings.Contains(arg0, "-help") {
+			args = append(args, "help")
+			arg0 = "help"
+		} else if arg0 == "-v" || arg0 == "--version" {
+			arg0 = "version"
+		}
+	}
+
+	if arg1 != "" {
+		if strings.Contains(arg0, "-env-file") {
+			arg0 = "version"
+		}
 	}
 
 	cmds := []Runner{
@@ -72,14 +95,12 @@ func runUsage() error {
 		NewVersionCommand(),
 	}
 
-	subcommand := args[0]
-
 	for _, cmd := range cmds {
-		if cmd.Name() == subcommand {
+		if cmd.Name() == arg0 {
 			cmd.Init(args[1:])
 			return cmd.Run()
 		}
 	}
 
-	return fmt.Errorf("%s\nunknown command: \"%s\"", message, subcommand)
+	return fmt.Errorf("%s\nunknown command: \"%s\"", message, arg0)
 }
