@@ -168,7 +168,7 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 
 		}
 
-		if !detach {
+		/*if !detach {
 
 			g = Command{
 				OutputStatus:   false,
@@ -184,7 +184,7 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				}
 			}
 
-		}
+		}*/
 	case "down":
 		g = Command{
 			OutputStatus:   true,
