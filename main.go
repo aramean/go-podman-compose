@@ -9,12 +9,14 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.1"
+	binaryVersion = "1.0.2"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
 	removeOrphans bool
 	signal        string
+	tty           bool
+	user          string
 	quiet         bool
 )
 
@@ -61,6 +63,9 @@ func init() {
 		}
 		if f == "-s" || f == "--signal" {
 			signal = args[(i + 1)]
+		}
+		if f == "-u" || f == "--user" {
+			user = args[(i + 1)]
 		}
 	}
 }
@@ -204,6 +209,39 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
 				CommandTask{[]string{"rm", k}, "", 0, true, true},
 			)
+		}
+	case "exec":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k := range e.Services {
+			if len(arg1) > 0 && k == arg1 || strings.Contains(arg1, "-") {
+
+				arr := []string{
+					"exec",
+					"--interactive",
+					k,
+				}
+
+				if detach {
+					arr = append(arr, "--detach")
+				}
+
+				if tty {
+					arr = append(arr, "--tty")
+				}
+
+				if len(user) > 0 {
+					arr = append(arr, "--user", "root")
+				}
+
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{arr, "", 0, true, false},
+				)
+			}
 		}
 	case "kill":
 		g = Command{

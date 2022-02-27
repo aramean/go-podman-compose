@@ -38,6 +38,7 @@ func (g *MainCommand) Init(args []string) error {
 func (g *MainCommand) Run() error {
 	fmt.Println("  up          Create and start containers")
 	fmt.Println("  down        Stop and remove containers, networks")
+	fmt.Println("  exec        Execute a command in a running container")
 	fmt.Println("  kill        Force stop service containers")
 	fmt.Println("  logs        View output from containers")
 	fmt.Println("  ps          List containers")
@@ -86,6 +87,7 @@ func runUsage() error {
 	cmds := []Runner{
 		NewMainCommand(),
 		NewDownCommand(),
+		NewExecCommand(),
 		NewKillCommand(),
 		NewLogsCommand(),
 		NewPsCommand(),
