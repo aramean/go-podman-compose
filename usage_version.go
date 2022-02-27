@@ -9,6 +9,7 @@ type VersionCommand struct {
 	fs *flag.FlagSet
 
 	format string
+	short  bool
 }
 
 func NewVersionCommand() *VersionCommand {
@@ -17,6 +18,7 @@ func NewVersionCommand() *VersionCommand {
 	}
 
 	gc.fs.StringVar(&gc.format, "f", "", "")
+	gc.fs.BoolVar(&gc.short, "short", false, "Shows only Compose's version number.")
 	return gc
 }
 
@@ -29,6 +31,9 @@ func (g *VersionCommand) Init(args []string) error {
 }
 
 func (g *VersionCommand) Run() error {
-	fmt.Print(binaryName + " version " + binaryVersion)
-	return fmt.Errorf("")
+	var long = binaryName + " version "
+	if g.short {
+		long = ""
+	}
+	return fmt.Errorf(long + "v" + binaryVersion)
 }
