@@ -102,6 +102,15 @@ ps%help:
 ps%quiet:
 	@cd $(SRC_DIR) && go $(GO_ARG) ps -q
 
+pull:
+	@cd $(SRC_DIR) && go $(GO_ARG) pull
+
+pull%nginx:
+	@cd $(SRC_DIR) && go $(GO_ARG) pull nginx
+
+pull%mariadb:
+	@cd $(SRC_DIR) && go $(GO_ARG) pull mariadb
+
 help:
 	@cd $(SRC_DIR) && go $(GO_ARG) --help
 

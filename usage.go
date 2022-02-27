@@ -88,6 +88,7 @@ func runUsage() error {
 		NewKillCommand(),
 		NewLogsCommand(),
 		NewPsCommand(),
+		NewPullCommand(),
 		NewRestartCommand(),
 		NewStartCommand(),
 		NewStopCommand(),

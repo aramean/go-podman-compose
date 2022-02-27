@@ -327,6 +327,20 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 			g.Tasks,
 			CommandTask{arr, "", 0, false, false},
 		)
+	case "pull":
+		g = Command{
+			OutputStatus:   false,
+			OutputNewlines: true,
+		}
+
+		for k := range e.Services {
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{[]string{"pull", k}, "", 0, true, false},
+				)
+			}
+		}
 	case "logs":
 		g = Command{
 			OutputStatus:   false,
