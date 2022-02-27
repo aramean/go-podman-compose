@@ -60,6 +60,12 @@ restart%nginxtime:
 down:
 	@cd $(SRC_DIR) && go $(GO_ARG) down
 
+exec:
+	@cd $(SRC_DIR) && go $(GO_ARG) exec
+
+exec%help:
+	@cd $(SRC_DIR) && go $(GO_ARG) exec --help
+
 exec%nginx:
 	@cd $(SRC_DIR) && go $(GO_ARG) exec nginx /bin/sh
 
