@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -16,10 +17,18 @@ type EnvironmentVariable struct {
 }
 
 func loadEnvironmentVariables() *EnvironmentVariables {
-
+	envsOs := os.Environ()
 	envs, _ := godotenv.Read(fileEnv)
 
 	e := EnvironmentVariables{}
+
+	for _, v := range envsOs {
+		k := strings.SplitN(v, "=", 2)
+		e.Environment = append(
+			e.Environment,
+			EnvironmentVariable{Name: k[0], Value: k[1]},
+		)
+	}
 
 	for k, v := range envs {
 		e.Environment = append(
