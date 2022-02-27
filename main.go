@@ -185,6 +185,13 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 			}
 
 		}*/
+
+		for k := range e.Volumes {
+			g.Tasks = append(
+				g.Tasks,
+				CommandTask{[]string{"volume", "create", k}, "", 0, true, true},
+			)
+		}
 	case "down":
 		g = Command{
 			OutputStatus:   true,
