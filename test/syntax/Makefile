@@ -90,6 +90,9 @@ up%detach:
 version:
 	@cd $(SRC_DIR) && go $(GO_ARG) version
 
+version%short:
+	@cd $(SRC_DIR) && go $(GO_ARG) version --short
+
 version%help:
 	@cd $(SRC_DIR) && go $(GO_ARG) version --help
 

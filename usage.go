@@ -41,6 +41,7 @@ func (g *MainCommand) Run() error {
 	fmt.Println("  kill        Force stop service containers")
 	fmt.Println("  logs        View output from containers")
 	fmt.Println("  ps          List containers")
+	fmt.Println("  pull        Pull service images")
 	fmt.Println("  restart     Restart containers")
 	fmt.Println("  start       Start services")
 	fmt.Println("  stop        Stop services")
