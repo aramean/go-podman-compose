@@ -160,6 +160,10 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				arr = append(arr, "-e", r.Name+"="+r.Value)
 			}
 
+			if v.Platform != "" {
+				arr = append(arr, "--platform", v.Platform)
+			}
+
 			if v.Restart != "" {
 				arr = append(arr, "--restart", v.Restart)
 			}

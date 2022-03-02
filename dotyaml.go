@@ -12,6 +12,7 @@ import (
 type Services struct {
 	Image       string      `yaml:"image"`
 	Volumes     []string    `yaml:"volumes,omitempty"`
+	Platform    string      `yaml:"platform,omitempty"`
 	Ports       []string    `yaml:"ports,omitempty"`
 	Restart     string      `yaml:"restart,omitempty"`
 	Environment interface{} `yaml:"environment,omitempty"`
