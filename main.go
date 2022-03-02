@@ -9,7 +9,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.1"
+	binaryVersion = "1.0.2"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -216,37 +216,47 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 		}
 	case "exec":
 		g = Command{
-			OutputStatus:   true,
+			OutputStatus:   false,
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
-			if len(arg1) > 0 && k == arg1 || strings.Contains(arg1, "-") {
+		var exec = ""
+		var service = ""
 
-				arr := []string{
-					"exec",
-					"--interactive",
-					k,
+		for i, f := range args {
+			for k := range e.Services {
+				if f == k {
+					service = args[i]
+					exec = args[(i + 1)]
+
+					fmt.Print("hej")
 				}
-
-				if detach {
-					arr = append(arr, "--detach")
-				}
-
-				if tty {
-					arr = append(arr, "--tty")
-				}
-
-				if len(user) > 0 {
-					arr = append(arr, "--user", "root")
-				}
-
-				g.Tasks = append(
-					g.Tasks,
-					CommandTask{arr, "", 0, true, false},
-				)
 			}
 		}
+
+		arr := []string{
+			"exec",
+			"-it",
+		}
+
+		/*if detach {
+			arr = append(arr, "--detach")
+		}
+
+		if tty {
+			arr = append(arr, "--tty")
+		}
+
+		if len(user) > 0 {
+			arr = append(arr, "--user", "root")
+		}
+		*/
+		arr = append(arr, service, exec)
+
+		g.Tasks = append(
+			g.Tasks,
+			CommandTask{arr, "", 0, false, false},
+		)
 	case "kill":
 		g = Command{
 			OutputStatus:   true,

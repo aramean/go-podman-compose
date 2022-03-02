@@ -69,8 +69,11 @@ exec%help:
 exec%nginx:
 	@cd $(SRC_DIR) && go $(GO_ARG) exec nginx /bin/sh
 
+exec%nginxwho:
+	@cd $(SRC_DIR) && go $(GO_ARG) exec nginx whoami
+
 exec%nginxroot:
-	@cd $(SRC_DIR) && go $(GO_ARG) exec nginx /bin/sh
+	@cd $(SRC_DIR) && go $(GO_ARG) exec -u root nginx /bin/sh
 
 kill:
 	@cd $(SRC_DIR) && go $(GO_ARG) kill

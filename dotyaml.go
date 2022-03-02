@@ -1,10 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"io/ioutil"
 	"log"
+	"regexp"
 	"strconv"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -65,10 +66,30 @@ func parseYAML(l []EnvironmentVariable) *Config {
 }
 
 func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
-	for _, k := range l {
-		yfile = bytes.Replace(yfile, []byte("${"+k.Name+"}"), []byte(k.Value), -1)
-	}
-	return yfile
+	content := string(yfile)
+
+	re := regexp.MustCompile(`\${(.*?)}`)
+
+	replaced := re.ReplaceAllStringFunc(content, func(part string) string {
+		plen := len(part)
+
+		if plen > 2 {
+			var name = strings.Split(part[2:plen-1], ":")
+			for _, k := range l {
+				if name[0] == k.Name {
+					return k.Value
+				}
+			}
+
+			if len(name) == 2 {
+				return name[1][1:len(name[1])]
+			}
+
+		}
+		return part
+	})
+
+	return []byte(replaced)
 }
 
 func convertEnvironmentVariable(t interface{}) []string {

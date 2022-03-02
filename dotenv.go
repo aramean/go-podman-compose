@@ -18,7 +18,7 @@ type EnvironmentVariable struct {
 
 func loadEnvironmentVariables() *EnvironmentVariables {
 	envsOs := os.Environ()
-	envs, _ := godotenv.Read(fileEnv)
+	envsFileEnv, _ := godotenv.Read(fileEnv)
 
 	e := EnvironmentVariables{}
 
@@ -30,7 +30,7 @@ func loadEnvironmentVariables() *EnvironmentVariables {
 		)
 	}
 
-	for k, v := range envs {
+	for k, v := range envsFileEnv {
 		e.Environment = append(
 			e.Environment,
 			EnvironmentVariable{Name: k, Value: v},
