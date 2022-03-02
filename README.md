@@ -3,7 +3,7 @@
 <img src="docs/logo.svg">
 
 # Podman Compose
-Podman Compose lets you define and run multi-container Podman applications.  
+Podman Compose lets you define and run multi-container [Podman](https://podman.io/) applications.  
 By configuring the services using YAML files, you can then manage them all with a single command.  
 
 ## Installing
