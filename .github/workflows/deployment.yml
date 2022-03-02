@@ -21,6 +21,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
     
+      - name: Download artifact - Darwin (ARM64)
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: releasement.yml
+          workflow_conclusion: success
+          name: artifact-darwin-arm64
+          path: bin/darwin/arm64/
+      - run: ls
+
       - name: Download artifact - Linux (AMD64)
         uses: dawidd6/action-download-artifact@v2
         with:
