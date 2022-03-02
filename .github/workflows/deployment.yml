@@ -27,8 +27,8 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-linux-amd64
-          path: bin
-      - run: ls bin
+          path: bin/linux/amd64/
+      - run: ls
 
       - name: Cache Go binaries
         uses: actions/cache@v2
