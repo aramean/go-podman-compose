@@ -92,7 +92,7 @@ jobs:
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
           delete_release: true # default: false
-          tag_name: "$VERSION" # tag name to delete
+          tag_name: ${{ env.VERSION }} # tag name to delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -102,8 +102,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "$VERSION"
-          release_name: "Release $VERSION"
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           #tag_name: ${{ github.ref }}
           #release_name: Release ${{ github.ref }}
           draft: false
