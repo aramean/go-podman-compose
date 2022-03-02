@@ -27,8 +27,17 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-darwin-arm64
-          path: bin/darwin/arm64/
-      - run: ls
+          path: bin/darwin/arm64
+      - run: ls bin/darwin/arm64
+
+      - name: Download artifact - Darwin (AMD64)
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: releasement.yml
+          workflow_conclusion: success
+          name: artifact-darwin-amd64
+          path: bin/darwin/amd64
+      - run: ls bin/darwin/amd64
 
       - name: Download artifact - Linux (AMD64)
         uses: dawidd6/action-download-artifact@v2
@@ -36,8 +45,8 @@ jobs:
           workflow: releasement.yml
           workflow_conclusion: success
           name: artifact-linux-amd64
-          path: bin/linux/amd64/
-      - run: ls
+          path: bin/linux/amd64
+      - run: ls bin/linux/amd64
 
       - name: Cache Go binaries
         uses: actions/cache@v2
