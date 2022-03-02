@@ -9,6 +9,9 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+env:
+  VERSION: v1.0.2
     
 jobs:
   
@@ -89,7 +92,7 @@ jobs:
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
           delete_release: true # default: false
-          tag_name: v1.0.1 # tag name to delete
+          tag_name: $VERSION # tag name to delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -99,8 +102,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.1
-          release_name: Release v1.0.1
+          tag_name: $VERSION
+          release_name: Release $VERSION
           #tag_name: ${{ github.ref }}
           #release_name: Release ${{ github.ref }}
           draft: false
