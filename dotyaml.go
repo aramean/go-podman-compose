@@ -11,18 +11,18 @@ import (
 )
 
 type Services struct {
-	Dns         interface{} `yaml:"dns,omitempty"`
 	CpuShares   string      `yaml:"cpu_shares,omitempty"`
+	Dns         interface{} `yaml:"dns,omitempty"`
+	EnvFile     interface{} `yaml:"env_file,omitempty"`
+	Environment interface{} `yaml:"environment,omitempty"`
 	Expose      interface{} `yaml:"expose,omitempty"`
 	Image       string      `yaml:"image"`
-	Volumes     []string    `yaml:"volumes,omitempty"`
+	Init        string      `yaml:"init,omitempty"`
 	Platform    string      `yaml:"platform,omitempty"`
 	Ports       []string    `yaml:"ports,omitempty"`
 	Pid         string      `yaml:"pid,omitempty"`
 	Restart     string      `yaml:"restart,omitempty"`
-	EnvFile     interface{} `yaml:"env_file,omitempty"`
-	Environment interface{} `yaml:"environment,omitempty"`
-	Init        string      `yaml:"init,omitempty"`
+	Volumes     []string    `yaml:"volumes,omitempty"`
 }
 
 type Volumes struct {
