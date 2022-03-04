@@ -25,8 +25,11 @@ type Services struct {
 	Platform    string      `yaml:"platform,omitempty"`
 	Ports       []string    `yaml:"ports,omitempty"`
 	Pid         string      `yaml:"pid,omitempty"`
+	PidsLimit   int16       `yaml:"pids_limit,omitempty"`
 	Restart     string      `yaml:"restart,omitempty"`
 	StopSignal  string      `yaml:"stop_signal,omitempty"`
+	Sysctls     interface{} `yaml:"sysctls,omitempty"`
+	Tmpfs       interface{} `yaml:"tmpfs,omitempty"`
 	Volumes     []string    `yaml:"volumes,omitempty"`
 }
 

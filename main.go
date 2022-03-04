@@ -158,12 +158,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				for i := range v.Volumes {
-					arr = append(arr, "-v", v.Volumes[i])
+					arr = append(arr, "--volume", v.Volumes[i])
 				}
 
 				for _, r := range normalizeValue(v.Environment) {
 					p := transformPairs(r)
-					arr = append(arr, "-e", p.Key+"="+p.Value)
+					arr = append(arr, "--env", p.Key+"="+p.Value)
 				}
 
 				if v.CpuShares != "" {
@@ -172,6 +172,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.Pid != "" {
 					arr = append(arr, "--pid", v.Pid)
+				}
+
+				if v.PidsLimit < -2 || v.PidsLimit != 0 {
+					arr = append(arr, "--pids-limit", strconv.Itoa(int(v.PidsLimit)))
 				}
 
 				if v.Platform != "" {
@@ -184,6 +188,17 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.StopSignal != "" {
 					arr = append(arr, "--stop-signal", v.StopSignal)
+				}
+
+				for _, r := range normalizeValue(v.Sysctls) {
+					p := transformPairs(r)
+					arr = append(arr, "--sysctl", p.Key+"="+p.Value)
+				}
+
+				if v.Tmpfs != nil {
+					for _, r := range convertToArray(v.Tmpfs) {
+						arr = append(arr, "--tmpfs", r)
+					}
 				}
 
 				if v.EnvFile != nil {
