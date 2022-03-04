@@ -18,10 +18,12 @@ type Services struct {
 	Expose      interface{} `yaml:"expose,omitempty"`
 	Image       string      `yaml:"image"`
 	Init        string      `yaml:"init,omitempty"`
+	Labels      interface{} `yaml:"labels,omitempty"`
 	Platform    string      `yaml:"platform,omitempty"`
 	Ports       []string    `yaml:"ports,omitempty"`
 	Pid         string      `yaml:"pid,omitempty"`
 	Restart     string      `yaml:"restart,omitempty"`
+	StopSignal  string      `yaml:"stop_signal,omitempty"`
 	Volumes     []string    `yaml:"volumes,omitempty"`
 }
 
@@ -45,13 +47,18 @@ type Networks struct {
 	Networks []string `yaml:"networks"`
 }
 
-type Config struct {
+type Yaml struct {
 	Version  string
 	Services map[string]Services
 	Volumes  map[string]Volumes
 }
 
-func parseYAML(l []EnvironmentVariable) *Config {
+type YamlPairs struct {
+	Key   string
+	Value string
+}
+
+func parseYAML(l []EnvironmentVariable) *Yaml {
 
 	yfile, err2 := ioutil.ReadFile(fileYAML)
 
@@ -61,7 +68,7 @@ func parseYAML(l []EnvironmentVariable) *Config {
 
 	yfile = replaceEnvironmentVariables(l, yfile)
 
-	var e Config
+	var e Yaml
 	err3 := yaml.Unmarshal(yfile, &e)
 
 	if err3 != nil {
@@ -98,7 +105,7 @@ func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
 	return []byte(replaced)
 }
 
-func convertEnvironmentVariable(t interface{}) []string {
+func normalizeValue(t interface{}) []string {
 	arr := []string{}
 
 	switch t := t.(type) {
@@ -123,6 +130,16 @@ func convertEnvironmentVariable(t interface{}) []string {
 	}
 
 	return arr
+}
+
+func transformPairs(s string) *YamlPairs {
+	split := strings.Split(s, "=")
+	k := split[0]
+	v := split[1]
+
+	p := YamlPairs{Key: k, Value: v}
+
+	return &p
 }
 
 func convertToArray(t interface{}) []string {

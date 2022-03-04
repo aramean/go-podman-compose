@@ -39,13 +39,3 @@ func loadEnvironmentVariables() *EnvironmentVariables {
 
 	return &e
 }
-
-func transformEnvironmentVariable(s string, l []EnvironmentVariable) *EnvironmentVariable {
-	split := strings.Split(s, "=")
-	k := split[0]
-	v := split[1]
-
-	e := EnvironmentVariable{Name: k, Value: v}
-
-	return &e
-}

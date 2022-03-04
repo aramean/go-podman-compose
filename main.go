@@ -117,7 +117,7 @@ func main() {
 	}
 }
 
-func buildCommand(e *Config, l []EnvironmentVariable) Command {
+func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 	var arg0, arg1 = "", ""
 
@@ -148,6 +148,11 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 					"-d",
 				}
 
+				for _, r := range normalizeValue(v.Labels) {
+					r := transformPairs(r)
+					arr = append(arr, "--label", r.Key+"="+r.Value)
+				}
+
 				for i := range v.Ports {
 					arr = append(arr, "-p", v.Ports[i])
 				}
@@ -156,9 +161,9 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 					arr = append(arr, "-v", v.Volumes[i])
 				}
 
-				for _, r := range convertEnvironmentVariable(v.Environment) {
-					r := transformEnvironmentVariable(r, l)
-					arr = append(arr, "-e", r.Name+"="+r.Value)
+				for _, r := range normalizeValue(v.Environment) {
+					p := transformPairs(r)
+					arr = append(arr, "-e", p.Key+"="+p.Value)
 				}
 
 				if v.CpuShares != "" {
@@ -175,6 +180,10 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 
 				if v.Restart != "" {
 					arr = append(arr, "--restart", v.Restart)
+				}
+
+				if v.StopSignal != "" {
+					arr = append(arr, "--stop-signal", v.StopSignal)
 				}
 
 				if v.EnvFile != nil {
