@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -171,6 +172,14 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 			if v.EnvFile != "" {
 				for _, r := range convertEnvironmentVariable(v.EnvFile) {
 					arr = append(arr, "--env-file", r)
+				}
+			}
+
+			if v.Init != "" {
+				if _, err := strconv.ParseBool(v.Init); err == nil {
+					arr = append(arr, "--init")
+				} else {
+					arr = append(arr, "--init-path", v.Init)
 				}
 			}
 

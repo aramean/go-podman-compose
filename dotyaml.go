@@ -18,6 +18,7 @@ type Services struct {
 	Restart     string      `yaml:"restart,omitempty"`
 	EnvFile     interface{} `yaml:"env_file,omitempty"`
 	Environment interface{} `yaml:"environment,omitempty"`
+	Init        string      `yaml:"init,omitempty"`
 }
 
 type Volumes struct {
