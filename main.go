@@ -175,6 +175,12 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				}
 			}
 
+			if v.Dns != nil {
+				for _, r := range convertToArray(v.Dns) {
+					arr = append(arr, "--dns", r)
+				}
+			}
+
 			if v.Init != "" {
 				if _, err := strconv.ParseBool(v.Init); err == nil {
 					arr = append(arr, "--init")
