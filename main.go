@@ -169,8 +169,8 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				arr = append(arr, "--restart", v.Restart)
 			}
 
-			if v.EnvFile != "" {
-				for _, r := range convertEnvironmentVariable(v.EnvFile) {
+			if v.EnvFile != nil {
+				for _, r := range convertToArray(v.EnvFile) {
 					arr = append(arr, "--env-file", r)
 				}
 			}

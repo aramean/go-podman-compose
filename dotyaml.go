@@ -121,3 +121,18 @@ func convertEnvironmentVariable(t interface{}) []string {
 
 	return arr
 }
+
+func convertToArray(t interface{}) []string {
+	arr := []string{}
+
+	switch t := t.(type) {
+	case []interface{}:
+		for _, v := range t {
+			arr = append(arr, v.(string))
+		}
+	default:
+		arr = append(arr, t.(string))
+	}
+
+	return arr
+}
