@@ -179,6 +179,12 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				}
 			}
 
+			if v.Expose != nil {
+				for _, r := range convertToArray(v.Expose) {
+					arr = append(arr, "--expose", r)
+				}
+			}
+
 			if v.Dns != nil {
 				for _, r := range convertToArray(v.Dns) {
 					arr = append(arr, "--dns", r)

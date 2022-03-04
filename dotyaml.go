@@ -13,6 +13,7 @@ import (
 type Services struct {
 	Dns         interface{} `yaml:"dns,omitempty"`
 	CpuShares   string      `yaml:"cpu_shares,omitempty"`
+	Expose      interface{} `yaml:"expose,omitempty"`
 	Image       string      `yaml:"image"`
 	Volumes     []string    `yaml:"volumes,omitempty"`
 	Platform    string      `yaml:"platform,omitempty"`
