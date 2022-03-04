@@ -140,11 +140,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 		}
 
 		for k, v := range e.Services {
-			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+			name := getContainerName(v, k)
+			if (len(arg1) > 0 && name == arg1) || len(arg1) == 0 {
 				arr := []string{
 					"run",
 					"--replace",
-					"--name", k,
+					"--name", name,
 					"-d",
 				}
 
@@ -245,7 +246,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
+					CommandTask{arr, "Starting container " + name + " ...", 0, false, false},
 				)
 			}
 		}
@@ -280,11 +281,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k, _ := range e.Services {
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
 			g.Tasks = append(
 				g.Tasks,
-				CommandTask{[]string{"stop", "--time", "2", k}, "Stopping container " + k + " ...", 0, true, false},
-				CommandTask{[]string{"rm", k}, "", 0, true, true},
+				CommandTask{[]string{"stop", "--time", "2", name}, "Stopping container " + name + " ...", 0, true, false},
+				CommandTask{[]string{"rm", name}, "", 0, true, true},
 			)
 		}
 	case "exec":
@@ -336,12 +338,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
-			if len(arg1) > 0 && k == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
-
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
+			if len(arg1) > 0 && name == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
 				arr := []string{
 					"kill",
-					k,
+					name,
 				}
 
 				if len(signal) > 0 {
@@ -350,7 +352,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr, "Killing container " + k + " ...", 0, true, false},
+					CommandTask{arr, "Killing container " + name + " ...", 0, true, false},
 				)
 			}
 		}
@@ -360,12 +362,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
-			if len(arg1) > 0 && k == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
-
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
+			if len(arg1) > 0 && name == arg1 || len(arg1) == 0 || strings.Contains(arg1, "-") {
 				arr := []string{
 					"restart",
-					k,
+					name,
 				}
 
 				if len(timeout) > 0 {
@@ -374,7 +376,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{arr, "Restarting container " + k + " ...", 0, true, false},
+					CommandTask{arr, "Restarting container " + name + " ...", 0, true, false},
 				)
 			}
 		}
@@ -384,11 +386,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
-			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
+			if (len(arg1) > 0 && name == arg1) || len(arg1) == 0 {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"stop", "--time", "10", k}, "Stopping container " + k + " ...", 0, true, false},
+					CommandTask{[]string{"stop", "--time", "10", name}, "Stopping container " + name + " ...", 0, true, false},
 				)
 			}
 		}
@@ -416,11 +419,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
-			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
+			if (len(arg1) > 0 && name == arg1) || len(arg1) == 0 {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"pull", k}, "", 0, true, false},
+					CommandTask{[]string{"pull", name}, "", 0, true, false},
 				)
 			}
 		}
@@ -430,15 +434,23 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		for k := range e.Services {
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
 			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
 				g.Tasks = append(
 					g.Tasks,
-					CommandTask{[]string{"logs", k}, "", 0, true, false},
+					CommandTask{[]string{"logs", name}, "", 0, true, false},
 				)
 			}
 		}
 	}
 
 	return g
+}
+
+func getContainerName(v Services, name string) string {
+	if v.ContainerName != "" {
+		name = v.ContainerName
+	}
+	return name
 }
