@@ -165,6 +165,10 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 					arr = append(arr, "--cpu-shares", v.CpuShares)
 				}
 
+				if v.Pid != "" {
+					arr = append(arr, "--pid", v.Pid)
+				}
+
 				if v.Platform != "" {
 					arr = append(arr, "--platform", v.Platform)
 				}
