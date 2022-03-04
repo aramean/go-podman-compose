@@ -133,79 +133,79 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 	g := Command{}
 
 	switch arg0 {
-	case "up":
+	case "up", "start":
 		g = Command{
 			OutputStatus:   true,
 			OutputNewlines: true,
 		}
 
 		for k, v := range e.Services {
-
-			arr := []string{
-				"run",
-				"--replace",
-				"--name", k,
-				"-d",
-			}
-
-			for i := range v.Ports {
-				arr = append(arr, "-p", v.Ports[i])
-			}
-
-			for i := range v.Volumes {
-				arr = append(arr, "-v", v.Volumes[i])
-			}
-
-			for _, r := range convertEnvironmentVariable(v.Environment) {
-				r := transformEnvironmentVariable(r, l)
-				arr = append(arr, "-e", r.Name+"="+r.Value)
-			}
-
-			if v.CpuShares != "" {
-				arr = append(arr, "--cpu-shares", v.CpuShares)
-			}
-
-			if v.Platform != "" {
-				arr = append(arr, "--platform", v.Platform)
-			}
-
-			if v.Restart != "" {
-				arr = append(arr, "--restart", v.Restart)
-			}
-
-			if v.EnvFile != nil {
-				for _, r := range convertToArray(v.EnvFile) {
-					arr = append(arr, "--env-file", r)
+			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
+				arr := []string{
+					"run",
+					"--replace",
+					"--name", k,
+					"-d",
 				}
-			}
 
-			if v.Expose != nil {
-				for _, r := range convertToArray(v.Expose) {
-					arr = append(arr, "--expose", r)
+				for i := range v.Ports {
+					arr = append(arr, "-p", v.Ports[i])
 				}
-			}
 
-			if v.Dns != nil {
-				for _, r := range convertToArray(v.Dns) {
-					arr = append(arr, "--dns", r)
+				for i := range v.Volumes {
+					arr = append(arr, "-v", v.Volumes[i])
 				}
-			}
 
-			if v.Init != "" {
-				if _, err := strconv.ParseBool(v.Init); err == nil {
-					arr = append(arr, "--init")
-				} else {
-					arr = append(arr, "--init-path", v.Init)
+				for _, r := range convertEnvironmentVariable(v.Environment) {
+					r := transformEnvironmentVariable(r, l)
+					arr = append(arr, "-e", r.Name+"="+r.Value)
 				}
+
+				if v.CpuShares != "" {
+					arr = append(arr, "--cpu-shares", v.CpuShares)
+				}
+
+				if v.Platform != "" {
+					arr = append(arr, "--platform", v.Platform)
+				}
+
+				if v.Restart != "" {
+					arr = append(arr, "--restart", v.Restart)
+				}
+
+				if v.EnvFile != nil {
+					for _, r := range convertToArray(v.EnvFile) {
+						arr = append(arr, "--env-file", r)
+					}
+				}
+
+				if v.Expose != nil {
+					for _, r := range convertToArray(v.Expose) {
+						arr = append(arr, "--expose", r)
+					}
+				}
+
+				if v.Dns != nil {
+					for _, r := range convertToArray(v.Dns) {
+						arr = append(arr, "--dns", r)
+					}
+				}
+
+				if v.Init != "" {
+					if _, err := strconv.ParseBool(v.Init); err == nil {
+						arr = append(arr, "--init")
+					} else {
+						arr = append(arr, "--init-path", v.Init)
+					}
+				}
+
+				arr = append(arr, v.Image)
+
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
+				)
 			}
-
-			arr = append(arr, v.Image)
-
-			g.Tasks = append(
-				g.Tasks,
-				CommandTask{arr, "Starting container " + k + " ...", 0, false, false},
-			)
-
 		}
 
 		/*if !detach {
@@ -349,48 +349,6 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 					CommandTask{[]string{"stop", "--time", "10", k}, "Stopping container " + k + " ...", 0, true, false},
 				)
 			}
-		}
-	case "start":
-		g = Command{
-			OutputStatus:   true,
-			OutputNewlines: true,
-		}
-
-		for k, v := range e.Services {
-
-			if (len(arg1) > 0 && k == arg1) || len(arg1) == 0 {
-				arr := []string{
-					"run",
-					"--replace",
-					"-d",
-					"--name", k,
-				}
-
-				for i := range v.Ports {
-					arr = append(arr, "-p", v.Ports[i])
-				}
-
-				for i := range v.Volumes {
-					arr = append(arr, "-v", v.Volumes[i])
-				}
-
-				for _, r := range convertEnvironmentVariable(v.Environment) {
-					r := transformEnvironmentVariable(r, l)
-					arr = append(arr, "-e", r.Name+"="+r.Value)
-				}
-
-				if v.Restart != "" {
-					arr = append(arr, "--restart", v.Restart)
-				}
-
-				arr = append(arr, v.Image)
-
-				g.Tasks = append(
-					g.Tasks,
-					CommandTask{arr, "Starting container " + k + " ...", 0, true, false},
-				)
-			}
-
 		}
 	case "ps":
 		g = Command{
