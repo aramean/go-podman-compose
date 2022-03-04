@@ -134,8 +134,16 @@ func normalizeValue(t interface{}) []string {
 
 func transformPairs(s string) *YamlPairs {
 	split := strings.Split(s, "=")
-	k := split[0]
-	v := split[1]
+	var k, v string
+
+	if len(split) == 1 {
+		k = split[0]
+	}
+
+	if len(split) == 2 {
+		k = split[0]
+		v = split[1]
+	}
 
 	p := YamlPairs{Key: k, Value: v}
 

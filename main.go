@@ -119,7 +119,7 @@ func main() {
 
 func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
-	var arg0, arg1 = "", ""
+	var arg0, arg1 string
 
 	for i, v := range args {
 		if i == 0 {
