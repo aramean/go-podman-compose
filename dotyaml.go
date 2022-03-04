@@ -13,6 +13,9 @@ import (
 type Services struct {
 	CpuShares   string      `yaml:"cpu_shares,omitempty"`
 	Dns         interface{} `yaml:"dns,omitempty"`
+	DnsSearch   interface{} `yaml:"dns_search,omitempty"`
+	DnsOpt      []string    `yaml:"dns_opt,omitempty"`
+	Devices     []string    `yaml:"devices,omitempty"`
 	EnvFile     interface{} `yaml:"env_file,omitempty"`
 	Environment interface{} `yaml:"environment,omitempty"`
 	Expose      interface{} `yaml:"expose,omitempty"`

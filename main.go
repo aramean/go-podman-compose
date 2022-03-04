@@ -198,10 +198,24 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					}
 				}
 
+				for i := range v.Devices {
+					arr = append(arr, "--device", v.Devices[i])
+				}
+
 				if v.Dns != nil {
 					for _, r := range convertToArray(v.Dns) {
 						arr = append(arr, "--dns", r)
 					}
+				}
+
+				if v.DnsSearch != nil {
+					for _, r := range convertToArray(v.DnsSearch) {
+						arr = append(arr, "--dns-search", r)
+					}
+				}
+
+				for i := range v.DnsOpt {
+					arr = append(arr, "--dns-opt", v.DnsOpt[i])
 				}
 
 				if v.Init != "" {
