@@ -16,6 +16,7 @@ type Services struct {
 	Platform    string      `yaml:"platform,omitempty"`
 	Ports       []string    `yaml:"ports,omitempty"`
 	Restart     string      `yaml:"restart,omitempty"`
+	EnvFile     interface{} `yaml:"env_file,omitempty"`
 	Environment interface{} `yaml:"environment,omitempty"`
 }
 

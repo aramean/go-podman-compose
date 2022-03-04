@@ -168,6 +168,12 @@ func buildCommand(e *Config, l []EnvironmentVariable) Command {
 				arr = append(arr, "--restart", v.Restart)
 			}
 
+			if v.EnvFile != "" {
+				for _, r := range convertEnvironmentVariable(v.EnvFile) {
+					arr = append(arr, "--env-file", r)
+				}
+			}
+
 			arr = append(arr, v.Image)
 
 			g.Tasks = append(
