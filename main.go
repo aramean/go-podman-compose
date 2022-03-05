@@ -149,6 +149,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					"-d",
 				}
 
+				if v.Cpus > 0 {
+					arr = append(arr, "--cpus", fmt.Sprint(v.Cpus))
+				}
+
 				for _, r := range normalizeValue(v.Labels) {
 					r := transformPairs(r)
 					arr = append(arr, "--label", r.Key+"="+r.Value)
@@ -162,13 +166,16 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--volume", v.Volumes[i])
 				}
 
-				for _, r := range normalizeValue(v.Environment) {
-					p := transformPairs(r)
-					arr = append(arr, "--env", p.Key+"="+p.Value)
+				if v.CpuPeriod != "" {
+					arr = append(arr, "--cpu-period", convertToDigit(v.CpuPeriod))
 				}
 
 				if v.CpuShares != "" {
 					arr = append(arr, "--cpu-shares", v.CpuShares)
+				}
+
+				if v.CpuQuota > 0 {
+					arr = append(arr, "--cpu-quota", fmt.Sprint(v.CpuQuota))
 				}
 
 				for i := range v.Devices {
@@ -196,6 +203,11 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--entrypoint", convertToString(p))
 				}
 
+				for _, r := range normalizeValue(v.Environment) {
+					p := transformPairs(r)
+					arr = append(arr, "--env", p.Key+"="+p.Value)
+				}
+
 				if v.EnvFile != nil {
 					for _, r := range convertToArray(v.EnvFile) {
 						arr = append(arr, "--env-file", r)
@@ -206,6 +218,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					for _, r := range convertToArray(v.Expose) {
 						arr = append(arr, "--expose", r)
 					}
+				}
+
+				if v.Hostname != "" {
+					arr = append(arr, "--hostname", v.Hostname)
 				}
 
 				if v.Init != "" {
@@ -233,7 +249,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.OomScoreAdj < -1000 || v.OomScoreAdj != 0 {
-					arr = append(arr, "--oom-score-adj", strconv.Itoa(int(v.OomScoreAdj)))
+					arr = append(arr, "--oom-score-adj", fmt.Sprint(v.OomScoreAdj))
 				}
 
 				if v.Pid != "" {
@@ -241,7 +257,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.PidsLimit < -2 || v.PidsLimit != 0 {
-					arr = append(arr, "--pids-limit", strconv.Itoa(int(v.PidsLimit)))
+					arr = append(arr, "--pids-limit", fmt.Sprint(v.PidsLimit))
 				}
 
 				if v.Platform != "" {

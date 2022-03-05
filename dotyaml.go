@@ -11,7 +11,10 @@ import (
 )
 
 type Services struct {
+	Cpus           float32     `yaml:"cpus,omitempty"`
+	CpuPeriod      string      `yaml:"cpu_period,omitempty"`
 	CpuShares      string      `yaml:"cpu_shares,omitempty"`
+	CpuQuota       int64       `yaml:"cpu_quota,omitempty"`
 	Dns            interface{} `yaml:"dns,omitempty"`
 	DnsSearch      interface{} `yaml:"dns_search,omitempty"`
 	DnsOpt         []string    `yaml:"dns_opt,omitempty"`
@@ -21,6 +24,7 @@ type Services struct {
 	EnvFile        interface{} `yaml:"env_file,omitempty"`
 	Environment    interface{} `yaml:"environment,omitempty"`
 	Expose         interface{} `yaml:"expose,omitempty"`
+	Hostname       string      `yaml:"hostname,omitempty"`
 	Image          string      `yaml:"image"`
 	Init           string      `yaml:"init,omitempty"`
 	Ipc            string      `yaml:"ipc,omitempty"`
@@ -179,4 +183,10 @@ func convertToArray(t interface{}) []string {
 func convertToString(p []string) string {
 	justString := strings.Join(p, " ")
 	return justString
+}
+
+func convertToDigit(str string) string {
+	re, _ := regexp.Compile(`[^\d]`)
+	str = re.ReplaceAllString(str, "")
+	return str
 }
