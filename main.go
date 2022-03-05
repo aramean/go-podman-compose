@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.5"
+	binaryVersion = "1.0.6"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -147,6 +147,30 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					"--replace",
 					"--name", name,
 					"-d",
+				}
+
+				if v.BlkioConfig.Weight > 0 {
+					arr = append(arr, "--blkio-weight", fmt.Sprint(v.BlkioConfig.Weight))
+				}
+
+				for _, r := range v.BlkioConfig.WeightDevice {
+					arr = append(arr, "--blkio-weight-device="+r.Path+":"+r.Weight)
+				}
+
+				for _, r := range v.BlkioConfig.DeviceWriteBps {
+					arr = append(arr, "--device-write-bps="+r.Path+":"+r.Rate)
+				}
+
+				for _, r := range v.BlkioConfig.DeviceReadBps {
+					arr = append(arr, "--device-read-bps="+r.Path+":"+r.Rate)
+				}
+
+				for _, r := range v.BlkioConfig.DeviceWriteIops {
+					arr = append(arr, "--device-write-iops="+r.Path+":"+r.Rate)
+				}
+
+				for _, r := range v.BlkioConfig.DeviceReadIops {
+					arr = append(arr, "--device-read-iops="+r.Path+":"+r.Rate)
 				}
 
 				for i := range v.CapAdd {
