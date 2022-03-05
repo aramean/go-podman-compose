@@ -12,7 +12,11 @@ import (
 
 type Services struct {
 	Cpus           float32     `yaml:"cpus,omitempty"`
+	Cpuset         string      `yaml:"cpuset,omitempty"`
+	CgroupParent   string      `yaml:"cgroup_parent,omitempty"`
 	CpuPeriod      string      `yaml:"cpu_period,omitempty"`
+	CpuRtRuntime   string      `yaml:"cpu_rt_runtime,omitempty"`
+	CpuRtPeriod    string      `yaml:"cpu_rt_period,omitempty"`
 	CpuShares      string      `yaml:"cpu_shares,omitempty"`
 	CpuQuota       int64       `yaml:"cpu_quota,omitempty"`
 	Dns            interface{} `yaml:"dns,omitempty"`
@@ -186,6 +190,12 @@ func convertToString(p []string) string {
 }
 
 func convertToDigit(str string) string {
+	re, _ := regexp.Compile(`[^\d]`)
+	str = re.ReplaceAllString(str, "")
+	return str
+}
+
+func convertUnit(str string) string {
 	re, _ := regexp.Compile(`[^\d]`)
 	str = re.ReplaceAllString(str, "")
 	return str

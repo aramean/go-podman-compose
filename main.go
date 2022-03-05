@@ -153,6 +153,14 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--cpus", fmt.Sprint(v.Cpus))
 				}
 
+				if v.Cpuset != "" {
+					arr = append(arr, "--cpuset-cpus", fmt.Sprint(v.Cpuset))
+				}
+
+				if v.CgroupParent != "" {
+					arr = append(arr, "--cgroup-parent", v.CgroupParent)
+				}
+
 				for _, r := range normalizeValue(v.Labels) {
 					r := transformPairs(r)
 					arr = append(arr, "--label", r.Key+"="+r.Value)
@@ -168,6 +176,14 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.CpuPeriod != "" {
 					arr = append(arr, "--cpu-period", convertToDigit(v.CpuPeriod))
+				}
+
+				if v.CpuRtPeriod != "" {
+					arr = append(arr, "--cpu-rt-period", convertUnit(v.CpuRtPeriod))
+				}
+
+				if v.CpuRtRuntime != "" {
+					arr = append(arr, "--cpu-rt-runtime", convertUnit(v.CpuRtRuntime))
 				}
 
 				if v.CpuShares != "" {
