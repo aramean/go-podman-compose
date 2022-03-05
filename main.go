@@ -183,15 +183,15 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.CpuPeriod != "" {
-					arr = append(arr, "--cpu-period", convertToDigit(v.CpuPeriod))
+					arr = append(arr, "--cpu-period", setDurationUnit(v.CpuPeriod, "ms"))
 				}
 
 				if v.CpuRtPeriod != "" {
-					arr = append(arr, "--cpu-rt-period", convertUnit(v.CpuRtPeriod))
+					arr = append(arr, "--cpu-rt-period", setDurationUnit(v.CpuRtPeriod, "ms"))
 				}
 
 				if v.CpuRtRuntime != "" {
-					arr = append(arr, "--cpu-rt-runtime", test(v.CpuRtRuntime))
+					arr = append(arr, "--cpu-rt-runtime", setDurationUnit(v.CpuRtRuntime, "ms"))
 				}
 
 				if v.CpuShares != "" {

@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -191,29 +192,46 @@ func convertToArray(t interface{}) []string {
 }
 
 func convertToString(p []string) string {
-	justString := strings.Join(p, " ")
-	return justString
+	str := strings.Join(p, " ")
+	return str
 }
 
-func convertToDigit(str string) string {
-	re, _ := regexp.Compile(`[^\d]`)
+func extractNumbers(str string) string {
+	re, _ := regexp.Compile(`[^\d.-]`)
 	str = re.ReplaceAllString(str, "")
 	return str
 }
 
-func convertUnit(str string) string {
-	re, _ := regexp.Compile(`[^\d]`)
-	str = re.ReplaceAllString(str, "")
-	return str
-}
+func setDurationUnit(str string, unit string) string {
+	h, _ := time.ParseDuration(str)
 
-func test(str string) string {
-	var re = regexp.MustCompile(`([\d]+)`)
-	matches := re.FindStringSubmatch(str)
-
-	if len(matches) > 0 {
-		//fmt.Println(matches[1])
-		fmt.Println(matches)
+	switch unit {
+	case "us":
+		if strings.Contains(str, "us") {
+			return extractNumbers(str)
+		}
+		return fmt.Sprint(h.Microseconds())
+	case "ms":
+		if strings.Contains(str, "ms") {
+			return extractNumbers(str)
+		}
+		return fmt.Sprint(h.Milliseconds())
+	case "s":
+		if strings.Contains(str, "s") {
+			return extractNumbers(str)
+		}
+		return fmt.Sprint(h.Seconds())
+	case "m":
+		if strings.Contains(str, "m") {
+			return extractNumbers(str)
+		}
+		return fmt.Sprint(h.Minutes())
+	case "h":
+		if strings.Contains(str, "h") {
+			return extractNumbers(str)
+		}
+		return fmt.Sprint(h.Hours())
 	}
+
 	return str
 }
