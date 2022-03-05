@@ -149,6 +149,14 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					"-d",
 				}
 
+				for i := range v.CapAdd {
+					arr = append(arr, "--cap-add", v.CapAdd[i])
+				}
+
+				for i := range v.CapDrop {
+					arr = append(arr, "--cap-drop", v.CapDrop[i])
+				}
+
 				if v.Cpus > 0 {
 					arr = append(arr, "--cpus", fmt.Sprint(v.Cpus))
 				}
@@ -254,6 +262,18 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.MacAddress != "" {
 					arr = append(arr, "--mac-address", v.MacAddress)
+				}
+
+				if v.MemLimit != "" {
+					arr = append(arr, "--memory", v.MemLimit)
+				}
+
+				if v.MemSwappiness > -1 {
+					arr = append(arr, "--memory-swappiness", fmt.Sprint(v.MemSwappiness))
+				}
+
+				if v.MemSwapLimit != "" {
+					arr = append(arr, "--memory-swap", v.MemSwapLimit)
 				}
 
 				if v.MemReservation != "" {

@@ -11,6 +11,8 @@ import (
 )
 
 type Services struct {
+	CapAdd         []string    `yaml:"cap_add,omitempty"`
+	CapDrop        []string    `yaml:"cap_drop,omitempty"`
 	Cpus           float32     `yaml:"cpus,omitempty"`
 	Cpuset         string      `yaml:"cpuset,omitempty"`
 	CgroupParent   string      `yaml:"cgroup_parent,omitempty"`
@@ -34,7 +36,10 @@ type Services struct {
 	Ipc            string      `yaml:"ipc,omitempty"`
 	Labels         interface{} `yaml:"labels,omitempty"`
 	MacAddress     string      `yaml:"mac_address,omitempty"`
+	MemLimit       string      `yaml:"mem_limit,omitempty"`
 	MemReservation string      `yaml:"mem_reservation,omitempty"`
+	MemSwappiness  int8        `yaml:"mem_swappiness,omitempty"`
+	MemSwapLimit   string      `yaml:"memswap_limit,omitempty"`
 	OomKill        bool        `yaml:"oom_kill_disable,omitempty"`
 	OomScoreAdj    int16       `yaml:"oom_score_adj,omitempty"`
 	Platform       string      `yaml:"platform,omitempty"`
