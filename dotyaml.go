@@ -17,6 +17,7 @@ type Services struct {
 	DnsOpt        []string    `yaml:"dns_opt,omitempty"`
 	Devices       []string    `yaml:"devices,omitempty"`
 	ContainerName string      `yaml:"container_name,omitempty"`
+	Entrypoint    interface{} `yaml:"entrypoint,omitempty"`
 	EnvFile       interface{} `yaml:"env_file,omitempty"`
 	Environment   interface{} `yaml:"environment,omitempty"`
 	Expose        interface{} `yaml:"expose,omitempty"`
@@ -28,10 +29,14 @@ type Services struct {
 	Pid           string      `yaml:"pid,omitempty"`
 	PidsLimit     int16       `yaml:"pids_limit,omitempty"`
 	Restart       string      `yaml:"restart,omitempty"`
+	Privileged    bool        `yaml:"privileged,omitempty"`
 	StopSignal    string      `yaml:"stop_signal,omitempty"`
 	Sysctls       interface{} `yaml:"sysctls,omitempty"`
 	Tmpfs         interface{} `yaml:"tmpfs,omitempty"`
+	Tty           bool        `yaml:"tty,omitempty"`
+	User          string      `yaml:"user,omitempty"`
 	Volumes       []string    `yaml:"volumes,omitempty"`
+	WorkingDir    string      `yaml:"working_dir,omitempty"`
 }
 
 type Volumes struct {
@@ -40,10 +45,6 @@ type Volumes struct {
 
 type Ports struct {
 	Ports []string `yaml:"ports"`
-}
-
-type Restart struct {
-	Restart string `yaml:"restart"`
 }
 
 type Environment struct {
@@ -170,4 +171,9 @@ func convertToArray(t interface{}) []string {
 	}
 
 	return arr
+}
+
+func convertToString(p []string) string {
+	justString := strings.Join(p, " ")
+	return justString
 }

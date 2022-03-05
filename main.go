@@ -171,6 +171,51 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--cpu-shares", v.CpuShares)
 				}
 
+				for i := range v.Devices {
+					arr = append(arr, "--device", v.Devices[i])
+				}
+
+				if v.Dns != nil {
+					for _, r := range convertToArray(v.Dns) {
+						arr = append(arr, "--dns", r)
+					}
+				}
+
+				if v.DnsSearch != nil {
+					for _, r := range convertToArray(v.DnsSearch) {
+						arr = append(arr, "--dns-search", r)
+					}
+				}
+
+				for i := range v.DnsOpt {
+					arr = append(arr, "--dns-opt", v.DnsOpt[i])
+				}
+
+				if v.Entrypoint != nil {
+					p := normalizeValue(v.Entrypoint)
+					arr = append(arr, "--entrypoint", convertToString(p))
+				}
+
+				if v.EnvFile != nil {
+					for _, r := range convertToArray(v.EnvFile) {
+						arr = append(arr, "--env-file", r)
+					}
+				}
+
+				if v.Expose != nil {
+					for _, r := range convertToArray(v.Expose) {
+						arr = append(arr, "--expose", r)
+					}
+				}
+
+				if v.Init != "" {
+					if _, err := strconv.ParseBool(v.Init); err == nil {
+						arr = append(arr, "--init")
+					} else {
+						arr = append(arr, "--init-path", v.Init)
+					}
+				}
+
 				if v.Pid != "" {
 					arr = append(arr, "--pid", v.Pid)
 				}
@@ -181,6 +226,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.Platform != "" {
 					arr = append(arr, "--platform", v.Platform)
+				}
+
+				if v.Privileged {
+					arr = append(arr, "--privileged")
 				}
 
 				if v.Restart != "" {
@@ -202,44 +251,16 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					}
 				}
 
-				if v.EnvFile != nil {
-					for _, r := range convertToArray(v.EnvFile) {
-						arr = append(arr, "--env-file", r)
-					}
+				if v.Tty {
+					arr = append(arr, "--tty")
 				}
 
-				if v.Expose != nil {
-					for _, r := range convertToArray(v.Expose) {
-						arr = append(arr, "--expose", r)
-					}
+				if v.User != "" {
+					arr = append(arr, "--user", v.User)
 				}
 
-				for i := range v.Devices {
-					arr = append(arr, "--device", v.Devices[i])
-				}
-
-				if v.Dns != nil {
-					for _, r := range convertToArray(v.Dns) {
-						arr = append(arr, "--dns", r)
-					}
-				}
-
-				if v.DnsSearch != nil {
-					for _, r := range convertToArray(v.DnsSearch) {
-						arr = append(arr, "--dns-search", r)
-					}
-				}
-
-				for i := range v.DnsOpt {
-					arr = append(arr, "--dns-opt", v.DnsOpt[i])
-				}
-
-				if v.Init != "" {
-					if _, err := strconv.ParseBool(v.Init); err == nil {
-						arr = append(arr, "--init")
-					} else {
-						arr = append(arr, "--init-path", v.Init)
-					}
+				if v.WorkingDir != "" {
+					arr = append(arr, "--workdir", v.WorkingDir)
 				}
 
 				arr = append(arr, v.Image)
