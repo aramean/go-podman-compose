@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"regexp"
@@ -203,5 +204,16 @@ func convertToDigit(str string) string {
 func convertUnit(str string) string {
 	re, _ := regexp.Compile(`[^\d]`)
 	str = re.ReplaceAllString(str, "")
+	return str
+}
+
+func test(str string) string {
+	var re = regexp.MustCompile(`([\d]+)`)
+	matches := re.FindStringSubmatch(str)
+
+	if len(matches) > 0 {
+		//fmt.Println(matches[1])
+		fmt.Println(matches)
+	}
 	return str
 }

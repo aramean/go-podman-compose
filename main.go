@@ -191,7 +191,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.CpuRtRuntime != "" {
-					arr = append(arr, "--cpu-rt-runtime", convertUnit(v.CpuRtRuntime))
+					arr = append(arr, "--cpu-rt-runtime", test(v.CpuRtRuntime))
 				}
 
 				if v.CpuShares != "" {
@@ -268,7 +268,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--memory", v.MemLimit)
 				}
 
-				if v.MemSwappiness > -1 {
+				if v.MemSwappiness > 0 || v.MemSwappiness == -1 {
 					arr = append(arr, "--memory-swappiness", fmt.Sprint(v.MemSwappiness))
 				}
 
@@ -284,7 +284,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--oom-kill-disable")
 				}
 
-				if v.OomScoreAdj < -1000 || v.OomScoreAdj != 0 {
+				if v.OomScoreAdj <= -1000 || v.OomScoreAdj >= 1000 {
 					arr = append(arr, "--oom-score-adj", fmt.Sprint(v.OomScoreAdj))
 				}
 
