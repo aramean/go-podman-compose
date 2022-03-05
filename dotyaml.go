@@ -11,40 +11,43 @@ import (
 )
 
 type Services struct {
-	CpuShares     string      `yaml:"cpu_shares,omitempty"`
-	Dns           interface{} `yaml:"dns,omitempty"`
-	DnsSearch     interface{} `yaml:"dns_search,omitempty"`
-	DnsOpt        []string    `yaml:"dns_opt,omitempty"`
-	Devices       []string    `yaml:"devices,omitempty"`
-	ContainerName string      `yaml:"container_name,omitempty"`
-	Entrypoint    interface{} `yaml:"entrypoint,omitempty"`
-	EnvFile       interface{} `yaml:"env_file,omitempty"`
-	Environment   interface{} `yaml:"environment,omitempty"`
-	Expose        interface{} `yaml:"expose,omitempty"`
-	Image         string      `yaml:"image"`
-	Init          string      `yaml:"init,omitempty"`
-	Labels        interface{} `yaml:"labels,omitempty"`
-	Platform      string      `yaml:"platform,omitempty"`
-	Ports         []string    `yaml:"ports,omitempty"`
-	Pid           string      `yaml:"pid,omitempty"`
-	PidsLimit     int16       `yaml:"pids_limit,omitempty"`
-	Restart       string      `yaml:"restart,omitempty"`
-	Privileged    bool        `yaml:"privileged,omitempty"`
-	StopSignal    string      `yaml:"stop_signal,omitempty"`
-	Sysctls       interface{} `yaml:"sysctls,omitempty"`
-	Tmpfs         interface{} `yaml:"tmpfs,omitempty"`
-	Tty           bool        `yaml:"tty,omitempty"`
-	User          string      `yaml:"user,omitempty"`
-	Volumes       []string    `yaml:"volumes,omitempty"`
-	WorkingDir    string      `yaml:"working_dir,omitempty"`
+	CpuShares      string      `yaml:"cpu_shares,omitempty"`
+	Dns            interface{} `yaml:"dns,omitempty"`
+	DnsSearch      interface{} `yaml:"dns_search,omitempty"`
+	DnsOpt         []string    `yaml:"dns_opt,omitempty"`
+	Devices        []string    `yaml:"devices,omitempty"`
+	ContainerName  string      `yaml:"container_name,omitempty"`
+	Entrypoint     interface{} `yaml:"entrypoint,omitempty"`
+	EnvFile        interface{} `yaml:"env_file,omitempty"`
+	Environment    interface{} `yaml:"environment,omitempty"`
+	Expose         interface{} `yaml:"expose,omitempty"`
+	Image          string      `yaml:"image"`
+	Init           string      `yaml:"init,omitempty"`
+	Ipc            string      `yaml:"ipc,omitempty"`
+	Labels         interface{} `yaml:"labels,omitempty"`
+	MacAddress     string      `yaml:"mac_address,omitempty"`
+	MemReservation string      `yaml:"mem_reservation,omitempty"`
+	OomKill        bool        `yaml:"oom_kill_disable,omitempty"`
+	OomScoreAdj    int16       `yaml:"oom_score_adj,omitempty"`
+	Platform       string      `yaml:"platform,omitempty"`
+	Ports          []string    `yaml:"ports,omitempty"`
+	Pid            string      `yaml:"pid,omitempty"`
+	PidsLimit      int16       `yaml:"pids_limit,omitempty"`
+	Privileged     bool        `yaml:"privileged,omitempty"`
+	Readonly       bool        `yaml:"read_only,omitempty"`
+	Restart        string      `yaml:"restart,omitempty"`
+	ShmSize        string      `yaml:"shm_size,omitempty"`
+	StopSignal     string      `yaml:"stop_signal,omitempty"`
+	Sysctls        interface{} `yaml:"sysctls,omitempty"`
+	Tmpfs          interface{} `yaml:"tmpfs,omitempty"`
+	Tty            bool        `yaml:"tty,omitempty"`
+	User           string      `yaml:"user,omitempty"`
+	Volumes        []string    `yaml:"volumes,omitempty"`
+	WorkingDir     string      `yaml:"working_dir,omitempty"`
 }
 
 type Volumes struct {
 	Mounts []string `yaml:"volumes"`
-}
-
-type Ports struct {
-	Ports []string `yaml:"ports"`
 }
 
 type Environment struct {

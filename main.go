@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.4"
+	binaryVersion = "1.0.5"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -216,6 +216,26 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					}
 				}
 
+				if v.Ipc != "" {
+					arr = append(arr, "--ipc", v.Ipc)
+				}
+
+				if v.MacAddress != "" {
+					arr = append(arr, "--mac-address", v.MacAddress)
+				}
+
+				if v.MemReservation != "" {
+					arr = append(arr, "--memory-reservation", v.MemReservation)
+				}
+
+				if v.OomKill {
+					arr = append(arr, "--oom-kill-disable")
+				}
+
+				if v.OomScoreAdj < -1000 || v.OomScoreAdj != 0 {
+					arr = append(arr, "--oom-score-adj", strconv.Itoa(int(v.OomScoreAdj)))
+				}
+
 				if v.Pid != "" {
 					arr = append(arr, "--pid", v.Pid)
 				}
@@ -232,8 +252,16 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--privileged")
 				}
 
+				if v.Readonly {
+					arr = append(arr, "--read-only")
+				}
+
 				if v.Restart != "" {
 					arr = append(arr, "--restart", v.Restart)
+				}
+
+				if v.ShmSize != "" {
+					arr = append(arr, "--shm-size", v.ShmSize)
 				}
 
 				if v.StopSignal != "" {
