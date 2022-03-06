@@ -13,55 +13,58 @@ import (
 )
 
 type Services struct {
-	BlkioConfig    ServicesBlockIO `yaml:"blkio_config,omitempty"`
-	CapAdd         []string        `yaml:"cap_add,omitempty"`
-	CapDrop        []string        `yaml:"cap_drop,omitempty"`
-	Cpus           float32         `yaml:"cpus,omitempty"`
-	Cpuset         string          `yaml:"cpuset,omitempty"`
-	CgroupParent   string          `yaml:"cgroup_parent,omitempty"`
-	CpuPeriod      string          `yaml:"cpu_period,omitempty"`
-	CpuRtRuntime   string          `yaml:"cpu_rt_runtime,omitempty"`
-	CpuRtPeriod    string          `yaml:"cpu_rt_period,omitempty"`
-	CpuShares      string          `yaml:"cpu_shares,omitempty"`
-	CpuQuota       int64           `yaml:"cpu_quota,omitempty"`
-	Dns            interface{}     `yaml:"dns,omitempty"`
-	DnsSearch      interface{}     `yaml:"dns_search,omitempty"`
-	DnsOpt         []string        `yaml:"dns_opt,omitempty"`
-	Devices        []string        `yaml:"devices,omitempty"`
-	ContainerName  string          `yaml:"container_name,omitempty"`
-	Entrypoint     interface{}     `yaml:"entrypoint,omitempty"`
-	EnvFile        interface{}     `yaml:"env_file,omitempty"`
-	Environment    interface{}     `yaml:"environment,omitempty"`
-	Expose         interface{}     `yaml:"expose,omitempty"`
-	Hostname       string          `yaml:"hostname,omitempty"`
-	Image          string          `yaml:"image"`
-	Init           string          `yaml:"init,omitempty"`
-	Ipc            string          `yaml:"ipc,omitempty"`
-	Labels         interface{}     `yaml:"labels,omitempty"`
-	MacAddress     string          `yaml:"mac_address,omitempty"`
-	MemLimit       string          `yaml:"mem_limit,omitempty"`
-	MemReservation string          `yaml:"mem_reservation,omitempty"`
-	MemSwappiness  int8            `yaml:"mem_swappiness,omitempty"`
-	MemSwapLimit   string          `yaml:"memswap_limit,omitempty"`
-	OomKill        bool            `yaml:"oom_kill_disable,omitempty"`
-	OomScoreAdj    int16           `yaml:"oom_score_adj,omitempty"`
-	Platform       string          `yaml:"platform,omitempty"`
-	Ports          []string        `yaml:"ports,omitempty"`
-	Pid            string          `yaml:"pid,omitempty"`
-	PidsLimit      int16           `yaml:"pids_limit,omitempty"`
-	Privileged     bool            `yaml:"privileged,omitempty"`
-	Readonly       bool            `yaml:"read_only,omitempty"`
-	Restart        string          `yaml:"restart,omitempty"`
-	ShmSize        string          `yaml:"shm_size,omitempty"`
-	StopSignal     string          `yaml:"stop_signal,omitempty"`
-	Sysctls        interface{}     `yaml:"sysctls,omitempty"`
-	Tmpfs          interface{}     `yaml:"tmpfs,omitempty"`
-	Tty            bool            `yaml:"tty,omitempty"`
-	Ulimits        ServicesUlimits `yaml:"ulimits,omitempty"`
-	User           string          `yaml:"user,omitempty"`
-	UsernsMode     string          `yaml:"userns_mode,omitempty"`
-	Volumes        []string        `yaml:"volumes,omitempty"`
-	WorkingDir     string          `yaml:"working_dir,omitempty"`
+	BlkioConfig    ServicesBlockIO     `yaml:"blkio_config,omitempty"`
+	CapAdd         []string            `yaml:"cap_add,omitempty"`
+	CapDrop        []string            `yaml:"cap_drop,omitempty"`
+	Cpus           float32             `yaml:"cpus,omitempty"`
+	Cpuset         string              `yaml:"cpuset,omitempty"`
+	CgroupParent   string              `yaml:"cgroup_parent,omitempty"`
+	CpuPeriod      string              `yaml:"cpu_period,omitempty"`
+	CpuRtRuntime   string              `yaml:"cpu_rt_runtime,omitempty"`
+	CpuRtPeriod    string              `yaml:"cpu_rt_period,omitempty"`
+	CpuShares      string              `yaml:"cpu_shares,omitempty"`
+	CpuQuota       int64               `yaml:"cpu_quota,omitempty"`
+	Dns            interface{}         `yaml:"dns,omitempty"`
+	DnsSearch      interface{}         `yaml:"dns_search,omitempty"`
+	DnsOpt         []string            `yaml:"dns_opt,omitempty"`
+	Devices        []string            `yaml:"devices,omitempty"`
+	ContainerName  string              `yaml:"container_name,omitempty"`
+	Entrypoint     interface{}         `yaml:"entrypoint,omitempty"`
+	EnvFile        interface{}         `yaml:"env_file,omitempty"`
+	Environment    interface{}         `yaml:"environment,omitempty"`
+	Expose         interface{}         `yaml:"expose,omitempty"`
+	Healthcheck    ServicesHealthcheck `yaml:"healthcheck,omitempty"`
+	Hostname       string              `yaml:"hostname,omitempty"`
+	Image          string              `yaml:"image"`
+	Init           string              `yaml:"init,omitempty"`
+	Ipc            string              `yaml:"ipc,omitempty"`
+	Labels         interface{}         `yaml:"labels,omitempty"`
+	MacAddress     string              `yaml:"mac_address,omitempty"`
+	MemLimit       string              `yaml:"mem_limit,omitempty"`
+	MemReservation string              `yaml:"mem_reservation,omitempty"`
+	MemSwappiness  int8                `yaml:"mem_swappiness,omitempty"`
+	MemSwapLimit   string              `yaml:"memswap_limit,omitempty"`
+	OomKill        bool                `yaml:"oom_kill_disable,omitempty"`
+	OomScoreAdj    int16               `yaml:"oom_score_adj,omitempty"`
+	Platform       string              `yaml:"platform,omitempty"`
+	Ports          []string            `yaml:"ports,omitempty"`
+	Pid            string              `yaml:"pid,omitempty"`
+	PidsLimit      int16               `yaml:"pids_limit,omitempty"`
+	Privileged     bool                `yaml:"privileged,omitempty"`
+	Readonly       bool                `yaml:"read_only,omitempty"`
+	Restart        string              `yaml:"restart,omitempty"`
+	Secrets        []ServicesSecrets   `yaml:"secrets"`
+	ShmSize        string              `yaml:"shm_size,omitempty"`
+	StdinOpen      bool                `yaml:"stdin_open,omitempty"`
+	StopSignal     string              `yaml:"stop_signal,omitempty"`
+	Sysctls        interface{}         `yaml:"sysctls,omitempty"`
+	Tmpfs          interface{}         `yaml:"tmpfs,omitempty"`
+	Tty            bool                `yaml:"tty,omitempty"`
+	Ulimits        ServicesUlimits     `yaml:"ulimits"`
+	User           string              `yaml:"user,omitempty"`
+	UsernsMode     string              `yaml:"userns_mode,omitempty"`
+	Volumes        []string            `yaml:"volumes,omitempty"`
+	WorkingDir     string              `yaml:"working_dir,omitempty"`
 }
 
 type ServicesBlockIO struct {
@@ -81,6 +84,22 @@ type ServicesBlockIOWeightDevice struct {
 type ServicesBlockIORateDevice struct {
 	Path string `yaml:"path,omitempty"`
 	Rate string `yaml:"rate,omitempty"`
+}
+
+type ServicesHealthcheck struct {
+	Test        interface{} `yaml:"test,omitempty"`
+	Interval    string      `yaml:"interval,omitempty"`
+	Timeout     string      `yaml:"timeout,omitempty"`
+	Retries     int8        `yaml:"retries,omitempty"`
+	StartPeriod string      `yaml:"start_period,omitempty"`
+}
+
+type ServicesSecrets struct {
+	Source string `yaml:"source,omitempty"`
+	Target string `yaml:"target,omitempty"`
+	Uid    string `yaml:"uid,omitempty"`
+	Gid    string `yaml:"gid,omitempty"`
+	Mode   int16  `yaml:"mode,omitempty"`
 }
 
 type ServicesUlimits struct {
@@ -247,10 +266,10 @@ func convertToArray(t interface{}) []string {
 	switch t := t.(type) {
 	case []interface{}:
 		for _, v := range t {
-			arr = append(arr, v.(string))
+			arr = append(arr, fmt.Sprint(v))
 		}
 	default:
-		arr = append(arr, t.(string))
+		arr = append(arr, fmt.Sprint(t))
 	}
 
 	return arr

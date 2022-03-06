@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.6"
+	binaryVersion = "1.0.7"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -146,7 +146,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					"run",
 					"--replace",
 					"--name", name,
-					"-d",
+					"--detach",
 				}
 
 				if v.BlkioConfig.Weight > 0 {
@@ -199,7 +199,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				for i := range v.Ports {
-					arr = append(arr, "-p", v.Ports[i])
+					arr = append(arr, "--publish", v.Ports[i])
 				}
 
 				for i := range v.Volumes {
@@ -266,6 +266,22 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					for _, r := range convertToArray(v.Expose) {
 						arr = append(arr, "--expose", r)
 					}
+				}
+
+				if v.Healthcheck.Test != "" {
+					arr = append(arr, "--health-cmd", fmt.Sprint(v.Healthcheck.Test))
+				}
+
+				if v.Healthcheck.Interval != "" {
+					arr = append(arr, "--health-interval", v.Healthcheck.Interval)
+				}
+
+				if v.Healthcheck.Timeout != "" {
+					arr = append(arr, "--health-timeout", v.Healthcheck.Timeout)
+				}
+
+				if v.Healthcheck.StartPeriod != "" {
+					arr = append(arr, "--health-start-period", v.Healthcheck.StartPeriod)
 				}
 
 				if v.Hostname != "" {
@@ -338,6 +354,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.ShmSize != "" {
 					arr = append(arr, "--shm-size", v.ShmSize)
+				}
+
+				if v.StdinOpen {
+					arr = append(arr, "--interactive")
 				}
 
 				if v.StopSignal != "" {
