@@ -269,7 +269,8 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.Healthcheck.Test != "" {
-					arr = append(arr, "--health-cmd", fmt.Sprint(v.Healthcheck.Test))
+					values := normalizeValueStrings(v.Healthcheck.Test)
+					arr = append(arr, "--health-cmd", "'"+values+"'")
 				}
 
 				if v.Healthcheck.Interval != "" {
@@ -380,97 +381,97 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.Ulimits.Core != nil {
-					values := normalizeValueMapping(v.Ulimits.Core)
+					values := normalizeValueColonsPair(v.Ulimits.Core)
 					arr = append(arr, "--ulimit", "core="+values)
 				}
 
 				if v.Ulimits.Data != nil {
-					values := normalizeValueMapping(v.Ulimits.Data)
+					values := normalizeValueColonsPair(v.Ulimits.Data)
 					arr = append(arr, "--ulimit", "data="+values)
 				}
 
 				if v.Ulimits.Fsize != nil {
-					values := normalizeValueMapping(v.Ulimits.Fsize)
+					values := normalizeValueColonsPair(v.Ulimits.Fsize)
 					arr = append(arr, "--ulimit", "fsize="+values)
 				}
 
 				if v.Ulimits.Memlock != nil {
-					values := normalizeValueMapping(v.Ulimits.Memlock)
+					values := normalizeValueColonsPair(v.Ulimits.Memlock)
 					arr = append(arr, "--ulimit", "memlock="+values)
 				}
 
 				if v.Ulimits.Nofile != nil {
-					values := normalizeValueMapping(v.Ulimits.Nofile)
+					values := normalizeValueColonsPair(v.Ulimits.Nofile)
 					arr = append(arr, "--ulimit", "nofile="+values)
 				}
 
 				if v.Ulimits.Rss != nil {
-					values := normalizeValueMapping(v.Ulimits.Rss)
+					values := normalizeValueColonsPair(v.Ulimits.Rss)
 					arr = append(arr, "--ulimit", "rss="+values)
 				}
 
 				if v.Ulimits.Stack != nil {
-					values := normalizeValueMapping(v.Ulimits.Stack)
+					values := normalizeValueColonsPair(v.Ulimits.Stack)
 					arr = append(arr, "--ulimit", "stack="+values)
 				}
 
 				if v.Ulimits.Cpu != nil {
-					values := normalizeValueMapping(v.Ulimits.Cpu)
+					values := normalizeValueColonsPair(v.Ulimits.Cpu)
 					arr = append(arr, "--ulimit", "cpu="+values)
 				}
 
 				if v.Ulimits.Nproc != nil {
-					values := normalizeValueMapping(v.Ulimits.Nproc)
+					values := normalizeValueColonsPair(v.Ulimits.Nproc)
 					arr = append(arr, "--ulimit", "nproc="+values)
 				}
 
 				if v.Ulimits.As != nil {
-					values := normalizeValueMapping(v.Ulimits.As)
+					values := normalizeValueColonsPair(v.Ulimits.As)
 					arr = append(arr, "--ulimit", "as="+values)
 				}
 
 				if v.Ulimits.Maxlogins != nil {
-					values := normalizeValueMapping(v.Ulimits.Maxlogins)
+					values := normalizeValueColonsPair(v.Ulimits.Maxlogins)
 					arr = append(arr, "--ulimit", "maxlogins="+values)
 				}
 
 				if v.Ulimits.Maxsyslogins != nil {
-					values := normalizeValueMapping(v.Ulimits.Maxsyslogins)
+					values := normalizeValueColonsPair(v.Ulimits.Maxsyslogins)
 					arr = append(arr, "--ulimit", "maxsyslogins="+values)
 				}
 
 				if v.Ulimits.Priority != nil {
-					values := normalizeValueMapping(v.Ulimits.Priority)
+					values := normalizeValueColonsPair(v.Ulimits.Priority)
 					arr = append(arr, "--ulimit", "priority="+values)
 				}
 
 				if v.Ulimits.Locks != nil {
-					values := normalizeValueMapping(v.Ulimits.Locks)
+					values := normalizeValueColonsPair(v.Ulimits.Locks)
 					arr = append(arr, "--ulimit", "locks="+values)
 				}
 
 				if v.Ulimits.Sigpending != nil {
-					values := normalizeValueMapping(v.Ulimits.Sigpending)
+					values := normalizeValueColonsPair(v.Ulimits.Sigpending)
 					arr = append(arr, "--ulimit", "sigpending="+values)
 				}
 
 				if v.Ulimits.Msgqueue != nil {
-					values := normalizeValueMapping(v.Ulimits.Msgqueue)
+					values := normalizeValueColonsPair(v.Ulimits.Msgqueue)
 					arr = append(arr, "--ulimit", "msgqueue="+values)
 				}
 
 				if v.Ulimits.Nice != nil {
-					values := normalizeValueMapping(v.Ulimits.Nice)
+					values := normalizeValueColonsPair(v.Ulimits.Nice)
 					arr = append(arr, "--ulimit", "nice="+values)
 				}
 
 				if v.Ulimits.Rtprio != nil {
-					values := normalizeValueMapping(v.Ulimits.Rtprio)
+					values := normalizeValueColonsPair(v.Ulimits.Rtprio)
 					arr = append(arr, "--ulimit", "rtprio="+values)
 				}
 
 				if v.Ulimits.Chroot != nil {
-					values := normalizeValueMapping(v.Ulimits.Chroot)
+					values := normalizeValueColonsPair(v.Ulimits.Chroot)
 					arr = append(arr, "--ulimit", "chroot="+values)
 				}
 

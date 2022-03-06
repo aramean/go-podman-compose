@@ -222,10 +222,8 @@ func normalizeValue(t interface{}) []string {
 	return arr
 }
 
-func normalizeValueMapping(field interface{}) string {
-
+func normalizeValueColonsPair(field interface{}) string {
 	values := normalizeValue(field)
-
 	size := len(values)
 	val := ""
 
@@ -239,6 +237,22 @@ func normalizeValueMapping(field interface{}) string {
 		if size-1 != i {
 			val += ":"
 		}
+	}
+	return val
+}
+
+func normalizeValueStrings(field interface{}) string {
+	values := normalizeValue(field)
+	size := len(values)
+	val := ""
+
+	if size == 0 {
+		return fmt.Sprint(field)
+	}
+
+	for _, r := range values {
+		fmt.Println(r)
+		val += r + " "
 	}
 	return val
 }
