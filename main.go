@@ -458,6 +458,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--user", v.User)
 				}
 
+				if v.UsernsMode != "" {
+					arr = append(arr, "--userns", v.UsernsMode)
+				}
+
 				if v.WorkingDir != "" {
 					arr = append(arr, "--workdir", v.WorkingDir)
 				}

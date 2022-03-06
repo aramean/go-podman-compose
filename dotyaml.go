@@ -59,6 +59,7 @@ type Services struct {
 	Tty            bool            `yaml:"tty,omitempty"`
 	Ulimits        ServicesUlimits `yaml:"ulimits,omitempty"`
 	User           string          `yaml:"user,omitempty"`
+	UsernsMode     string          `yaml:"userns_mode,omitempty"`
 	Volumes        []string        `yaml:"volumes,omitempty"`
 	WorkingDir     string          `yaml:"working_dir,omitempty"`
 }
