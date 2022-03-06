@@ -57,6 +57,7 @@ type Services struct {
 	Sysctls        interface{}     `yaml:"sysctls,omitempty"`
 	Tmpfs          interface{}     `yaml:"tmpfs,omitempty"`
 	Tty            bool            `yaml:"tty,omitempty"`
+	Ulimits        ServicesUlimits `yaml:"ulimits,omitempty"`
 	User           string          `yaml:"user,omitempty"`
 	Volumes        []string        `yaml:"volumes,omitempty"`
 	WorkingDir     string          `yaml:"working_dir,omitempty"`
@@ -79,6 +80,28 @@ type ServicesBlockIOWeightDevice struct {
 type ServicesBlockIORateDevice struct {
 	Path string `yaml:"path,omitempty"`
 	Rate string `yaml:"rate,omitempty"`
+}
+
+type ServicesUlimits struct {
+	Core         interface{} `yaml:"core,omitempty"`
+	Data         interface{} `yaml:"data,omitempty"`
+	Fsize        interface{} `yaml:"fsize,omitempty"`
+	Memlock      interface{} `yaml:"memlock,omitempty"`
+	Nofile       interface{} `yaml:"nofile,omitempty"`
+	Rss          interface{} `yaml:"rss,omitempty"`
+	Stack        interface{} `yaml:"stack,omitempty"`
+	Cpu          interface{} `yaml:"cpu,omitempty"`
+	Nproc        interface{} `yaml:"nproc,omitempty"`
+	As           interface{} `yaml:"as,omitempty"`
+	Maxlogins    interface{} `yaml:"maxlogins,omitempty"`
+	Maxsyslogins interface{} `yaml:"maxsyslogins,omitempty"`
+	Priority     interface{} `yaml:"priority,omitempty"`
+	Locks        interface{} `yaml:"locks,omitempty"`
+	Sigpending   interface{} `yaml:"sigpending,omitempty"`
+	Msgqueue     interface{} `yaml:"msgqueue,omitempty"`
+	Nice         interface{} `yaml:"nice,omitempty"`
+	Rtprio       interface{} `yaml:"rtprio,omitempty"`
+	Chroot       interface{} `yaml:"chroot,omitempty"`
 }
 
 type Volumes struct {
@@ -176,6 +199,27 @@ func normalizeValue(t interface{}) []string {
 	}
 
 	return arr
+}
+
+func normalizeValueMapping(field interface{}) string {
+
+	values := normalizeValue(field)
+
+	size := len(values)
+	val := ""
+
+	if size == 0 {
+		return fmt.Sprint(field)
+	}
+
+	for i, r := range values {
+		p := transformPairs(r)
+		val += p.Value
+		if size-1 != i {
+			val += ":"
+		}
+	}
+	return val
 }
 
 func transformPairs(s string) *YamlPairs {

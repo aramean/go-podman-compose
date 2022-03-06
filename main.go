@@ -359,6 +359,101 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--tty")
 				}
 
+				if v.Ulimits.Core != nil {
+					values := normalizeValueMapping(v.Ulimits.Core)
+					arr = append(arr, "--ulimit", "core="+values)
+				}
+
+				if v.Ulimits.Data != nil {
+					values := normalizeValueMapping(v.Ulimits.Data)
+					arr = append(arr, "--ulimit", "data="+values)
+				}
+
+				if v.Ulimits.Fsize != nil {
+					values := normalizeValueMapping(v.Ulimits.Fsize)
+					arr = append(arr, "--ulimit", "fsize="+values)
+				}
+
+				if v.Ulimits.Memlock != nil {
+					values := normalizeValueMapping(v.Ulimits.Memlock)
+					arr = append(arr, "--ulimit", "memlock="+values)
+				}
+
+				if v.Ulimits.Nofile != nil {
+					values := normalizeValueMapping(v.Ulimits.Nofile)
+					arr = append(arr, "--ulimit", "nofile="+values)
+				}
+
+				if v.Ulimits.Rss != nil {
+					values := normalizeValueMapping(v.Ulimits.Rss)
+					arr = append(arr, "--ulimit", "rss="+values)
+				}
+
+				if v.Ulimits.Stack != nil {
+					values := normalizeValueMapping(v.Ulimits.Stack)
+					arr = append(arr, "--ulimit", "stack="+values)
+				}
+
+				if v.Ulimits.Cpu != nil {
+					values := normalizeValueMapping(v.Ulimits.Cpu)
+					arr = append(arr, "--ulimit", "cpu="+values)
+				}
+
+				if v.Ulimits.Nproc != nil {
+					values := normalizeValueMapping(v.Ulimits.Nproc)
+					arr = append(arr, "--ulimit", "nproc="+values)
+				}
+
+				if v.Ulimits.As != nil {
+					values := normalizeValueMapping(v.Ulimits.As)
+					arr = append(arr, "--ulimit", "as="+values)
+				}
+
+				if v.Ulimits.Maxlogins != nil {
+					values := normalizeValueMapping(v.Ulimits.Maxlogins)
+					arr = append(arr, "--ulimit", "maxlogins="+values)
+				}
+
+				if v.Ulimits.Maxsyslogins != nil {
+					values := normalizeValueMapping(v.Ulimits.Maxsyslogins)
+					arr = append(arr, "--ulimit", "maxsyslogins="+values)
+				}
+
+				if v.Ulimits.Priority != nil {
+					values := normalizeValueMapping(v.Ulimits.Priority)
+					arr = append(arr, "--ulimit", "priority="+values)
+				}
+
+				if v.Ulimits.Locks != nil {
+					values := normalizeValueMapping(v.Ulimits.Locks)
+					arr = append(arr, "--ulimit", "locks="+values)
+				}
+
+				if v.Ulimits.Sigpending != nil {
+					values := normalizeValueMapping(v.Ulimits.Sigpending)
+					arr = append(arr, "--ulimit", "sigpending="+values)
+				}
+
+				if v.Ulimits.Msgqueue != nil {
+					values := normalizeValueMapping(v.Ulimits.Msgqueue)
+					arr = append(arr, "--ulimit", "msgqueue="+values)
+				}
+
+				if v.Ulimits.Nice != nil {
+					values := normalizeValueMapping(v.Ulimits.Nice)
+					arr = append(arr, "--ulimit", "nice="+values)
+				}
+
+				if v.Ulimits.Rtprio != nil {
+					values := normalizeValueMapping(v.Ulimits.Rtprio)
+					arr = append(arr, "--ulimit", "rtprio="+values)
+				}
+
+				if v.Ulimits.Chroot != nil {
+					values := normalizeValueMapping(v.Ulimits.Chroot)
+					arr = append(arr, "--ulimit", "chroot="+values)
+				}
+
 				if v.User != "" {
 					arr = append(arr, "--user", v.User)
 				}
@@ -420,8 +515,8 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			OutputNewlines: true,
 		}
 
-		var exec = ""
-		var service = ""
+		exec := ""
+		service := ""
 
 		for i, f := range args {
 			for k := range e.Services {
