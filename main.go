@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.5"
+	binaryVersion = "1.0.6"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string

@@ -216,6 +216,12 @@ func convertToString(p []string) string {
 	return str
 }
 
+func extractLetters(str string) string {
+	re, _ := regexp.Compile(`[^a-zA-Z]+`)
+	str = re.ReplaceAllString(str, "")
+	return str
+}
+
 func extractNumbers(str string) string {
 	re, _ := regexp.Compile(`[^\d.-]`)
 	str = re.ReplaceAllString(str, "")
@@ -223,35 +229,60 @@ func extractNumbers(str string) string {
 }
 
 func setDurationUnit(str string, unit string) string {
+	letter := strings.ToLower(extractLetters(str))
 	h, _ := time.ParseDuration(str)
 
 	switch unit {
 	case "us":
-		if strings.Contains(str, "us") {
-			return extractNumbers(str)
+		if letter != "us" {
+			return fmt.Sprint(h.Microseconds())
 		}
-		return fmt.Sprint(h.Microseconds())
 	case "ms":
-		if strings.Contains(str, "ms") {
-			return extractNumbers(str)
+		if letter != "ms" {
+			return fmt.Sprint(h.Milliseconds())
 		}
-		return fmt.Sprint(h.Milliseconds())
 	case "s":
-		if strings.Contains(str, "s") {
-			return extractNumbers(str)
+		if letter != "s" {
+			return fmt.Sprint(h.Seconds())
 		}
-		return fmt.Sprint(h.Seconds())
 	case "m":
-		if strings.Contains(str, "m") {
-			return extractNumbers(str)
+		if letter != "m" {
+			return fmt.Sprint(h.Minutes())
 		}
-		return fmt.Sprint(h.Minutes())
 	case "h":
-		if strings.Contains(str, "h") {
-			return extractNumbers(str)
+		if letter != "h" {
+			return fmt.Sprint(h.Hours())
 		}
-		return fmt.Sprint(h.Hours())
 	}
 
-	return str
+	return extractNumbers(str)
+}
+
+func setByteUnit(str string, unit string) string {
+	letter := strings.ToLower(extractLetters(str))
+	number, _ := strconv.ParseFloat(extractNumbers(str), 64)
+
+	var bytes float64 = number
+
+	switch letter {
+	case "k", "kb":
+		bytes = number * 1000
+	case "m", "mb":
+		bytes = number * 1000000
+	case "g", "gb":
+		bytes = number * 1000000000
+	}
+
+	var val = fmt.Sprint(number) + "b"
+
+	switch unit {
+	case "k":
+		val = fmt.Sprint(bytes/1000) + "k"
+	case "m":
+		val = fmt.Sprint(bytes/1000000) + "m"
+	case "g":
+		val = fmt.Sprint(bytes/1000000000) + "g"
+	}
+
+	return val
 }
