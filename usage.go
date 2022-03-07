@@ -36,6 +36,7 @@ func (g *MainCommand) Init(args []string) error {
 }
 
 func (g *MainCommand) Run() error {
+	fmt.Println("  build       Build or rebuild services")
 	fmt.Println("  up          Create and start containers")
 	fmt.Println("  down        Stop and remove containers, networks")
 	fmt.Println("  exec        Execute a command in a running container")
@@ -86,6 +87,7 @@ func runUsage() error {
 
 	cmds := []Runner{
 		NewMainCommand(),
+		NewBuildCommand(),
 		NewDownCommand(),
 		NewExecCommand(),
 		NewKillCommand(),

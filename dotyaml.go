@@ -14,6 +14,7 @@ import (
 
 type Services struct {
 	BlkioConfig     ServicesBlockIO     `yaml:"blkio_config,omitempty"`
+	Build           interface{}         `yaml:"build,omitempty"`
 	CapAdd          []string            `yaml:"cap_add,omitempty"`
 	CapDrop         []string            `yaml:"cap_drop,omitempty"`
 	Cpus            float32             `yaml:"cpus,omitempty"`
@@ -163,19 +164,23 @@ type YamlPairs struct {
 
 func parseYAML(l []EnvironmentVariable) *Yaml {
 
-	yfile, err2 := ioutil.ReadFile(fileYAML)
+	yfile1, err1 := ioutil.ReadFile(fileYML)
+	yfile2, err2 := ioutil.ReadFile(fileYAML)
 
-	if err2 != nil {
-		log.Fatal(err2)
+	var file []byte
+	if err1 == nil {
+		file = replaceEnvironmentVariables(l, yfile1)
+	} else if err2 == nil {
+		file = replaceEnvironmentVariables(l, yfile2)
+	} else {
+		log.Fatal("Not found: configuration file not provided")
 	}
 
-	yfile = replaceEnvironmentVariables(l, yfile)
-
 	var e Yaml
-	err3 := yaml.Unmarshal(yfile, &e)
+	err := yaml.Unmarshal(file, &e)
 
-	if err3 != nil {
-		log.Fatal(err3)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	return &e

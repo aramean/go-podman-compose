@@ -4,4 +4,5 @@ __debug_bin
 .vscode
 *.env
 *.yml
+Dockerfile*
 podman-compose

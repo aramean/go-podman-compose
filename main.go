@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.9"
+	binaryVersion = "1.0.10"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -22,8 +22,10 @@ var (
 )
 
 const (
-	fileYAML         = "docker-compose.yml"
-	fileYAMLOverride = "docker-compose.override.yml"
+	fileYML          = "docker-compose.yml"
+	fileYAML         = "docker-compose.yaml"
+	fileYMLOverride  = "docker-compose.override.yml"
+	fileYAMLOverride = "docker-compose.override.yaml"
 	fileEnv          = ".env"
 )
 
@@ -133,6 +135,43 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 	g := Command{}
 
 	switch arg0 {
+	case "build":
+		g = Command{
+			OutputStatus:   true,
+			OutputNewlines: true,
+		}
+
+		for k, v := range e.Services {
+			name := getContainerName(v, k)
+			if (len(arg1) > 0 && name == arg1) || len(arg1) == 0 {
+				arr := []string{
+					"build",
+					"-t", name,
+				}
+
+				var build = normalizeValue(v.Build)
+
+				for _, r := range build {
+					p := transformPairs(r)
+					if p.Key == "dockerfile" {
+						arr = append(arr, "-f", p.Value)
+					}
+					if p.Key == "context" {
+						arr = append(arr, p.Value)
+					}
+				}
+
+				if len(build) == 0 {
+					arr = append(arr, fmt.Sprint(v.Build))
+				}
+
+				g.Tasks = append(
+					g.Tasks,
+					CommandTask{arr, "Building " + name + " ...", 0, false, false},
+				)
+			}
+		}
+
 	case "up", "start":
 		g = Command{
 			OutputStatus:   true,
