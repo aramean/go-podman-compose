@@ -268,7 +268,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					}
 				}
 
-				if v.Healthcheck.Test != "" {
+				if v.Healthcheck.Test != nil {
 					p := normalizeValue(v.Healthcheck.Test)
 					arr = append(arr, "--health-cmd", "'"+convertToString(p)+"'")
 				}
@@ -299,6 +299,18 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.Ipc != "" {
 					arr = append(arr, "--ipc", v.Ipc)
+				}
+
+				if v.Logging.Driver != "" {
+					arr = append(arr, "--log-driver", v.Logging.Driver)
+				}
+
+				if v.Logging.Options != nil {
+					for _, r := range normalizeValue(v.Logging.Options) {
+						p := transformPairs(r)
+						arr = append(arr, "--log-opt", p.Key)
+						fmt.Println(p.Key)
+					}
 				}
 
 				if v.MacAddress != "" {

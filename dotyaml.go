@@ -39,6 +39,7 @@ type Services struct {
 	Init            string              `yaml:"init,omitempty"`
 	Ipc             string              `yaml:"ipc,omitempty"`
 	Labels          interface{}         `yaml:"labels,omitempty"`
+	Logging         ServicesLogging     `yaml:"logging,omitempty"`
 	MacAddress      string              `yaml:"mac_address,omitempty"`
 	MemLimit        string              `yaml:"mem_limit,omitempty"`
 	MemReservation  string              `yaml:"mem_reservation,omitempty"`
@@ -66,6 +67,11 @@ type Services struct {
 	UsernsMode      string              `yaml:"userns_mode,omitempty"`
 	Volumes         []string            `yaml:"volumes,omitempty"`
 	WorkingDir      string              `yaml:"working_dir,omitempty"`
+}
+
+type ServicesLogging struct {
+	Driver  string      `yaml:"driver,omitempty"`
+	Options interface{} `yaml:"options,omitempty"`
 }
 
 type ServicesBlockIO struct {
