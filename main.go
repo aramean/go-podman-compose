@@ -285,6 +285,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--health-start-period", v.Healthcheck.StartPeriod)
 				}
 
+				if v.Healthcheck.Disable {
+					arr = append(arr, "--no-healthcheck")
+				}
+
 				if v.Hostname != "" {
 					arr = append(arr, "--hostname", v.Hostname)
 				}

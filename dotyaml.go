@@ -94,6 +94,7 @@ type ServicesBlockIORateDevice struct {
 }
 
 type ServicesHealthcheck struct {
+	Disable     bool        `yaml:"disable"`
 	Test        interface{} `yaml:"test,omitempty"`
 	Interval    string      `yaml:"interval,omitempty"`
 	Timeout     string      `yaml:"timeout,omitempty"`
