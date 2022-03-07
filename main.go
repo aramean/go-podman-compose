@@ -248,7 +248,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
 				if v.Entrypoint != nil {
 					p := normalizeValue(v.Entrypoint)
-					arr = append(arr, "--entrypoint", convertToString(p))
+					arr = append(arr, "--entrypoint", "'"+convertToString(p)+"'")
 				}
 
 				for _, r := range normalizeValue(v.Environment) {
@@ -269,8 +269,8 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				}
 
 				if v.Healthcheck.Test != "" {
-					values := normalizeValueStrings(v.Healthcheck.Test)
-					arr = append(arr, "--health-cmd", "'"+values+"'")
+					p := normalizeValue(v.Healthcheck.Test)
+					arr = append(arr, "--health-cmd", "'"+convertToString(p)+"'")
 				}
 
 				if v.Healthcheck.Interval != "" {

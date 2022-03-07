@@ -241,22 +241,6 @@ func normalizeValueColonsPair(field interface{}) string {
 	return val
 }
 
-func normalizeValueStrings(field interface{}) string {
-	values := normalizeValue(field)
-	size := len(values)
-	val := ""
-
-	if size == 0 {
-		return fmt.Sprint(field)
-	}
-
-	for _, r := range values {
-		fmt.Println(r)
-		val += r + " "
-	}
-	return val
-}
-
 func transformPairs(s string) *YamlPairs {
 	split := strings.Split(s, "=")
 	var k, v string
@@ -291,7 +275,10 @@ func convertToArray(t interface{}) []string {
 }
 
 func convertToString(p []string) string {
-	str := strings.Join(p, " ")
+	str := ""
+	if len(p) > 0 {
+		str = strings.Join(p, " ")
+	}
 	return str
 }
 
