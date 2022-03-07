@@ -386,6 +386,10 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--stop-signal", v.StopSignal)
 				}
 
+				if v.StorageOpt.Size != "" {
+					arr = append(arr, "--storage-opt", "size="+v.StorageOpt.Size)
+				}
+
 				for _, r := range normalizeValue(v.Sysctls) {
 					p := transformPairs(r)
 					arr = append(arr, "--sysctl", p.Key+"="+p.Value)

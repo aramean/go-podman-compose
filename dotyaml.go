@@ -60,6 +60,7 @@ type Services struct {
 	StdinOpen       bool                `yaml:"stdin_open,omitempty"`
 	StopGracePeriod string              `yaml:"stop_grace_period,omitempty"`
 	StopSignal      string              `yaml:"stop_signal,omitempty"`
+	StorageOpt      ServicesStorageOpt  `yaml:"storage_opt,omitempty"`
 	Sysctls         interface{}         `yaml:"sysctls,omitempty"`
 	Tmpfs           interface{}         `yaml:"tmpfs,omitempty"`
 	Tty             bool                `yaml:"tty,omitempty"`
@@ -109,6 +110,10 @@ type ServicesSecrets struct {
 	Uid    string `yaml:"uid,omitempty"`
 	Gid    string `yaml:"gid,omitempty"`
 	Mode   int16  `yaml:"mode,omitempty"`
+}
+
+type ServicesStorageOpt struct {
+	Size string `yaml:"size,omitempty"`
 }
 
 type ServicesUlimits struct {
