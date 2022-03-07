@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.7"
+	binaryVersion = "1.0.8"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -308,8 +308,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				if v.Logging.Options != nil {
 					for _, r := range normalizeValue(v.Logging.Options) {
 						p := transformPairs(r)
-						arr = append(arr, "--log-opt", p.Key)
-						fmt.Println(p.Key)
+						arr = append(arr, "--log-opt", p.Key+"="+p.Value)
 					}
 				}
 
