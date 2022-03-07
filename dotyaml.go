@@ -55,6 +55,7 @@ type Services struct {
 	Readonly        bool                `yaml:"read_only,omitempty"`
 	Restart         string              `yaml:"restart,omitempty"`
 	Secrets         []ServicesSecrets   `yaml:"secrets"`
+	SecurityOpt     []string            `yaml:"security_opt,omitempty"`
 	ShmSize         string              `yaml:"shm_size,omitempty"`
 	StdinOpen       bool                `yaml:"stdin_open,omitempty"`
 	StopGracePeriod string              `yaml:"stop_grace_period,omitempty"`
@@ -358,18 +359,4 @@ func setByteUnit(str string, unit string) string {
 	}
 
 	return val
-}
-
-func setTimeUnit(str string, unit string) string {
-	letter := strings.ToLower(extractLetters(str))
-	h, _ := time.ParseDuration(str)
-
-	switch unit {
-	case "s":
-		if letter != "s" {
-			return fmt.Sprint(h.Seconds())
-		}
-	}
-
-	return extractNumbers(str)
 }

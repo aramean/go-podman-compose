@@ -10,7 +10,7 @@ import (
 var (
 	debug         = os.Getenv("DEBUG")
 	binaryName    = "podman-compose"
-	binaryVersion = "1.0.8"
+	binaryVersion = "1.0.9"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -368,6 +368,12 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "--restart", v.Restart)
 				}
 
+				if v.SecurityOpt != nil {
+					for _, r := range v.SecurityOpt {
+						arr = append(arr, "--security-opt", r)
+					}
+				}
+
 				if v.ShmSize != "" {
 					arr = append(arr, "--shm-size", v.ShmSize)
 				}
@@ -659,7 +665,7 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				if timeout != "" {
 					t = timeout
 				} else if v.StopGracePeriod != "" {
-					t = setTimeUnit(v.StopGracePeriod, "s")
+					t = setDurationUnit(v.StopGracePeriod, "s")
 				}
 
 				arr = append(arr, "-t", t)
