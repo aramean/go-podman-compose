@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionPullCommand = "Pull service images"
 )
 
 type PullCommand struct {
@@ -13,6 +18,7 @@ func NewPullCommand() *PullCommand {
 		fs: flag.NewFlagSet("pull", flag.ExitOnError),
 	}
 
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionPullCommand, "pull")
 	return gc
 }
 

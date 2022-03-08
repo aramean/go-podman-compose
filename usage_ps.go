@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionPsCommand = "List containers"
 )
 
 type PsCommand struct {
@@ -20,6 +25,7 @@ func NewPsCommand() *PsCommand {
 	gc.fs.StringVar(&gc.all, "a", "all", "Show all the containers, default is only running containers")
 	gc.fs.StringVar(&gc.external, "external", "", "Show containers in storage not controlled by Podman")
 	gc.fs.BoolVar(&gc.quiet, "q", false, "Print the numeric IDs of the containers only")
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionPsCommand, "ps")
 	return gc
 }
 

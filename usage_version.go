@@ -3,6 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
+)
+
+const (
+	DescriptionVersionCommand = "Show Podman-Compose version information"
 )
 
 type VersionCommand struct {
@@ -19,6 +24,7 @@ func NewVersionCommand() *VersionCommand {
 
 	gc.fs.StringVar(&gc.format, "f", "", "")
 	gc.fs.BoolVar(&gc.short, "short", false, "Shows only Compose's version number.")
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionVersionCommand, "version")
 	return gc
 }
 

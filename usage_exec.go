@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionExecCommand = "Execute a command in a running container"
 )
 
 type ExecCommand struct {
@@ -20,7 +25,7 @@ func NewExecCommand() *ExecCommand {
 	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run command in the background.")
 	gc.fs.BoolVar(&gc.tty, "T", false, "Disable pseudo-TTY allocation. By default "+binaryName+" exec allocates a TTY.")
 	gc.fs.StringVar(&gc.user, "u", "", "Run the command as this user.")
-
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionExecCommand, "exec")
 	return gc
 }
 

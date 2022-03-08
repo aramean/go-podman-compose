@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionBuildCommand = "Build or rebuild services"
 )
 
 type BuildCommand struct {
@@ -13,6 +18,7 @@ func NewBuildCommand() *BuildCommand {
 		fs: flag.NewFlagSet("build", flag.ExitOnError),
 	}
 
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionBuildCommand, "build")
 	return gc
 }
 

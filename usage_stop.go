@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionStopCommand = "Stop services"
 )
 
 type StopCommand struct {
@@ -16,6 +21,7 @@ func NewStopCommand() *StopCommand {
 	}
 
 	gc.fs.IntVar(&gc.timeout, "t", 10, "Specify a shutdown timeout in seconds (default 10)")
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionStopCommand, "stop")
 	return gc
 }
 

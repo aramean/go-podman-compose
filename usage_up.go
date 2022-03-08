@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionUpCommand = "Create and start containers"
 )
 
 type UpCommand struct {
@@ -18,6 +23,7 @@ func NewUpCommand() *UpCommand {
 
 	gc.fs.BoolVar(&gc.detach, "d", false, "Detached mode: Run containers in the background")
 	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionUpCommand, "up")
 	return gc
 }
 

@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionKillCommand = "Force stop service containers"
 )
 
 type KillCommand struct {
@@ -13,6 +18,7 @@ func NewKillCommand() *KillCommand {
 		fs: flag.NewFlagSet("kill", flag.ExitOnError),
 	}
 
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionKillCommand, "kill")
 	return gc
 }
 

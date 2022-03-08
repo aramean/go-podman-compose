@@ -8,8 +8,6 @@ import (
 
 var (
 	debug         = os.Getenv("DEBUG")
-	binaryName    = "podman-compose"
-	binaryVersion = "1.0.11"
 	args          = os.Args[1:]
 	detach        bool
 	timeout       string
@@ -21,6 +19,8 @@ var (
 )
 
 const (
+	binaryName       = "podman-compose"
+	binaryVersion    = "1.0.11"
 	fileYML          = "docker-compose.yml"
 	fileYAML         = "docker-compose.yaml"
 	fileYMLOverride  = "docker-compose.override.yml"

@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionLogsCommand = "View output from containers"
 )
 
 type LogsCommand struct {
@@ -13,6 +18,7 @@ func NewLogsCommand() *LogsCommand {
 		fs: flag.NewFlagSet("logs", flag.ExitOnError),
 	}
 
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionLogsCommand, "logs")
 	return gc
 }
 

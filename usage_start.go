@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionStartCommand = "Start services"
 )
 
 type StartCommand struct {
@@ -13,6 +18,7 @@ func NewStartCommand() *StartCommand {
 		fs: flag.NewFlagSet("start", flag.ExitOnError),
 	}
 
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionStartCommand, "start")
 	return gc
 }
 

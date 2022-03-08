@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+)
+
+const (
+	DescriptionDownCommand = "Stop and remove containers, networks"
 )
 
 type DownCommand struct {
@@ -16,6 +21,7 @@ func NewDownCommand() *DownCommand {
 	}
 
 	gc.fs.BoolVar(&gc.removeOrphans, "remove-orphans", false, "Remove containers for services not defined in the Compose file.")
+	gc.fs.Usage = displayUsage(gc.fs, os.Stdout, DescriptionDownCommand, "down")
 	return gc
 }
 

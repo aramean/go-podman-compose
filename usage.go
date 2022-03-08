@@ -4,10 +4,16 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
+	"os"
 	"strings"
 )
 
-const message = "\nRun 'podman-compose COMMAND --help' for more information on a command"
+const (
+	messageError     = "\nRun 'podman-compose COMMAND --help' for more information on a command"
+	messageUsage     = "Description:\n   %s\n\nUsage:\n  " + binaryName + " %s [options]\n\nOptions:\n"
+	mainMessageUsage = "Usage:\n  " + binaryName + " [options] [command]\n\nAvailable Commands:\n"
+)
 
 type MainCommand struct {
 	fs *flag.FlagSet
@@ -36,19 +42,20 @@ func (g *MainCommand) Init(args []string) error {
 }
 
 func (g *MainCommand) Run() error {
-	fmt.Println("  build       Build or rebuild services")
-	fmt.Println("  up          Create and start containers")
-	fmt.Println("  down        Stop and remove containers, networks")
-	fmt.Println("  exec        Execute a command in a running container")
-	fmt.Println("  kill        Force stop service containers")
-	fmt.Println("  logs        View output from containers")
-	fmt.Println("  ps          List containers")
-	fmt.Println("  pull        Pull service images")
-	fmt.Println("  restart     Restart containers")
-	fmt.Println("  start       Start services")
-	fmt.Println("  stop        Stop services")
-	fmt.Println("  version     Show Podman-Compose version information")
-	return errors.New(message)
+	fmt.Fprintf(os.Stdout, mainMessageUsage)
+	fmt.Fprintf(os.Stdout, "  build\t\t%s\n", DescriptionBuildCommand)
+	fmt.Fprintf(os.Stdout, "  up\t\t%s\n", DescriptionUpCommand)
+	fmt.Fprintf(os.Stdout, "  down\t\t%s\n", DescriptionDownCommand)
+	fmt.Fprintf(os.Stdout, "  exec\t\t%s\n", DescriptionExecCommand)
+	fmt.Fprintf(os.Stdout, "  kill\t\t%s\n", DescriptionKillCommand)
+	fmt.Fprintf(os.Stdout, "  logs\t\t%s\n", DescriptionLogsCommand)
+	fmt.Fprintf(os.Stdout, "  ps\t\t%s\n", DescriptionPsCommand)
+	fmt.Fprintf(os.Stdout, "  pull\t\t%s\n", DescriptionPullCommand)
+	fmt.Fprintf(os.Stdout, "  restart\t%s\n", DescriptionRestartCommand)
+	fmt.Fprintf(os.Stdout, "  start\t\t%s\n", DescriptionStartCommand)
+	fmt.Fprintf(os.Stdout, "  stop\t\t%s\n", DescriptionStopCommand)
+	fmt.Fprintf(os.Stdout, "  version \t%s\n", DescriptionVersionCommand)
+	return errors.New(messageError)
 }
 
 type Runner interface {
@@ -108,5 +115,13 @@ func runUsage() error {
 		}
 	}
 
-	return fmt.Errorf("%s\nunknown command: \"%s\"", message, arg0)
+	return fmt.Errorf("%s\nunknown command: \"%s\"", messageError, arg0)
+}
+
+func displayUsage(fs *flag.FlagSet, out io.Writer, desc string, arg string) func() {
+	fs.SetOutput(out)
+	return func() {
+		fmt.Fprintf(out, messageUsage, desc, arg)
+		fs.PrintDefaults()
+	}
 }
