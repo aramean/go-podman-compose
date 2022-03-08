@@ -7,8 +7,12 @@ import (
 )
 
 var (
-	debug         = os.Getenv("DEBUG")
-	args          = os.Args[1:]
+	debug = os.Getenv("DEBUG")
+	args  = os.Args[1:]
+
+	arg0 string
+	arg1 string
+
 	detach        bool
 	timeout       string
 	removeOrphans bool
@@ -38,8 +42,6 @@ const (
 	colorWhite  = "\033[1;37m%s\033[0m"
 )
 
-var arg0, arg1 string
-
 type Command struct {
 	OutputStatus   bool
 	OutputNewlines bool
@@ -47,39 +49,10 @@ type Command struct {
 }
 
 func init() {
+	setArgs()
 	if err := runUsage(); err != nil {
 		fmt.Println(err)
 		os.Exit(0)
-	}
-
-	for i, v := range args {
-		if i == 0 {
-			arg0 = v
-		}
-		if i == 1 {
-			arg1 = v
-		}
-	}
-
-	for i, f := range args {
-		if f == "-d" || f == "--detach" {
-			detach = true
-		}
-		if f == "-t" || f == "--timeout" {
-			timeout = args[(i + 1)]
-		}
-		if f == "--remove-orphans" {
-			removeOrphans = true
-		}
-		if f == "-q" || f == "--quiet" {
-			quiet = true
-		}
-		if f == "-s" || f == "--signal" {
-			signal = args[(i + 1)]
-		}
-		if f == "-u" || f == "--user" {
-			user = args[(i + 1)]
-		}
 	}
 }
 
@@ -157,6 +130,38 @@ func buildCommand(e *Yaml, l []EnvironmentVariable) Command {
 	}
 
 	return g
+}
+
+func setArgs() {
+	for i, v := range args {
+		if i == 0 {
+			arg0 = v
+		}
+		if i == 1 {
+			arg1 = v
+		}
+	}
+
+	for i, f := range args {
+		if f == "-d" || f == "--detach" {
+			detach = true
+		}
+		if f == "-t" || f == "--timeout" {
+			timeout = args[(i + 1)]
+		}
+		if f == "--remove-orphans" {
+			removeOrphans = true
+		}
+		if f == "-q" || f == "--quiet" {
+			quiet = true
+		}
+		if f == "-s" || f == "--signal" {
+			signal = args[(i + 1)]
+		}
+		if f == "-u" || f == "--user" {
+			user = args[(i + 1)]
+		}
+	}
 }
 
 func getContainerName(v Services, name string) string {

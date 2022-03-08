@@ -42,7 +42,7 @@ func (g *MainCommand) Init(args []string) error {
 }
 
 func (g *MainCommand) Run() error {
-	fmt.Fprintf(os.Stdout, mainMessageUsage)
+	fmt.Print(mainMessageUsage)
 	fmt.Fprintf(os.Stdout, "  build\t\t%s\n", DescriptionBuildCommand)
 	fmt.Fprintf(os.Stdout, "  up\t\t%s\n", DescriptionUpCommand)
 	fmt.Fprintf(os.Stdout, "  down\t\t%s\n", DescriptionDownCommand)
@@ -65,18 +65,6 @@ type Runner interface {
 }
 
 func runUsage() error {
-
-	var arg0, arg1 = "", ""
-
-	for i, v := range args {
-		if i == 0 {
-			arg0 = v
-		}
-		if i == 1 {
-			arg1 = v
-		}
-	}
-
 	if arg1 == "" {
 		if arg0 == "" || strings.Contains(arg0, "-help") {
 			args = append(args, "help")
