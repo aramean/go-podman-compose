@@ -260,7 +260,7 @@ func normalizeValueColonsPair(field interface{}) string {
 }
 
 func transformPairs(s string) *YamlPairs {
-	split := strings.Split(s, "=")
+	split := strings.SplitN(s, "=", 2)
 	var k, v string
 
 	if len(split) == 1 {
