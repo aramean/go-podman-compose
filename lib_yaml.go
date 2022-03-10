@@ -250,7 +250,7 @@ func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
 
 		if len(name3) == 2 {
 			if match3env == "" {
-				log.Fatal(ErrorVariableValue, name3[0], name3[1])
+				log.Fatalf(ErrorVariableValue, name3[0], name3[1])
 			}
 			return match3env
 		}
@@ -271,7 +271,7 @@ func replaceEnvironmentVariables(l []EnvironmentVariable, yfile []byte) []byte {
 
 		if len(name4) == 2 {
 			if !match4 {
-				log.Fatal(ErrorVariableValue, name4[0], name4[1])
+				log.Fatalf(ErrorVariableValue, name4[0], name4[1])
 			}
 			return match4env
 		}
