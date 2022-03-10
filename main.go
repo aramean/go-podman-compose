@@ -24,7 +24,7 @@ var (
 
 const (
 	binaryName       = "podman-compose"
-	binaryVersion    = "1.0.11"
+	binaryVersion    = "1.0.12"
 	fileYML          = "docker-compose.yml"
 	fileYAML         = "docker-compose.yaml"
 	fileYMLOverride  = "docker-compose.override.yml"
