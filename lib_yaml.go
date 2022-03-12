@@ -293,7 +293,7 @@ func normalizeValue(t interface{}) []string {
 	case map[string]interface{}:
 		for k, v := range t {
 
-			var x = ""
+			x := ""
 
 			switch v := v.(type) {
 			case int:
