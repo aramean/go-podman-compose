@@ -17,7 +17,7 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				"-t", name,
 			}
 
-			var build = normalizeValue(v.Build)
+			build := normalizeValue(v.Build)
 
 			for _, r := range build {
 				p := transformPairs(r)
