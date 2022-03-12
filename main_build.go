@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 
