@@ -20,6 +20,7 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 			}
 
 			build := normalizeValue(v.Build)
+			context := "."
 
 			for _, r := range build {
 				p := transformPairs(r)
@@ -27,13 +28,15 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 					arr = append(arr, "-f", p.Value)
 				}
 				if p.Key == "context" {
-					arr = append(arr, p.Value)
+					context = p.Value
 				}
 			}
 
 			if len(build) == 0 {
 				arr = append(arr, fmt.Sprint(v.Build))
 			}
+
+			arr = append(arr, context)
 
 			g.Tasks = append(
 				g.Tasks,
