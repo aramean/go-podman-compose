@@ -163,6 +163,10 @@ type YamlPairs struct {
 }
 
 const (
+	delimiter = "[|]"
+)
+
+const (
 	ErrorFile          = "Not found: configuration file not provided"
 	ErrorVariableValue = "Not found: required variable %s is missing a value: %s"
 )
@@ -300,6 +304,10 @@ func normalizeValue(t interface{}) []string {
 				x = strconv.FormatInt(int64(v), 10)
 			case bool, string:
 				x = fmt.Sprint(v)
+			default:
+				for _, i := range convertToArray(v) {
+					x += i + delimiter
+				}
 			}
 
 			arr = append(arr, k+"="+x)
@@ -353,6 +361,10 @@ func convertToArray(t interface{}) []string {
 	case []interface{}:
 		for _, v := range t {
 			arr = append(arr, fmt.Sprint(v))
+		}
+	case map[string]interface{}:
+		for k, v := range t {
+			arr = append(arr, fmt.Sprint(k)+"="+fmt.Sprint(v))
 		}
 	default:
 		arr = append(arr, fmt.Sprint(t))

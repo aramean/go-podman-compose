@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
@@ -26,6 +27,15 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				p := transformPairs(r)
 				if p.Key == "dockerfile" {
 					arr = append(arr, "-f", p.Value)
+				}
+				if p.Key == "args" {
+					a := strings.Split(p.Value, delimiter)
+					for _, r := range a {
+						if len(r) > 0 {
+							p := transformPairs(r)
+							arr = append(arr, "--build-arg", p.Key+"="+p.Value)
+						}
+					}
 				}
 				if p.Key == "context" {
 					context = p.Value
