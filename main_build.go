@@ -37,6 +37,15 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 						}
 					}
 				}
+				if p.Key == "labels" {
+					a := strings.Split(p.Value, delimiter)
+					for _, r := range a {
+						if len(r) > 0 {
+							p := transformPairs(r)
+							arr = append(arr, "--label", p.Key+"="+p.Value)
+						}
+					}
+				}
 				if p.Key == "context" {
 					context = p.Value
 				}
