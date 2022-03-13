@@ -49,6 +49,9 @@ func newComposeBuildCommand(e *Yaml, l []EnvironmentVariable) Command {
 				if p.Key == "shm_size" {
 					arr = append(arr, "--shm-size", p.Value)
 				}
+				if p.Key == "target" {
+					arr = append(arr, "--target", p.Value)
+				}
 				if p.Key == "context" {
 					context = p.Value
 				}
